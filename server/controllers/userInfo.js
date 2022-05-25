@@ -3,15 +3,17 @@ const app = express()
 const mysql = require("mysql")
 const validator = require('email-validator');
 
+//Use json format for data
 app.use(express.json());
 
-
+//initialize database information
 const DB_HOST = process.env.DB_HOST
 const DB_USER = process.env.DB_USER
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_DATABASE = process.env.DB_DATABASE
 const DB_PORT = process.env.DB_PORT
 
+//create database connection
 const db = mysql.createPool({
    connectionLimit: 100,
    host: DB_HOST,
@@ -34,28 +36,32 @@ const signUp = (req, res) => {
         const firstName = req.body.firstName;
         const lastName = req.body.lastName;
         const email = req.body.email;
-
+        
+        //validate information
         if (!verifyNumber(number)) {
            console.log("invalid number");
            res.sendStatus(400);
         } else if (!validator.validate(email)){
            console.log("invalid email")
-           res.sendStatus(400);
+           res.sendStatus(400);  
+        } else if (typeof firstName == "string"){
+            console.log("first name invalid")
         } else {
+            //create queries to check for duplicates
             const sqlUsernameSearch = "SELECT * FROM user_info WHERE username =?";
             const usernameSearchQuery = mysql.format(sqlUsernameSearch, [username]);
             const sqlPasswordSearch = "SELECT * FROM user_info WHERE password =?";
             const passwordSearchQuery = mysql.format(sqlPasswordSearch, [password]);
-            const sqlNumberSearch = "SELECT * FROM user_info WHERE number =?";
+            const sqlNumberSearch = "SELECT * FROM user_info WHERE phone_number =?";
             const numberSearchQuery = mysql.format(sqlNumberSearch, [number]);
             const sqlEmailSearch = "SELECT * FROM user_info WHERE email =?";
             const emailSearchQuery = mysql.format(sqlEmailSearch, [email]);
        
- 
+            //create query to insert account information into database
             const sqlInsert = "INSERT INTO user_info VALUES (0, ?, ?, ?, ?, ?, ?)";
-            const insertQuery = mysql.format(sqlInsert, [username, number, password, firstName, lastName, email]);
+            const insertQuery = mysql.format(sqlInsert, [username, number, password, email, firstName, lastName]);
 
-
+            //check for duplicates and add to database if there is none 
             db.query (usernameSearchQuery, (err, result) => {
                 if (err) throw (err)
                 console.log("Search Results");
@@ -118,11 +124,12 @@ const signIn = (req, res) => {
        console.log(req.body);
        const username = req.body.username;
        const password = req.body.password;
-       const number = req.body.number;
- 
+
+       //create query to verify details 
        const sqlSearch = "SELECT * FROM user_info WHERE username =? AND password =?";
        const searchQuery = mysql.format(sqlSearch, [username, password]);
  
+       //check if authentictaion is valid
        db.query (searchQuery, (err, result) => {
           if (err) throw (err)
           console.log("------> Search Results");
@@ -166,6 +173,7 @@ const verifyEmail = email => {
 }
 
 const verifyName = name => {
+
 }
 
 const verifyPassword = password => {
