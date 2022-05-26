@@ -2,6 +2,8 @@ const express = require("express")
 const app = express()
 const mysql = require("mysql")
 const validator = require('email-validator');
+const util = require("util");
+
 
 //Use json format for data
 app.use(express.json());
@@ -14,7 +16,7 @@ const DB_DATABASE = process.env.DB_DATABASE
 const DB_PORT = process.env.DB_PORT
 
 //create database connection
-const db = mysql.createPool({
+const db = mysql.createConnection({
    connectionLimit: 100,
    host: DB_HOST,
    user: DB_USER,
@@ -24,11 +26,11 @@ const db = mysql.createPool({
 })
 const port = process.env.PORT
 
+const query = util.promisify(db.query).bind(db);
+
+
 //Creating Account Information
 const signUp = (req, res) => {
-    db.getConnection((err, connection) => {
-        if (err) throw err;
-        console.log("Connected!");
         console.log(req.body);
         const username = req.body.username;
         const password = req.body.password;
@@ -36,18 +38,21 @@ const signUp = (req, res) => {
         const firstName = req.body.firstName;
         const lastName = req.body.lastName;
         const email = req.body.email;
+
+         //validate information
+        const details = {
+            "username": validateNumber(number),
+            "password": validatePassword(password),
+            "phone_number":validateNumber(number),
+            "firstName": validateName(firstName),
+            "lastName": validateName(lastName),
+            "email": validator.validate(email),
+            "usernameDuplicate" : true,
+            "passwordDuplicate" : true, 
+            "phoneNumberDuplicate": true,
+            "emailDuplicate": true
+        }
         
-        //validate information
-        if (!verifyNumber(number)) {
-           console.log("invalid number");
-           res.sendStatus(400);
-        } else if (!validator.validate(email)){
-           console.log("invalid email")
-           res.sendStatus(400);  
-        } else if (typeof firstName == "string"){
-            console.log("first name invalid")
-        } else {
-            //create queries to check for duplicates
             const sqlUsernameSearch = "SELECT * FROM user_info WHERE username =?";
             const usernameSearchQuery = mysql.format(sqlUsernameSearch, [username]);
             const sqlPasswordSearch = "SELECT * FROM user_info WHERE password =?";
@@ -59,63 +64,102 @@ const signUp = (req, res) => {
        
             //create query to insert account information into database
             const sqlInsert = "INSERT INTO user_info VALUES (0, ?, ?, ?, ?, ?, ?)";
-            const insertQuery = mysql.format(sqlInsert, [username, number, password, email, firstName, lastName]);
-
-            //check for duplicates and add to database if there is none 
-            db.query (usernameSearchQuery, (err, result) => {
-                if (err) throw (err)
-                console.log("Search Results");
-                console.log(result.length);
-                if (result.length != 0) {
-                    connection.release()
-                    console.log("username already exists");
-                    res.sendStatus(409) 
-                } else {
-                    db.query (passwordSearchQuery, (err, result) => {
-                    if (err) throw (err)
-                        console.log("Search Results");
-                        console.log(result.length);
-                        if (result.length != 0) {
-                            connection.release()
-                            console.log("password already exists");
-                            res.sendStatus(409)
-                        } else {
-                            db.query (numberSearchQuery, (err, result) => {
-                                if (err) throw (err)
-                                console.log("Search Results");
-                                console.log(result.length);
-                                if (result.length != 0) {
-                                    connection.release()
-                                    console.log("number already exists");
-                                    res.sendStatus(409)
-                                } else {
-                                    db.query (emailSearchQuery, (err, result) => {
-                                    if (err) throw (err)
-                                    console.log("Search Results");
-                                    console.log(result.length);
-                                    if(result.length != 0) {
-                                        connection.release()
-                                        console.log("email already exists");
-                                        res.sendStatus(409)
-                                    } else {
-                                        db.query (insertQuery, (err, result) => {
-                                        connection.release()
-                                        if (err) throw (err)
-                                        console.log ("Created new User")
-                                        console.log(result.insertId)
-                                        res.sendStatus(201)
-                                        })
-                                    }
-                                    })
-                                }
-                            })
-                        }   
-                    })
+            const insertQuery = mysql.format(sqlInsert, [username, password, number, email, firstName, lastName]);
+            
+            //async/await format to query data
+            (async () => { 
+            try {
+                //check for duplicates in database
+                const usernameResults = await query(usernameSearchQuery);
+                const passwordResults = await query(passwordSearchQuery);
+                const numberResults = await query(numberSearchQuery);
+                const emailResults = await query(emailSearchQuery);
+                console.log(usernameResults.length)
+                console.log(passwordResults.length)
+                console.log(numberResults.length)
+                console.log(emailResults.length)
+                if (usernameResults.length != 0) {
+                    details.usernameDuplicate = false;
                 }
-            })
-        }        
-    }) //end of db.getConnection()
+                if (passwordResults.length != 0) {
+                    details.passwordUnique = false;
+                }
+                if (numberResults.length != 0) {
+                    details.numberUnique = false;
+                }
+                if (emailResults.length != 0) {
+                    details.emailunique = false;
+                }
+                } catch ( err ) {
+                    console.log(err.message);
+                } finally {
+                    
+                    if(Object.values(details).indexOf(false) > -1) {
+                        res.json(details);
+                    } else {
+                        res.send("Account created");
+                        db.query (insertQuery);      
+                    }
+                    db.end();
+                }
+            })();
+            //check for duplicates and add to database if there is none 
+            // db.query (usernameSearchQuery, (err, result) => {
+            //     if (err) throw (err)
+            //     console.log("Search Results");
+            //     console.log(result.length);
+            //     if (result.length != 0) {
+            //         details.usernameDuplicate = false;
+            //         connection.release()
+            //         // res.send("username already exists");
+            //         // res.sendStatus(409) 
+            //     } else {
+            //         db.query (passwordSearchQuery, (err, result) => {
+            //         if (err) throw (err)
+            //             console.log("Search Results");
+            //             console.log(result.length);
+            //             if (result.length != 0) {
+            //                 connection.release()
+            //                 // res.send("password already exists");
+            //                 // res.sendStatus(409)
+            //             } else {
+            //                 db.query (numberSearchQuery, (err, result) => {
+            //                     if (err) throw (err)
+            //                     console.log("Search Results");
+            //                     console.log(result.length);
+            //                     if (result.length != 0) {
+            //                         connection.release()
+            //                         // res.send("number already exists");
+            //                         // res.sendStatus(409)
+            //                     } else {
+            //                         db.query (emailSearchQuery, (err, result) => {
+            //                         if (err) throw (err)
+            //                         console.log("Search Results");
+            //                         console.log(result.length);
+            //                         if(result.length != 0) {
+            //                             connection.release()
+            //                             // res.send("email already exists");
+            //                             // res.sendStatus(409)
+            //                         } else {
+            //                             db.query (insertQuery, (err, result) => {
+            //                             connection.release()
+            //                             if (err) throw (err)
+            //                             res.send("Created new User")
+            //                             console.log(result.insertId)
+            //                             res.sendStatus(201)
+            //                             })
+            //                         }
+            //                         })
+            //                     }
+            //                 })
+            //             }   
+            //         })
+            //     }
+            // })          
 }
+
+
+
 
 //Authenticating Login details 
 const signIn = (req, res) => {
@@ -129,19 +173,19 @@ const signIn = (req, res) => {
        const sqlSearch = "SELECT * FROM user_info WHERE username =? AND password =?";
        const searchQuery = mysql.format(sqlSearch, [username, password]);
  
-       //check if authentictaion is valid
+       //check if authentictaion is valid (using callback fomat)
        db.query (searchQuery, (err, result) => {
           if (err) throw (err)
           console.log("------> Search Results");
           console.log(result.length);
           if (result.length != 0) {
            connection.release()
-           console.log("accepted");
+           res.send("accepted");
            res.sendStatus(200);
           } 
           else {
            connection.release()
-           console.log ("username or password is incorrect")
+           res.send("username or password is incorrect")
            res.sendStatus(401);
           }
       }) //end of connection.query()
@@ -149,50 +193,47 @@ const signIn = (req, res) => {
 }
 
 
-const verifyNumber = (number) => {
-    const num = String(number);
-    if (num.length != 8) {
-        return false;
-    }
-    if(num[1] != 8 && num[1] != 9) {
-        return false;
-    }
-    return true;
+const validateNumber = (number) => {
+    const numRegex = /^[8-9]{1}[0-9]{7}$/;
+    return numRegex.test(number);
 }
 
-const verifyEmail = email => {
-    const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (email.value.match(validRegex)) {
-        alert("Valid email address!");
+const validateEmail = email => {
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (emailRegex.test(email)) {
+        console.log("Valid email address!");
         return true;
 
     } else {
-        alert("Invalid email address!");
+        console.log("Invalid email address!");
         return false;
     }
 }
 
-const verifyName = name => {
+const validateName = name => {
+    const nameRegex = /^[a-zA-Z ]{2,30}$/;
+    return nameRegex.test(name);
+}
+
+const validatePassword = password => {
+    const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    return passwordRegex.test(password)
 
 }
 
-const verifyPassword = password => {
-
+const searchQuery = (entry, string) => {
+    const sqlSearch = "SELECT * FROM user_info WHERE " + string + "=?";
+    const searchQuery = mysql.format(sqlSearch, [entry]);
+    let length;
+    try{
+    const search = db.query (searchQuery);
+    }catch(err) {
+        console.log(err.message);
+    } finally {
+        db.close()
+    }
+    return length != 0;
 }
-
-// const searchQuery = (entry, string) => {
-//     const sqlSearch = "SELECT * FROM user_info WHERE " + string + "=?";
-//     const searchQuery = mysql.format(sqlSearch, [entry]);
-//     let length = 0;
-//     db.query (searchQuery, (err, result) => {
-//         if (err) throw (err)
-//         console.log("Search Results");
-//         console.log(result.length);
-//         length = result.length;
-//         console.log(length)
-//     })
-//     return length != 0;
-// }
 
 
 module.exports = {signIn, signUp}

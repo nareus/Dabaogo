@@ -22,7 +22,8 @@
     "otp-generator": "^4.0.0",
     "pg": "^8.7.3",
     "sequelize": "^6.20.0",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "util": "^0.12.4"
   },
   "devDependencies": {
     "dotenv": "^16.0.1",
