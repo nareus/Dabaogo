@@ -100,7 +100,6 @@ const signUp = (req, res) => {
                         res.send("Account created");
                         db.query (insertQuery);      
                     }
-                    db.end();
                 }
             })();
             //check for duplicates and add to database if there is none 
@@ -163,9 +162,6 @@ const signUp = (req, res) => {
 
 //Authenticating Login details 
 const signIn = (req, res) => {
-    db.getConnection((err, connection) => {
-       console.log("Connected!");
-       console.log(req.body);
        const username = req.body.username;
        const password = req.body.password;
 
@@ -179,17 +175,12 @@ const signIn = (req, res) => {
           console.log("------> Search Results");
           console.log(result.length);
           if (result.length != 0) {
-           connection.release()
            res.send("accepted");
-           res.sendStatus(200);
           } 
           else {
-           connection.release()
            res.send("username or password is incorrect")
-           res.sendStatus(401);
           }
       }) //end of connection.query()
-    }) //end of db.getConnection()
 }
 
 
