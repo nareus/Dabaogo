@@ -24,7 +24,6 @@ const db = mysql.createConnection({
    database: DB_DATABASE,
    port: DB_PORT
 })
-const port = process.env.PORT
 
 const query = util.promisify(db.query).bind(db);
 
@@ -34,23 +33,21 @@ const signUp = (req, res) => {
         console.log(req.body);
         const username = req.body.username;
         const password = req.body.password;
-        const number = req.body.number;
+        const phone = req.body.phone;
         const firstName = req.body.firstName;
         const lastName = req.body.lastName;
         const email = req.body.email;
 
          //validate information
         const details = {
-            "username": validateNumber(number),
-            "password": validatePassword(password),
-            "phone_number":validateNumber(number),
-            "firstName": validateName(firstName),
-            "lastName": validateName(lastName),
-            "email": validator.validate(email),
-            "usernameDuplicate" : true,
-            "passwordDuplicate" : true, 
-            "phoneNumberDuplicate": true,
-            "emailDuplicate": true
+            "passwordValid": validatePassword(password),
+            "phoneValid":validatePhone(phone),
+            "firstNameValid": validateName(firstName),
+            "lastNameValid": validateName(lastName),
+            "emailValid": validator.validate(email),
+            "passwordUnique" : false, 
+            "phoneUnique": false,
+            "emailUnique": false
         }
         
             const sqlUsernameSearch = "SELECT * FROM user_info WHERE username =?";
@@ -58,37 +55,32 @@ const signUp = (req, res) => {
             const sqlPasswordSearch = "SELECT * FROM user_info WHERE password =?";
             const passwordSearchQuery = mysql.format(sqlPasswordSearch, [password]);
             const sqlNumberSearch = "SELECT * FROM user_info WHERE phone_number =?";
-            const numberSearchQuery = mysql.format(sqlNumberSearch, [number]);
+            const numberSearchQuery = mysql.format(sqlNumberSearch, [phone]);
             const sqlEmailSearch = "SELECT * FROM user_info WHERE email =?";
             const emailSearchQuery = mysql.format(sqlEmailSearch, [email]);
        
             //create query to insert account information into database
-            const sqlInsert = "INSERT INTO user_info VALUES (0, ?, ?, ?, ?, ?, ?)";
-            const insertQuery = mysql.format(sqlInsert, [username, password, number, email, firstName, lastName]);
+            const sqlInsert = "INSERT INTO user_info VALUES (0, ?, ?, ?, ?, ?)";
+            const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName]);
             
             //async/await format to query data
             (async () => { 
             try {
                 //check for duplicates in database
-                const usernameResults = await query(usernameSearchQuery);
                 const passwordResults = await query(passwordSearchQuery);
                 const numberResults = await query(numberSearchQuery);
                 const emailResults = await query(emailSearchQuery);
-                console.log(usernameResults.length)
                 console.log(passwordResults.length)
                 console.log(numberResults.length)
                 console.log(emailResults.length)
-                if (usernameResults.length != 0) {
-                    details.usernameDuplicate = false;
+                if (passwordResults.length == 0) {
+                    details.passwordUnique = true;
                 }
-                if (passwordResults.length != 0) {
-                    details.passwordUnique = false;
+                if (numberResults.length == 0) {
+                    details.phoneUnique = true;
                 }
-                if (numberResults.length != 0) {
-                    details.numberUnique = false;
-                }
-                if (emailResults.length != 0) {
-                    details.emailunique = false;
+                if (emailResults.length == 0) {
+                    details.emailUnique = true;
                 }
                 } catch ( err ) {
                     console.log(err.message);
@@ -158,16 +150,17 @@ const signUp = (req, res) => {
 }
 
 
-
-
 //Authenticating Login details 
 const signIn = (req, res) => {
-       const username = req.body.username;
+       const phone = req.body.phone;
        const password = req.body.password;
+       let accepted = {
+           "accepted": false
+       }
 
        //create query to verify details 
-       const sqlSearch = "SELECT * FROM user_info WHERE username =? AND password =?";
-       const searchQuery = mysql.format(sqlSearch, [username, password]);
+       const sqlSearch = "SELECT * FROM user_info WHERE phone_number =? AND password =?";
+       const searchQuery = mysql.format(sqlSearch, [phone, password]);
  
        //check if authentictaion is valid (using callback fomat)
        db.query (searchQuery, (err, result) => {
@@ -175,16 +168,14 @@ const signIn = (req, res) => {
           console.log("------> Search Results");
           console.log(result.length);
           if (result.length != 0) {
-           res.send("accepted");
+            accepted.accepted = true;
           } 
-          else {
-           res.send("username or password is incorrect")
-          }
+          res.json(accepted);
       }) //end of connection.query()
 }
 
 
-const validateNumber = (number) => {
+const validatePhone = (number) => {
     const numRegex = /^[8-9]{1}[0-9]{7}$/;
     return numRegex.test(number);
 }
@@ -207,8 +198,9 @@ const validateName = name => {
 }
 
 const validatePassword = password => {
-    const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-    return passwordRegex.test(password)
+    //const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{5,20}$/;
+    //return passwordRegex.test(password)
+    return true 
 
 }
 

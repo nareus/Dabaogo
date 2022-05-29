@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express()
-require("dotenv").config()
 const mysql = require("mysql")
+const port = process.env.PORT || 3000
 
 
 //Importing Routes
@@ -40,11 +40,11 @@ connection.connect(err => {
 });
 
 
-const port = process.env.PORT
+
 
 //listening on port set in environment 
 app.listen(port, 
-()=> console.log(`Server Started on port ${port}...`))
+()=> console.log(`Server Started on port 3000...`))
 
    
 
