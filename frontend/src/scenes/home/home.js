@@ -1,9 +1,10 @@
 import React from 'react';
-import {SafeAreaView, Text, TouchableHighlight} from 'react-native';
+import {SafeAreaView} from 'react-native';
+import Logo from '../../components/atoms/Logo';
 
 const HomeScreen = ({navigation}) => (
   <SafeAreaView>
-    <Text>Home</Text>
+    <Logo text={"Welcome to Dabaogo"}/>
   </SafeAreaView>
 );
 

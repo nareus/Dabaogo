@@ -1,1 +1,0 @@
-// allow to set color and configure text

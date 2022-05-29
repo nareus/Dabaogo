@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 
-const Logo = () => {
-  return <Text style={styles.title}>DABAOGO</Text>;
+const Logo = ({text}) => {
+  return <Text style={styles.title}>{text}</Text>;
 };
 
 const styles = StyleSheet.create({
