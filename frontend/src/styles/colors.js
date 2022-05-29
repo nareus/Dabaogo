@@ -1,7 +1,13 @@
-export const PRIMARY = '#1779ba';
-export const SECONDARY = '#767676';
-export const WHITE = '#FFFFFF';
-export const BLACK = '#000000';
+export const PRIMARY = '#F19896';
+export const SECONDARY = '#DFDEDE';
+export const BACKGROUND_COLOR = 'white';
+
+export const FORM_INPUT_TEXT = '#808080';
+export const LINE_COLOR = '#D1D1D1';
+
+export const BUTTON_BACKGROUND_1 = '#EEEEEE';
+export const BUTTON_TEXT_1 = '#666666';
+export const BUTTON_TEXT_2 = 'white';
 
 // ACTIONS
 export const SUCCESS = '#3adb76';

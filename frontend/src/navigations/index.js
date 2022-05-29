@@ -1,28 +1,44 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../scenes/home/home';
 import SettingsScreen from '../scenes/settings/settings';
-import SignInScreen from '../scenes/signIn/signIn';
-import SignUpScreen from '../scenes/signUp/signUp';
 import ForgotPasswordScreen from '../scenes/forgotPassword/forgotPassword';
 import LandingScreen from '../scenes/landingScreen/landing';
+import AuthScreen from '../scenes/auth/auth';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import AuthReducer from '../redux/reducer/AuthReducer';
 
 const Stack = createNativeStackNavigator();
 
-const Navigator = () =>  {
+const store = createStore(AuthReducer);
+
+const Navigator = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen name="Landing" component={LandingScreen} options={{headerShown: false}} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="SignIn" component={SignInScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Landing">
+          <Stack.Screen
+            name="Landing"
+            component={LandingScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPasswordScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
-}
+};
 
 export default Navigator;
