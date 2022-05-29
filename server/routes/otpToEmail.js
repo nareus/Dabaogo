@@ -48,11 +48,11 @@ router.post('/email/otp', async (req, res, next) => {
  
   //Create OTP instance in DB
   connection.connect();
-  const insertQuery = "INSERT INTO otp (otp, expiration_time) VALUES (?,?)"
+  const insertQuery = "INSERT INTO otp_details (otp, expiration_time) VALUES (?,?)"
   const formattedQuery = mysql.format(insertQuery, [otp, expiration_time]);
   connection.query(formattedQuery, (error, results) => {
       if (error) throw error;
-      console.log("otp added to database");
+      console.log("otp added to database"); 
   })
   connection.end();
 
@@ -91,25 +91,40 @@ router.post('/email/otp', async (req, res, next) => {
     }
 
     // Create nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      host: 'gmail',
-      port: 465,
-      secure: true,
-      auth: {
-        user: `${process.env.EMAIL_ADDRESS}`,
-        pass: `${process.env.EMAIL_PASSWORD}`
-      },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   host: 'gmail',
+    //   port: 465,
+    //   secure: true,
+    //   auth: {
+    //     user: `${process.env.EMAIL_ADDRESS}`,
+    //     pass: `${process.env.EMAIL_PASSWORD}`
+    //   },
+    // });
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'marktaylorsouthampton@gmail.com',
+          pass: 'Bestintheworld'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'marktaylorsouthampton@gmail.com',
+        to: `${email}`,
+        subject: email_subject,
+        text: email_message
+      };
 
 
-    const mailOptions = {
-      from: `"Naren Sreekanth"<${process.env.EMAIL_ADDRESS}>`,
-      to: `${email}`,
-      subject: email_subject,
-      text: email_message ,
-    };
+//     const mailOptions = {
+//       from: `"Naren Sreekanth"<${process.env.EMAIL_ADDRESS}>`,
+//       to: `${email}`,
+//       subject: email_subject,
+//       text: email_message ,
+//     };
 
-    await transporter.verify();
+       await transporter.verify();
     
     //Send Email
     await transporter.sendMail(mailOptions, (err, response) => {
@@ -124,7 +139,7 @@ router.post('/email/otp', async (req, res, next) => {
     const response={"Status":"Failure","Details": err.message}
     return res.status(400).send(response)
   }
-});
+ });
 
  
 module.exports = router;
