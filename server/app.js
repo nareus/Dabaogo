@@ -27,20 +27,28 @@ const DB_DATABASE = process.env.DB_DATABASE
 const DB_PORT = process.env.DB_PORT
 
 const connection = mysql.createConnection({
-   host: DB_HOST,
-   user: DB_USER,
-   password: DB_PASSWORD,
-   database: DB_DATABASE,
-   port: DB_PORT
+   host: "dabaogo.cjq1kwf2vggx.ap-southeast-1.rds.amazonaws.com",
+   user: "naren",
+   password: "Levelsixlounge",
+   database: "dabaogo",
+   port: "3306"
 })
 
 connection.connect(err => {
     if (err) console.log(err.message);
+    else {
     console.log("connected to database");
+    }
 });
 
 
-
+console.log({
+    host: DB_HOST,
+   user: DB_USER,
+   password: DB_PASSWORD,
+   database: DB_DATABASE,
+   port: DB_PORT
+ })
 
 //listening on port set in environment 
 app.listen(port, 

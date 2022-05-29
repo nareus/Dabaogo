@@ -17,13 +17,12 @@ const DB_PORT = process.env.DB_PORT
 
 //create database connection
 const db = mysql.createConnection({
-   connectionLimit: 100,
-   host: DB_HOST,
-   user: DB_USER,
-   password: DB_PASSWORD,
-   database: DB_DATABASE,
-   port: DB_PORT
-})
+    host: "dabaogo.cjq1kwf2vggx.ap-southeast-1.rds.amazonaws.com",
+    user: "naren",
+    password: "Levelsixlounge",
+    database: "dabaogo",
+    port: "3306"
+ })
 
 const query = util.promisify(db.query).bind(db);
 
@@ -44,8 +43,7 @@ const signUp = (req, res) => {
             "phoneValid":validatePhone(phone),
             "firstNameValid": validateName(firstName),
             "lastNameValid": validateName(lastName),
-            "emailValid": validator.validate(email),
-            "passwordUnique" : false, 
+            "emailValid": validator.validate(email), 
             "phoneUnique": false,
             "emailUnique": false
         }
@@ -67,15 +65,11 @@ const signUp = (req, res) => {
             (async () => { 
             try {
                 //check for duplicates in database
-                const passwordResults = await query(passwordSearchQuery);
                 const numberResults = await query(numberSearchQuery);
                 const emailResults = await query(emailSearchQuery);
                 console.log(passwordResults.length)
                 console.log(numberResults.length)
                 console.log(emailResults.length)
-                if (passwordResults.length == 0) {
-                    details.passwordUnique = true;
-                }
                 if (numberResults.length == 0) {
                     details.phoneUnique = true;
                 }
@@ -198,9 +192,8 @@ const validateName = name => {
 }
 
 const validatePassword = password => {
-    //const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{5,20}$/;
-    //return passwordRegex.test(password)
-    return true 
+    const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+    return passwordRegex.test(password)
 
 }
 
