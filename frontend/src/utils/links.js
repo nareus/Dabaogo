@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'https://dabaogo-backend.herokuapp.com';
+export const BACKEND_URL = 'https://dabaogo-server.herokuapp.com';

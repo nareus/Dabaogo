@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
+
 import PasswordFormElement from '../molecules/PasswordFormElement';
 import PhoneFormElement from '../molecules/PhoneFormElement';
 import {FORM_WIDTH} from '../../styles/mixins';
@@ -13,13 +14,11 @@ const SignInForm = ({navigate}) => {
 
   const authenticate = async () => {
     if (phone && password != '') {
-      console.log(typeof parseInt(phone));
-      console.log(parseInt(phone));
-      const response = await axios.get(`${BACKEND_URL}/login`, {
-        phone: parseInt(phone),
+      const phoneNum = parseInt(phone);
+      const response = await axios.post(`${BACKEND_URL}/login`, {
+        phone: phoneNum,
         password: password,
       });
-      console.log(response.data);
       if (response.data.accepted == true) {
         return [false, '', ''];
       }
