@@ -36,7 +36,7 @@ const signUp = (req, res) => {
         const firstName = req.body.firstName;
         const lastName = req.body.lastName;
         const email = req.body.email;
-
+        console.log(typeof phone)
          //validate information
         const details = {
             "passwordValid": validatePassword(password),
@@ -67,7 +67,6 @@ const signUp = (req, res) => {
                 //check for duplicates in database
                 const numberResults = await query(numberSearchQuery);
                 const emailResults = await query(emailSearchQuery);
-                console.log(passwordResults.length)
                 console.log(numberResults.length)
                 console.log(emailResults.length)
                 if (numberResults.length == 0) {
