@@ -41,15 +41,6 @@ connection.connect(err => {
     }
 });
 
-
-console.log({
-    host: DB_HOST,
-   user: DB_USER,
-   password: DB_PASSWORD,
-   database: DB_DATABASE,
-   port: DB_PORT
- })
-
 //listening on port set in environment 
 app.listen(port, 
 ()=> console.log(`Server Started on port 3000...`))
