@@ -25,6 +25,7 @@ const SignUpForm = ({navigate}) => {
         lastName: lastName,
         email: email,
       });
+      console.log(response.data);
       const {
         emailUnique,
         emailValid,
