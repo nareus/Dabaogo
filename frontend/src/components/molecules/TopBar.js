@@ -4,7 +4,7 @@ import {LINE_COLOR, PRIMARY, SECONDARY} from '../../styles/colors';
 import {FORM_LINE_WIDTH} from '../../styles/mixins';
 import {FORM_GAP} from '../../styles/spacing';
 import ExitButton from '../atoms/ExitButton';
-import ToggleSignInUp from '../atoms/ToggleSignInUp';
+import Toggle from '../atoms/Toggle';
 
 const TopBar = ({selectionState, onPress, onSignUpPress, onSignInPress}) => (
   <View
@@ -14,12 +14,16 @@ const TopBar = ({selectionState, onPress, onSignUpPress, onSignInPress}) => (
       borderBottomWidth: FORM_LINE_WIDTH,
     }}>
     <View style={styles.container}>
-      <ToggleSignInUp
+      <Toggle
         initialState={selectionState}
         onSignInPress={onSignInPress}
         onSignUpPress={onSignUpPress}
         selectionColor={PRIMARY}
         unselectionColor={SECONDARY}
+        leftContent = {"Sign up"}
+        rightContent = {"Sign in"} 
+        height = {155}
+        width = {38}
       />
       <ExitButton onPress={onPress} />
     </View>
