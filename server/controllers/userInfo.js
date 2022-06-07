@@ -78,68 +78,15 @@ const signUp = (req, res) => {
                 } catch ( err ) {
                     console.log(err.message);
                 } finally {
-                    
                     if(Object.values(details).indexOf(false) > -1) {
                         res.json(details);
                     } else {
-                        res.send("Account created");
-                        db.query (insertQuery);      
+                        await db.query (insertQuery);  
+                        res.send("Account created");    
                     }
                 }
             })();
-            //check for duplicates and add to database if there is none 
-            // db.query (usernameSearchQuery, (err, result) => {
-            //     if (err) throw (err)
-            //     console.log("Search Results");
-            //     console.log(result.length);
-            //     if (result.length != 0) {
-            //         details.usernameDuplicate = false;
-            //         connection.release()
-            //         // res.send("username already exists");
-            //         // res.sendStatus(409) 
-            //     } else {
-            //         db.query (passwordSearchQuery, (err, result) => {
-            //         if (err) throw (err)
-            //             console.log("Search Results");
-            //             console.log(result.length);
-            //             if (result.length != 0) {
-            //                 connection.release()
-            //                 // res.send("password already exists");
-            //                 // res.sendStatus(409)
-            //             } else {
-            //                 db.query (numberSearchQuery, (err, result) => {
-            //                     if (err) throw (err)
-            //                     console.log("Search Results");
-            //                     console.log(result.length);
-            //                     if (result.length != 0) {
-            //                         connection.release()
-            //                         // res.send("number already exists");
-            //                         // res.sendStatus(409)
-            //                     } else {
-            //                         db.query (emailSearchQuery, (err, result) => {
-            //                         if (err) throw (err)
-            //                         console.log("Search Results");
-            //                         console.log(result.length);
-            //                         if(result.length != 0) {
-            //                             connection.release()
-            //                             // res.send("email already exists");
-            //                             // res.sendStatus(409)
-            //                         } else {
-            //                             db.query (insertQuery, (err, result) => {
-            //                             connection.release()
-            //                             if (err) throw (err)
-            //                             res.send("Created new User")
-            //                             console.log(result.insertId)
-            //                             res.sendStatus(201)
-            //                             })
-            //                         }
-            //                         })
-            //                     }
-            //                 })
-            //             }   
-            //         })
-            //     }
-            // })          
+            
 }
 
 
