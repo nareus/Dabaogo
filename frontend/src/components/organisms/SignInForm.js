@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import PasswordFormElement from '../molecules/PasswordFormElement';
 import PhoneFormElement from '../molecules/PhoneFormElement';
@@ -13,8 +13,8 @@ const SignInForm = ({navigate}) => {
   const [password, setPassword] = useState('');
 
   const authenticate = async () => {
-    if (phone && password != '') {
-      const phoneNum = parseInt(phone);
+    if (phone && password !== '') {
+      const phoneNum = parseInt(phone, 10);
       const response = await axios.post(`${BACKEND_URL}/login`, {
         phone: phoneNum,
         password: password,
@@ -34,7 +34,7 @@ const SignInForm = ({navigate}) => {
   };
 
   return (
-    <View style={{alignItems: 'center'}}>
+    <View style={styles.container}>
       <View
         style={{
           width: FORM_WIDTH,
@@ -50,5 +50,11 @@ const SignInForm = ({navigate}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+});
 
 export default SignInForm;

@@ -7,10 +7,11 @@ import SignUpForm from '../../components/organisms/SignUpForm';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import {bindActionCreators} from 'redux';
 import {toggleAuthState} from '../../redux/action/AuthActions';
+import {StyleSheet} from 'react-native';
 
 const AuthScreen = props => {
   return (
-    <SafeAreaView style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
+    <SafeAreaView style={styles.container}>
       <TopBar
         selectionState={props.auth}
         onPress={() => props.navigation.navigate('Landing')}
@@ -38,5 +39,12 @@ const mapDispatchToProps = dispatch =>
     },
     dispatch,
   );
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: BACKGROUND_COLOR,
+    flex: 1,
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);

@@ -7,12 +7,7 @@ import ExitButton from '../atoms/ExitButton';
 import ToggleSignInUp from '../atoms/ToggleSignInUp';
 
 const TopBar = ({selectionState, onPress, onSignUpPress, onSignInPress}) => (
-  <View
-    style={{
-      paddingBottom: FORM_GAP,
-      borderBottomColor: LINE_COLOR,
-      borderBottomWidth: FORM_LINE_WIDTH,
-    }}>
+  <View style={styles.bigContainer}>
     <View style={styles.container}>
       <ToggleSignInUp
         initialState={selectionState}
@@ -36,6 +31,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // center, space-around
     // paddingLeft: 10,
     // paddingRight: 10
+  },
+  bigContainer: {
+    paddingBottom: FORM_GAP,
+    borderBottomColor: LINE_COLOR,
+    borderBottomWidth: FORM_LINE_WIDTH,
   },
 });
 

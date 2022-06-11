@@ -9,6 +9,7 @@ import AuthScreen from '../scenes/auth/auth';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import AuthReducer from '../redux/reducer/AuthReducer';
+import OrderScreen from '../scenes/order/orderv2';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,13 +19,17 @@ const Navigator = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Landing">
+        <Stack.Navigator initialRouteName="Order">
           <Stack.Screen
             name="Landing"
             component={LandingScreen}
             options={{headerShown: false}}
           />
-          <Stack.Screen name="Home" component={HomeScreen} options={{headerBackTitle: 'Sign Out'}}/>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{headerBackTitle: 'Sign Out'}}
+          />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen
             name="Auth"
@@ -34,6 +39,16 @@ const Navigator = () => {
           <Stack.Screen
             name="ForgotPassword"
             component={ForgotPasswordScreen}
+          />
+          {/* <Stack.Screen
+            name="Order"
+            component={OrderScreen}
+            options={{headerShown: false}}
+          /> */}
+          <Stack.Screen
+            name="Order"
+            component={OrderScreen}
+            options={{headerShown: false}}
           />
         </Stack.Navigator>
       </NavigationContainer>

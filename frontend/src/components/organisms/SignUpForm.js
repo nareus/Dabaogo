@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import PasswordFormElement from '../molecules/PasswordFormElement';
 import PhoneFormElement from '../molecules/PhoneFormElement';
@@ -17,9 +17,9 @@ const SignUpForm = ({navigate}) => {
   const [password, setPassword] = useState('');
 
   const authenticate = async () => {
-    if (firstName && lastName && email && phone && password != '') {
+    if (firstName && lastName && email && phone && password !== '') {
       const response = await axios.post(`${BACKEND_URL}/register`, {
-        phone: parseInt(phone),
+        phone: parseInt(phone, 10),
         password: password,
         firstName: firstName,
         lastName: lastName,
@@ -36,7 +36,7 @@ const SignUpForm = ({navigate}) => {
         phoneUnique,
         phoneValid,
       } = response.data;
-      if (response.data == 'Account created') {
+      if (response.data === 'Account created') {
         return [false, '', ''];
       } else if (!firstNameValid) {
         return [
@@ -86,7 +86,7 @@ const SignUpForm = ({navigate}) => {
   };
 
   return (
-    <View style={{alignItems: 'center'}}>
+    <View style={styles.container}>
       <View style={{width: FORM_WIDTH}}>
         <FormElement
           text={'First Name'}
@@ -110,5 +110,11 @@ const SignUpForm = ({navigate}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+});
 
 export default SignUpForm;

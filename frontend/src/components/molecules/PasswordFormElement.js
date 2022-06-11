@@ -1,12 +1,7 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {FORM_INPUT_TEXT, LINE_COLOR} from '../../styles/colors';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {LINE_COLOR} from '../../styles/colors';
 import {FORM_LINE_WIDTH} from '../../styles/mixins';
-import {GAP_FORM_FIELD} from '../../styles/spacing';
 import FormInput from '../atoms/FormInput';
 import FormText from '../atoms/FormText';
 
@@ -14,12 +9,7 @@ const PasswordFormElement = ({inputText, onChangeText}) => {
   const [showPassword, setVisibility] = useState(true);
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        borderBottomColor: LINE_COLOR,
-        borderBottomWidth: FORM_LINE_WIDTH,
-      }}>
+    <View style={styles.container}>
       <FormText text={'Password'} />
       <FormInput
         placeholder={'at least 8 characters'}
@@ -28,16 +18,28 @@ const PasswordFormElement = ({inputText, onChangeText}) => {
         showText={showPassword}
       />
       <TouchableOpacity
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingRight: 10,
-        }}
+        style={styles.showPasswordButton}
         onPress={() => setVisibility(!showPassword)}>
-        <Text style={{fontWeight: 'bold'}}>Show</Text>
+        <Text style={styles.showPasswordText}>Show</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    borderBottomColor: LINE_COLOR,
+    borderBottomWidth: FORM_LINE_WIDTH,
+  },
+  showPasswordButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingRight: 10,
+  },
+  showPasswordText: {
+    fontWeight: 'bold',
+  },
+});
 
 export default PasswordFormElement;

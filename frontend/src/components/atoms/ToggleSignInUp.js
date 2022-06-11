@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  StyleSheet,
 } from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 
@@ -43,11 +44,7 @@ const ToggleSignInUp = ({
   });
 
   return (
-    <SafeAreaView
-      style={{
-        width: WIDTH,
-        alignItems: 'center',
-      }}>
+    <SafeAreaView style={styles.safeAreaView}>
       <View
         style={{
           left: Dimensions.get('screen').width / 2 - WIDTH / 2,
@@ -72,7 +69,8 @@ const ToggleSignInUp = ({
               },
             ],
             backgroundColor: selectionColor,
-          }}></Animated.View>
+          }}
+        />
         <TouchableOpacity
           style={{
             flex: 1,
@@ -109,4 +107,13 @@ const ToggleSignInUp = ({
     </SafeAreaView>
   );
 };
+
+const styles = props =>
+  StyleSheet.create({
+    safeAreaView: {
+      width: props.WIDTH,
+      alignItems: 'center',
+    },
+  });
+
 export default ToggleSignInUp;

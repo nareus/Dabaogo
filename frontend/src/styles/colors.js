@@ -1,6 +1,6 @@
 export const PRIMARY = '#F19896';
 export const SECONDARY = '#DFDEDE';
-export const BACKGROUND_COLOR = 'white';
+export const BACKGROUND_COLOR = '#FAFAFA';
 
 export const FORM_INPUT_TEXT = '#808080';
 export const LINE_COLOR = '#D1D1D1';

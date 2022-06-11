@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Logo from '../../components/atoms/Logo';
 import SignInUpButton from '../../components/atoms/SignInUpButton';
 import {
@@ -14,12 +14,12 @@ import {toggleAuthState} from '../../redux/action/AuthActions';
 
 function LandingScreen(props) {
   return (
-    <View style={{backgroundColor: 'white', flex: 1}}>
-      <View style={{alignSelf: 'center', paddingTop: 150}}>
+    <View style={styles.fullScreenContainer}>
+      <View style={styles.logoView}>
         <Logo text={'DABAOGO'} />
       </View>
-      <View style={{marginTop: '120%'}}></View>
-      <View style={{alignSelf: 'center', width: '80%'}}>
+      <View style={styles.marginBtwnLogoAndButton} />
+      <View style={styles.signUpInContainer}>
         <SignInUpButton
           onPress={() => {
             props.navigation.navigate('Auth');
@@ -29,7 +29,7 @@ function LandingScreen(props) {
           backgroundColor={PRIMARY}
           color={BACKGROUND_COLOR}
         />
-        <View style={{padding: 8}}></View>
+        <View style={styles.paddingBtwnSignInAndUp} />
         <SignInUpButton
           onPress={() => {
             props.navigation.navigate('Auth');
@@ -56,5 +56,26 @@ const mapDispatchToProps = dispatch =>
     },
     dispatch,
   );
+
+const styles = StyleSheet.create({
+  fullScreenContainer: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  logoView: {
+    alignSelf: 'center',
+    paddingTop: 150,
+  },
+  marginBtwnLogoAndButton: {
+    marginTop: '120%',
+  },
+  signUpInContainer: {
+    alignSelf: 'center',
+    width: '80%',
+  },
+  paddingBtwnSignInAndUp: {
+    padding: 8,
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingScreen);

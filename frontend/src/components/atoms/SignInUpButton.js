@@ -2,26 +2,29 @@ import * as React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 
-const SignInUpButton = ({onPress, title, color, backgroundColor}) => (
+const SignInUpButton = props => (
   <TouchableOpacity
-    onPress={onPress}
-    style={{
+    onPress={props.onPress}
+    style={styles(props).touchableOpacity}>
+    <Text style={styles(this.color).text}>{props.title}</Text>
+  </TouchableOpacity>
+);
+
+const styles = props =>
+  StyleSheet.create({
+    touchableOpacity: {
       elevation: 8,
       borderRadius: BORDER_RADIUS,
       paddingVertical: 10,
       paddingHorizontal: 12,
-      backgroundColor: backgroundColor,
-    }}>
-    <Text
-      style={{
-        fontSize: 18,
-        color: color,
-        fontWeight: 'bold',
-        alignSelf: 'center',
-      }}>
-      {title}
-    </Text>
-  </TouchableOpacity>
-);
+      backgroundColor: props.backgroundColor,
+    },
+    text: {
+      fontSize: 18,
+      color: props.color,
+      fontWeight: 'bold',
+      alignSelf: 'center',
+    },
+  });
 
 export default SignInUpButton;
