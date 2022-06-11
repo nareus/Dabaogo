@@ -10,17 +10,21 @@ import {
 } from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 
-const ToggleSignInUp = ({
+const Toggle = ({
   onSignUpPress,
   onSignInPress,
   initialState,
   unselectionColor,
   selectionColor,
+  leftContent,
+  rightContent,
+  height,
+  width,
 }) => {
   const [active, setActive] = useState(initialState);
   let transformX = useRef(new Animated.Value(0)).current;
-  const WIDTH = 155;
-  const HEIGHT = 38;
+  const WIDTH = height;
+  const HEIGHT = width;
 
   useEffect(() => {
     if (active) {
@@ -84,7 +88,7 @@ const ToggleSignInUp = ({
             }
           }}>
           <Text style={{color: active ? 'black' : 'white', fontWeight: 'bold'}}>
-            Sign Up
+            {leftContent}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -100,7 +104,7 @@ const ToggleSignInUp = ({
             }
           }}>
           <Text style={{color: active ? 'white' : 'black', fontWeight: 'bold'}}>
-            Sign In
+            {rightContent}
           </Text>
         </TouchableOpacity>
       </View>
@@ -116,4 +120,4 @@ const styles = props =>
     },
   });
 
-export default ToggleSignInUp;
+export default Toggle;

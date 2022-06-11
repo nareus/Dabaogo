@@ -28,7 +28,7 @@ const Navigator = () => {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
-            options={{headerBackTitle: 'Sign Out'}}
+            options={{headerShown: false}}
           />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen

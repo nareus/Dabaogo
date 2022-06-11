@@ -1,13 +1,29 @@
-import React from 'react';
-import {SafeAreaView} from 'react-native';
-import {Button} from 'react-native-elements';
-import Logo from '../../components/atoms/Logo';
+import * as React from 'react';
+import {StyleSheet, View} from 'react-native';
+import RestaurantScroll from '../../components/molecules/RestaurantScroll';
+import TopBarHome from '../../components/molecules/TopBarHome';
 
-const HomeScreen = ({navigation}) => (
-  <SafeAreaView>
-    <Logo text={'Welcome to Dabaogo'} />
-    <Button onPress={navigation.navigate('Order')} />
-  </SafeAreaView>
-);
+const HomeScreen = () => {
+  return (
+    <View style={styles.container}>
+      <TopBarHome />
+      <RestaurantScroll />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  // container: {
+  //   // alignSelf: 'stretch',
+  //   height: 40,
+  //   // paddingBottom: 60,
+  //   flexDirection: 'row', // row
+  //   alignItems: 'center',
+  //   justifyContent: 'space-between', // center, space-around
+  //   // paddingLeft: 10,
+  //   // paddingRight: 10
+  // },
+  container: {backgroundColor: '#fafafa', flex: 1},
+});
 
 export default HomeScreen;
