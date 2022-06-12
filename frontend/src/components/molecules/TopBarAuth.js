@@ -3,10 +3,15 @@ import {StyleSheet, View} from 'react-native';
 import {LINE_COLOR, PRIMARY, SECONDARY} from '../../styles/colors';
 import {FORM_LINE_WIDTH} from '../../styles/mixins';
 import {FORM_GAP} from '../../styles/spacing';
-import ExitButton from '../atoms/ExitButton';
+import GeneralButton from '../atoms/GeneralButton';
 import Toggle from '../atoms/Toggle';
 
-const TopBar = ({selectionState, onPress, onSignUpPress, onSignInPress}) => (
+const TopBarAuth = ({
+  selectionState,
+  onPress,
+  onSignUpPress,
+  onSignInPress,
+}) => (
   <View style={styles.bigContainer}>
     <View style={styles.container}>
       <Toggle
@@ -15,12 +20,12 @@ const TopBar = ({selectionState, onPress, onSignUpPress, onSignInPress}) => (
         onSignUpPress={onSignUpPress}
         selectionColor={PRIMARY}
         unselectionColor={SECONDARY}
-        leftContent = {"Sign up"}
-        rightContent = {"Sign in"} 
-        height = {155}
-        width = {38}
+        leftContent={'Sign up'}
+        rightContent={'Sign in'}
+        height={155}
+        width={38}
       />
-      <ExitButton onPress={onPress} />
+      <GeneralButton onPress={onPress} name="cross" type="entypo" />
     </View>
   </View>
 );
@@ -43,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopBar;
+export default TopBarAuth;

@@ -352,7 +352,7 @@ class MenuScroll extends Component {
     const {navbarColor, statusBarColor, containerStyle} = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
-        <StatusBar backgroundColor={statusBarColor || navbarColor} />
+        {/* <StatusBar backgroundColor={statusBarColor || navbarColor} /> */}
         {this.renderScrollView()}
         {this.renderNavbarBackground()}
         {this.renderHeaderBackground()}

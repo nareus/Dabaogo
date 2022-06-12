@@ -6,7 +6,7 @@ const SignInUpButton = props => (
   <TouchableOpacity
     onPress={props.onPress}
     style={styles(props).touchableOpacity}>
-    <Text style={styles(this.color).text}>{props.title}</Text>
+    <Text style={styles(props).text}>{props.title}</Text>
   </TouchableOpacity>
 );
 

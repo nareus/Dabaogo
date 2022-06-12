@@ -1,67 +1,89 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TextInput, StyleSheet } from 'react-native';
-import { color } from 'react-native-reanimated';
+import {View, Text, Image, StyleSheet} from 'react-native';
+import {PADDING_LEFT} from '../../styles/spacing';
 
+const RestaurantCard = props => {
+  return (
+    <View style={styles(props).card}>
+      <Image
+        source={require('../../images/taiwanese.png')}
+        style={styles(props).image}
+      />
+      <View style={styles(props).alignmentContainer}>
+        <View style={styles(props).details}>
+          <View style={styles(props).leftText}>
+            <Text style={styles(props).restaurantName}>Taiwanese</Text>
+            <Text style={styles(props).locationAndCategory}>
+              Flavours@Utown
+            </Text>
+            <Text style={styles(props).locationAndCategory}>Food Court</Text>
+          </View>
+          <View style={styles(props).rightText}>
+            <Text style={styles(props).number}>5</Text>
+            <Text style={styles(props).transporterText}>transporters</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+};
 
-const styles = StyleSheet.create({
-
+const styles = props =>
+  StyleSheet.create({
     image: {
       width: '100%',
-      borderTopLeftRadius: 5,
-      borderTopRightRadius: 5,
-      flex: 2
+      borderTopLeftRadius: props.borderRadius,
+      borderTopRightRadius: props.borderRadius,
+      flex: 3,
     },
-    details:{
-      flex: 1, 
-      flexDirection: 'row', 
-      justifyContent: 'space-between'
+    details: {
+      // flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
-    restaurantName :{
+    restaurantName: {
+      fontWeight: '500',
+      fontSize: 30,
+      paddingBottom: 5,
+    },
+    alignmentContainer: {
+      justifyContent: 'center',
+      backgroundColor: 'white',
+      flex: 1,
+      padding: PADDING_LEFT,
+    },
+    locationAndCategory: {
+      color: '#595959',
+    },
+    leftText: {
+      justifyContent: 'flex-start',
+    },
+    rightText: {
+      alignItems: 'center',
+    },
+    transporterText: {
+      flex: 1,
+      justifyContent: 'center',
       fontWeight: 'bold',
-      fontSize: 20, 
-      paddingTop: 5
     },
     card: {
-      height: 250,
-      width: '96%',
-      marginLeft: '2%', 
-      marginRight: '2%',
-      marginTop: 25,
+      height: 328,
+      width: props.cardWidth,
+      marginLeft: props.LRmargin,
+      marginRight: props.LRmargin,
+      marginTop: props.marginTop,
       backgroundColor: 'white',
-      borderRadius: 5,
+      borderRadius: props.borderRadius,
       display: 'flex',
-      elevation: 2
+      elevation: 2,
     },
     number: {
       fontSize: 25,
+      fontWeight: 'bold',
       color: '#ff9e9e',
-      paddingLeft: 30, 
-      paddingTop: 10
-    }
-        
-})
-
-const RestaurantCard = () => {
-  return (
-      <View style={styles.card}>
-      <Image
-          source={require('../../images/taiwanese.png')}
-          style={styles.image}
-        />
-      <View style={styles.details}>
-        <View style ={{justifyContent: 'flex-start',paddingLeft: 20}}>
-          <Text style = {styles.restaurantName}>Taiwanese</Text>
-          <Text>Flavours@Utown</Text>
-          <Text>Food Court</Text>
-        </View>
-        <View style = {{justifyContent: 'space-around'}}>
-          <Text style = {styles.number}>5</Text>
-          <Text style={{flex:1, justifyContent: 'center', fontWeight: 'bold', paddingRight: 20}}>transporters</Text>
-        </View>
-      </View>
-      </View>
-
-  );
-}
+      paddingTop: 5,
+      paddingBottom: 5,
+    },
+  });
 
 export default RestaurantCard;

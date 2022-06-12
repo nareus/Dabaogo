@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {connect} from 'react-redux';
-import TopBar from '../../components/molecules/TopBar';
+import TopBarAuth from '../../components/molecules/TopBarAuth';
 import SignInForm from '../../components/organisms/SignInForm';
 import SignUpForm from '../../components/organisms/SignUpForm';
 import {BACKGROUND_COLOR} from '../../styles/colors';
@@ -12,7 +12,7 @@ import {StyleSheet} from 'react-native';
 const AuthScreen = props => {
   return (
     <SafeAreaView style={styles.container}>
-      <TopBar
+      <TopBarAuth
         selectionState={props.auth}
         onPress={() => props.navigation.navigate('Landing')}
         onSignInPress={() => props.toggleAuthState(true)}
