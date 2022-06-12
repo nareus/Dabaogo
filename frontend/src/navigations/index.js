@@ -24,7 +24,11 @@ const Navigator = () => {
             component={LandingScreen}
             options={{headerShown: false}}
           />
-          <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen
             name="Auth"

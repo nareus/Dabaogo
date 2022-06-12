@@ -1,29 +1,37 @@
 import * as React from 'react';
-import {StyleSheet, View, SafeAreaView} from 'react-native';
-import RestaurantScroll from '../../components/molecules/RestaurantScroll'
+import {SafeAreaView} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
+import {connect} from 'react-redux';
+import {BACKGROUND_COLOR} from '../../styles/colors';
+import {bindActionCreators} from 'redux';
+import {toggleHomeState} from '../../redux/action/HomeActions';
+import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
+import TransporterHomeScreen from '../../components/organisms/TransporterHomeScreen';
 
-const HomeScreen = () => {
+const HomeScreen = props => {
   return (
-    <View style={{backgroundColor: '#fafafa', flex: 1, }}>
-      <TopBarHome/>
-      <RestaurantScroll/>
-      </View>
-      
+    <SafeAreaView style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
+      <TopBarHome
+        selectionState={props.home}
+        onLeftPress={() => props.toggleHomeState(true)}
+        onRightPress={() => props.toggleHomeState(false)}
+      />
+      {props.auth ? <BuyerHomeScreen /> : <TransporterHomeScreen />}
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    // alignSelf: 'stretch',
-    height: 40,
-    // paddingBottom: 60,
-    flexDirection: 'row', // row
-    alignItems: 'center',
-    justifyContent: 'space-between', // center, space-around
-    // paddingLeft: 10,
-    // paddingRight: 10
-  },
-});
+const mapStateToProps = state => {
+  const {home} = state;
+  return {home};
+};
 
-export default HomeScreen;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      toggleHomeState,
+    },
+    dispatch,
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
