@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Icon} from '@rneui/themed';
 import {FORM_GAP, GAP_FORM_FIELD} from '../../styles/spacing';
 import {Text} from 'react-native-elements';
@@ -13,58 +13,32 @@ const FormErrorAndSubmit = ({signInUp, authenticate, navigate}) => {
   const [errorBody, setErrorBody] = useState('');
 
   const onSubmit = async () => {
-    const [error, errorHeader, errorBody] = await authenticate();
+    const [error, tempErrorHeader, tempErrorBody] = await authenticate();
     setError(error);
-    setErrorHeader(errorHeader);
-    setErrorBody(errorBody);
+    setErrorHeader(tempErrorHeader);
+    setErrorBody(tempErrorBody);
     if (!error) {
       navigate();
     }
   };
 
   return (
-    <View style={{width: '80%'}}>
+    <View style={styles.bigContainer}>
       {hasError && (
-        <View
-          style={{
-            marginTop: FORM_GAP,
-            flexDirection: 'row',
-            backgroundColor: '#FFFFA4',
-            borderRadius: BORDER_RADIUS,
-          }}>
-          <View
-            style={{
-              paddingLeft: 10,
-              paddingTop: 10,
-              paddingBottom: 10,
-              width: '20%',
-            }}>
+        <View style={styles.container}>
+          <View style={styles.text}>
             <Icon name="warning" type="FontAwesome" color="#D4A600" size={40} />
           </View>
-          <View
-            style={{
-              flexDirection: 'column',
-              width: '80%',
-              padding: 10,
-            }}>
-            {errorHeader != '' ? (
+          <View style={styles.inputField}>
+            {errorHeader !== '' ? (
               <View>
-                <Text style={{fontWeight: 'bold', fontSize: 17}}>
-                  {errorHeader}
-                </Text>
-                <View style={{padding: GAP_FORM_FIELD / 2}}></View>
+                <Text style={styles.errorHeader}>{errorHeader}</Text>
+                <View style={{padding: GAP_FORM_FIELD / 2}} />
               </View>
             ) : (
-              <View></View>
+              <View />
             )}
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 13,
-                color: FORM_INPUT_TEXT,
-              }}>
-              {errorBody}
-            </Text>
+            <Text style={styles.errorBody}>{errorBody}</Text>
           </View>
         </View>
       )}
@@ -80,5 +54,37 @@ const FormErrorAndSubmit = ({signInUp, authenticate, navigate}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  bigContainer: {
+    width: '80%',
+  },
+  container: {
+    marginTop: FORM_GAP,
+    flexDirection: 'row',
+    backgroundColor: '#FFFFA4',
+    borderRadius: BORDER_RADIUS,
+  },
+  text: {
+    paddingLeft: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    width: '20%',
+  },
+  inputField: {
+    flexDirection: 'column',
+    width: '80%',
+    padding: 10,
+  },
+  errorHeader: {
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
+  errorBody: {
+    fontWeight: 'bold',
+    fontSize: 13,
+    color: FORM_INPUT_TEXT,
+  },
+});
 
 export default FormErrorAndSubmit;

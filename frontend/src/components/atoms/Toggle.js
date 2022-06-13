@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  StyleSheet,
 } from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 
@@ -18,7 +19,7 @@ const Toggle = ({
   leftContent,
   rightContent,
   height,
-  width
+  width,
 }) => {
   const [active, setActive] = useState(initialState);
   let transformX = useRef(new Animated.Value(0)).current;
@@ -47,11 +48,7 @@ const Toggle = ({
   });
 
   return (
-    <SafeAreaView
-      style={{
-        width: WIDTH,
-        alignItems: 'center',
-      }}>
+    <SafeAreaView style={styles.safeAreaView}>
       <View
         style={{
           left: Dimensions.get('screen').width / 2 - WIDTH / 2,
@@ -76,7 +73,8 @@ const Toggle = ({
               },
             ],
             backgroundColor: selectionColor,
-          }}></Animated.View>
+          }}
+        />
         <TouchableOpacity
           style={{
             flex: 1,
@@ -106,11 +104,20 @@ const Toggle = ({
             }
           }}>
           <Text style={{color: active ? 'white' : 'black', fontWeight: 'bold'}}>
-           {rightContent}
+            {rightContent}
           </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
+
+const styles = props =>
+  StyleSheet.create({
+    safeAreaView: {
+      width: props.WIDTH,
+      alignItems: 'center',
+    },
+  });
+
 export default Toggle;

@@ -1,11 +1,13 @@
 import * as React from 'react';
-import {Icon} from '@rneui/themed';
+// import {Icon} from '@rneui/themed';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 
-const ExitButton = ({onPress, backgroundColor, color}) => (
+const GeneralButton = ({onPress, backgroundColor, color}) => (
   <TouchableOpacity style={styles(backgroundColor).button} onPress={onPress}>
-    <Icon name="cross" type="entypo" color={color} />
+    {/* <Icon name="cross" type="entypo" color={color} /> */}
+    <Icon name="rocket" size={20} color={color} />
   </TouchableOpacity>
 );
 
@@ -20,4 +22,4 @@ const styles = props =>
     },
   });
 
-export default ExitButton;
+export default GeneralButton;

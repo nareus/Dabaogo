@@ -1,18 +1,24 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
 const FormText = ({text}) => (
-  <View
-    style={{
-      height: 42,
-      width: '28%',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      flexDirection: 'row',
-      paddingRight: 18,
-    }}>
-    <Text style={{fontWeight: 'bold'}}>{text}</Text>
+  <View style={styles.container}>
+    <Text style={styles.text}>{text}</Text>
   </View>
 );
+
+const styles = StyleSheet.create({
+  container: {
+    height: 42,
+    width: '28%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    paddingRight: 18,
+  },
+  text: {
+    fontWeight: 'bold',
+  },
+});
 
 export default FormText;

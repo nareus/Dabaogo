@@ -1,20 +1,11 @@
 import React from 'react';
-import {TextInput} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 import {FORM_INPUT_TEXT} from '../../styles/colors';
 
-const FormInput = ({
-  placeholder,
-  onChangeText,
-  showText = false,
-}) => {
+const FormInput = ({placeholder, onChangeText, showText = false}) => {
   return (
     <TextInput
-      style={{
-        fontWeight: 'bold',
-        color: FORM_INPUT_TEXT,
-        flex: 2,
-        paddingRight: 10,
-      }}
+      style={styles.textInput}
       placeholderTextColor={FORM_INPUT_TEXT}
       placeholder={placeholder}
       onChangeText={onChangeText}
@@ -22,5 +13,14 @@ const FormInput = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  textInput: {
+    fontWeight: 'bold',
+    color: FORM_INPUT_TEXT,
+    flex: 2,
+    paddingRight: 10,
+  },
+});
 
 export default FormInput;

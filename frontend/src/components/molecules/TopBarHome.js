@@ -1,5 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD
 import {View, StyleSheet} from 'react-native';
+=======
+import {View, ScrollView, StyleSheet} from 'react-native';
+>>>>>>> refs/remotes/origin/main
 import Toggle from '../atoms/Toggle';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Text} from 'react-native-elements';
@@ -18,7 +22,11 @@ const styles = StyleSheet.create({
   },
 });
 
+<<<<<<< HEAD
 const TopBarHome = ({selectionState, onLeftPress, onRightPress}) => {
+=======
+const TopBarHome = () => {
+>>>>>>> refs/remotes/origin/main
   return (
     <View style={styles.topBar}>
       <View style={styles.icons}>
@@ -33,9 +41,15 @@ const TopBarHome = ({selectionState, onLeftPress, onRightPress}) => {
       </View>
       <View style={{marginBottom: 20}}>
         <Toggle
+<<<<<<< HEAD
           initialState={selectionState}
           onSignInPress={onLeftPress}
           onSignUpPress={onRightPress}
+=======
+          initialState={false}
+          onSignInPress={() => {}}
+          onSignUpPress={() => {}}
+>>>>>>> refs/remotes/origin/main
           selectionColor={PRIMARY}
           unselectionColor={SECONDARY}
           leftContent={'Available Restaurants'}
