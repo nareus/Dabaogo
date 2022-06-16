@@ -5,13 +5,17 @@ import TopBarHome from '../molecules/TopBarHome';
 import OrdersToTakeUp from '../atoms/OrdersToTakeUp';
 import DepartureTime from '../atoms/DepartureTime';
 import RestaurantToVisit from '../atoms/RestaurantToVisit';
+import BottomBarTransporterHome from '../molecules/BottomBarTransporterHome';
 
 const TransporterHomeScreen = () => {
   return (
     <View style={{backgroundColor: '#fafafa', flex: 1}}>
-      <RestaurantToVisit />
-      <OrdersToTakeUp />
-      <DepartureTime />
+      <View style={{flex:1}}>
+        <RestaurantToVisit />
+        <OrdersToTakeUp />
+        <DepartureTime />
+      </View>
+      <BottomBarTransporterHome style ={{marginTop: 'auto'}} />
     </View>
   );
 };

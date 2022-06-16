@@ -17,6 +17,7 @@
     "@rneui/base": "^4.0.0-rc.4",
     "@rneui/themed": "^4.0.0-rc.4",
     "axios": "^0.27.2",
+    "metro": "^0.71.1",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-elements": "^3.4.2",

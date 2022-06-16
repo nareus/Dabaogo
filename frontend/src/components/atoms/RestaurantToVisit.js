@@ -6,7 +6,10 @@ import OrdersToTakeUp from './OrdersToTakeUp';
 const RestaurantToVisit = () => {
   return (
     <View style = {styles.main}>
-    <Image source={'../../images/location.jpeg'} />
+     <Image
+        source={require('../../images/map.png')}
+        style={styles.image}
+      />
     <View style={styles.top}>
       <Text>Restaurant to Visit</Text>
       <View>
@@ -24,7 +27,8 @@ const RestaurantToVisit = () => {
 
 const styles = StyleSheet.create({
     main: {
-        borderRadius: 5
+        borderRadius: 5, 
+        marginTop: 20,
     },
     top: {
         display: 'flex',
@@ -35,7 +39,6 @@ const styles = StyleSheet.create({
         width: '95%',
         marginLeft: '2.5%',
         marginRight: '2.5%',
-        marginTop: 20,
         borderRadius: 5,
         },
     time: {
@@ -47,6 +50,14 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 5,
         borderBottomLeftRadius: 5
 
+    }, 
+    image: {
+      height: 200, 
+      width: '95%',
+      marginLeft: '2.5%',
+      marginRight: '2.5%',
+      borderTopRightRadius: 5, 
+      borderTopLeftRadius: 5
     }
 });
 export default RestaurantToVisit;

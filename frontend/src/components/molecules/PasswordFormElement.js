@@ -1,11 +1,6 @@
 import React, {useState} from 'react';
-<<<<<<< HEAD
 import {Text, TouchableOpacity, View} from 'react-native';
 import {FORM_INPUT_TEXT, LINE_COLOR} from '../../styles/colors';
-=======
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {LINE_COLOR} from '../../styles/colors';
->>>>>>> refs/remotes/origin/main
 import {FORM_LINE_WIDTH} from '../../styles/mixins';
 import FormInput from '../atoms/FormInput';
 import FormText from '../atoms/FormText';
