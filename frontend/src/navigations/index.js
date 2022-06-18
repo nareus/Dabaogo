@@ -10,6 +10,8 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import AuthReducer from '../redux/reducer/AuthReducer';
 import OrderScreen from '../scenes/order/order';
+import PaymentScreen from '../scenes/payment/payment';
+import OrderStatusScreen from '../scenes/orderStatus/orderStatus';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +21,7 @@ const Navigator = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Landing">
+        <Stack.Navigator initialRouteName="Order Status">
           <Stack.Screen
             name="Landing"
             component={LandingScreen}
@@ -48,6 +50,16 @@ const Navigator = () => {
           <Stack.Screen
             name="Order"
             component={OrderScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Payment"
+            component={PaymentScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Order Status"
+            component={OrderStatusScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {FORM_INPUT_TEXT, LINE_COLOR} from '../../styles/colors';
 import {FORM_LINE_WIDTH} from '../../styles/mixins';
 import FormInput from '../atoms/FormInput';

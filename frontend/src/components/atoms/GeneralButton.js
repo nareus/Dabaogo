@@ -16,6 +16,7 @@ const styles = props =>
     button: {
       borderRadius: BORDER_RADIUS,
       alignItems: 'center',
+      left: 0,
       position: 'absolute',
       backgroundColor: props,
       padding: 20,
