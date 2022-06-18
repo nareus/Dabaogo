@@ -28,7 +28,7 @@ const PaymentScreen = props => {
     <Fragment>
       <SafeAreaView style={styles.topSafeAreaView}>
         <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
-          <Text style={styles.header}>Order details</Text>
+          <Text style={styles.header}>Payment</Text>
           <Padding />
           <Notes
             name={'Order Notes'}

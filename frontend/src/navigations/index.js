@@ -21,7 +21,7 @@ const Navigator = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Order Status">
+        <Stack.Navigator initialRouteName="Payment">
           <Stack.Screen
             name="Landing"
             component={LandingScreen}
