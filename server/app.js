@@ -24,6 +24,7 @@ app.use('/outlets', outlets);
 app.use('/orders', orders);
 app.use('/menu', menu);
 
+
 //Getting data in JSON format
 app.use(express.json());
 

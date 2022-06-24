@@ -26,15 +26,32 @@ const connection = mysql.createConnection({
 const query = util.promisify(connection.query).bind(connection);
 
 async function getOrder(req, res) {
-    const searchQuery = "SELECT * FROM Outlets";
+    req.query.orderId
+    const search = "SELECT * FROM Orders WHERE id =?";
+    const searchQuery = mysql.format(search, orderId);
     const result = await query(searchQuery);
-    res.json(result)  
+    if (result.length == 0) {
+        res.json("Id does not exist")
+    } 
+    else {
+        res.json(result)  
+    }
 }
 
 async function createOrder(req, res) {
-    buyerId = req.body.buyeriD
-    transporterId
+    const buyerId = req.body.buyerId
+    const transporterId = req.body.transporterId
+    const foods = JSON.stringify({ "foods": req.body.foodItems })
+    const price = req.body.price
+    const outletId = req.body.outletId
+    const deliveryStage = req.body.deliveryStage
+    const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?)";
+    const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, deliveryStage, foods]);
+    await query(insertQuery)
+    const idQuery = "SELECT LAST_INSERT_ID()"
+    const id = await query(idQuery)
+    res.send(id)
 }
 
 
-module.exports = {getOrder}
+module.exports = {getOrder, createOrder}

@@ -30,7 +30,6 @@ const query = util.promisify(db.query).bind(db);
 //Creating Account Information
 const signUp = (req, res) => {
         console.log(req.body);
-        const username = req.body.username;
         const password = req.body.password;
         const phone = req.body.phone;
         const firstName = req.body.firstName;
@@ -47,9 +46,6 @@ const signUp = (req, res) => {
             "phoneUnique": false,
             "emailUnique": false
         }
-        
-            const sqlUsernameSearch = "SELECT * FROM Users WHERE username =?";
-            const usernameSearchQuery = mysql.format(sqlUsernameSearch, [username]);
             const sqlPasswordSearch = "SELECT * FROM Users WHERE password =?";
             const passwordSearchQuery = mysql.format(sqlPasswordSearch, [password]);
             const sqlNumberSearch = "SELECT * FROM Users WHERE phoneNumber =?";

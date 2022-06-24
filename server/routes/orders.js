@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.use(express.json());
 
-// router.get("/", orders.getOrder);
-// router.post("/", orders.createOrder);
+router.get("/", orders.getOrder);
+router.post("/", orders.createOrder);
 // router.put("/", orders.updateOrder);
 
 module.exports = router;
