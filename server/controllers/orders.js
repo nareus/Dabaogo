@@ -26,8 +26,8 @@ const connection = mysql.createConnection({
 const query = util.promisify(connection.query).bind(connection);
 
 async function getOrder(req, res) {
-    req.query.orderId
-    const search = "SELECT * FROM Orders WHERE id =?";
+    const orderId = req.query.orderId
+    const search = "SELECT * FROM Orders WHERE orderId =?";
     const searchQuery = mysql.format(search, orderId);
     const result = await query(searchQuery);
     if (result.length == 0) {
