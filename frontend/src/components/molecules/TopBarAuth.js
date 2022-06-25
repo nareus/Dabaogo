@@ -9,7 +9,6 @@ import {
 import {FORM_LINE_WIDTH} from '../../styles/mixins';
 import {FORM_GAP} from '../../styles/spacing';
 import GeneralButton from '../atoms/GeneralButton';
-import Padding from '../atoms/Padding';
 import Toggle from '../atoms/Toggle';
 
 const TopBarAuth = ({

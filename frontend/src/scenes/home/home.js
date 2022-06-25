@@ -9,17 +9,20 @@ import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
 import TransporterHomeScreen from '../../components/organisms/TransporterHomeScreen';
 
 const HomeScreen = props => {
-  const [toggleTrue, setState] = useState(true);
+  const [toggleState, setToggleState] = useState(true);
+
   return (
     <View style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <TopBarHome
           selectionState={props.home}
-          onLeftPress={() => props.toggleHomeState(true)}
-          onRightPress={() => props.toggleHomeState(false)}
+          // onLeftPress={() => props.toggleHomeState(true)}
+          // onRightPress={() => props.toggleHomeState(false)}
+          onLeftPress={() => setToggleState(false)}
+          onRightPress={() => setToggleState(true)}
         />
         {
-          props.auth ? <BuyerHomeScreen /> : <TransporterHomeScreen />
+          toggleState ? <BuyerHomeScreen /> : <TransporterHomeScreen />
           // <TransporterHomeScreen />
           // <BuyerHomeScreen />
         }
