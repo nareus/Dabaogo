@@ -1,5 +1,5 @@
 export const PRIMARY = '#F19896';
-export const SECONDARY = '#FAFAFA';
+export const SECONDARY = '#DFDEDE';
 export const BACKGROUND_COLOR = '#FAFAFA';
 
 export const FORM_INPUT_TEXT = '#808080';

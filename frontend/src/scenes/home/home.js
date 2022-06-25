@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, ScrollView, View} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
 import {connect} from 'react-redux';
@@ -9,6 +9,7 @@ import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
 import TransporterHomeScreen from '../../components/organisms/TransporterHomeScreen';
 
 const HomeScreen = props => {
+  const [toggleTrue, setState] = useState(true);
   return (
     <View style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -18,9 +19,9 @@ const HomeScreen = props => {
           onRightPress={() => props.toggleHomeState(false)}
         />
         {
-          // props.auth ? <BuyerHomeScreen /> : <TransporterHomeScreen />
+          props.auth ? <BuyerHomeScreen /> : <TransporterHomeScreen />
           // <TransporterHomeScreen />
-          <BuyerHomeScreen />
+          // <BuyerHomeScreen />
         }
       </ScrollView>
     </View>

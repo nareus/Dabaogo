@@ -20,7 +20,7 @@ const styles = props =>
     button: {
       borderRadius: 30,
       alignItems: 'center',
-      left: 0,
+      left: props.position === 'absolute' ? 10 : 0,
       position: props.position,
       backgroundColor: props.backgroundColor,
       padding: 10,
