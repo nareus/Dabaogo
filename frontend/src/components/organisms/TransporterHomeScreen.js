@@ -7,10 +7,11 @@ import DepartureTime from '../atoms/DepartureTime';
 import RestaurantToVisit from '../atoms/LocationToVisit';
 import BottomBarTransporterHome from '../molecules/BottomBarTransporterHome';
 import LocationToVisit from '../atoms/LocationToVisit';
+import {BACKGROUND_COLOR} from '../../styles/colors';
 
 const TransporterHomeScreen = () => {
   return (
-    <View style={{backgroundColor: '#fafafa', flex: 1}}>
+    <View style={styles.container}>
       <View style={{flex: 1}}>
         <LocationToVisit
           text={'Restaurant to visit'}
@@ -26,14 +27,8 @@ const TransporterHomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // alignSelf: 'stretch',
-    height: 40,
-    // paddingBottom: 60,
-    flexDirection: 'row', // row
-    alignItems: 'center',
-    justifyContent: 'space-between', // center, space-around
-    // paddingLeft: 10,
-    // paddingRight: 10
+    backgroundColor: BACKGROUND_COLOR,
+    flex: 1,
   },
 });
 

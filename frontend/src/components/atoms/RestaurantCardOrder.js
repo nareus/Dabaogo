@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 
-const RestaurantCard = props => {
+const RestaurantCardOrder = props => {
   return (
     <View style={styles.card}>
       <Image
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   restaurantName: {
     fontWeight: '500',
-    fontSize: 18,
+    fontSize: 30,
   },
   alignmentContainer: {
     justifyContent: 'center',
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     color: 'black',
     opacity: 0.4,
     fontWeight: 'bold',
-    fontSize: 12,
   },
   leftText: {
     justifyContent: 'flex-start',
@@ -62,24 +61,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   transporterText: {
-    // flex: 1,
+    flex: 1,
     justifyContent: 'center',
-    fontWeight: '500',
-    fontSize: 12,
+    fontWeight: 'bold',
   },
   card: {
-    height: 240,
+    height: 328,
     backgroundColor: 'white',
     borderRadius: BORDER_RADIUS,
     display: 'flex',
     elevation: 2,
   },
   number: {
-    fontSize: 23,
-    fontWeight: '600',
+    fontSize: 30,
+    fontWeight: 'bold',
     color: '#ff9e9e',
+    // paddingTop: 5,
     paddingBottom: 5,
   },
 });
 
-export default RestaurantCard;
+export default RestaurantCardOrder;

@@ -7,14 +7,18 @@ import PopularDishesCard from '../atoms/PopularDishesCard';
 
 const DATA = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Prawn Roe Rice',
-    price: '$7.50',
+    id: 1,
+    name: 'Sakura Hiramasa Sushi',
+    description:
+      'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
+    price: '$8.00',
   },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Prawn Roe Rice',
-    price: '$7.50',
+    id: 1,
+    name: 'Sakura Hiramasa Sushi',
+    description:
+      'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
+    price: '$8.00',
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
@@ -26,7 +30,7 @@ const DATA = [
 const PopularDishesScroll = () => {
   const items = () =>
     DATA.map(item => (
-      <PopularDishesCard key={item.id} title={item.title} price={item.price} />
+      <PopularDishesCard key={item.id} title={item.name} price={item.price} />
     ));
 
   return (

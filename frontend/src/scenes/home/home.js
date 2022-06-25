@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, ScrollView, View} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
 import {connect} from 'react-redux';
 import {BACKGROUND_COLOR} from '../../styles/colors';
@@ -10,17 +10,20 @@ import TransporterHomeScreen from '../../components/organisms/TransporterHomeScr
 
 const HomeScreen = props => {
   return (
-    <SafeAreaView style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
-      <TopBarHome
-        selectionState={props.home}
-        onLeftPress={() => props.toggleHomeState(true)}
-        onRightPress={() => props.toggleHomeState(false)}
-      />
-      {
-      //props.auth ? <BuyerHomeScreen /> : <TransporterHomeScreen />
-      <TransporterHomeScreen />
-      }
-    </SafeAreaView>
+    <View style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TopBarHome
+          selectionState={props.home}
+          onLeftPress={() => props.toggleHomeState(true)}
+          onRightPress={() => props.toggleHomeState(false)}
+        />
+        {
+          // props.auth ? <BuyerHomeScreen /> : <TransporterHomeScreen />
+          // <TransporterHomeScreen />
+          <BuyerHomeScreen />
+        }
+      </ScrollView>
+    </View>
   );
 };
 

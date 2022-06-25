@@ -2,7 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import GeneralButton from '../../components/atoms/GeneralButton';
 import MenuCategoryText from '../../components/atoms/MenuCategoryText';
-import RestaurantCard from '../../components/atoms/RestaurantCard';
+import RestaurantCardOrder from '../../components/atoms/RestaurantCardOrder';
 import PopularDishesScroll from '../../components/molecules/PopularDishesScroll';
 import TopBarAuth from '../../components/molecules/TopBarAuth';
 import TopBarOrder from '../../components/molecules/TopBarOrder';
@@ -15,7 +15,7 @@ const OrderScreen = props => {
       {/* <TopBarAuth /> */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <RestaurantCard />
+        <RestaurantCardOrder />
         <MenuCategoryText text={'Popular Dishes'} />
         <PopularDishesScroll />
         <RestOfMenuItems />
