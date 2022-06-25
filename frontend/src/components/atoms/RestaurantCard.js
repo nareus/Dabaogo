@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 
 const RestaurantCard = props => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card}>
       <Image
         source={require('../../images/taiwanese.png')}
         style={styles.image}
@@ -23,7 +23,7 @@ const RestaurantCard = props => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   alignmentContainer: {
     justifyContent: 'center',
     backgroundColor: 'white',
-    flex: 1,
+    flex: 0.9,
     padding: PADDING_LEFT,
   },
   locationAndCategory: {
