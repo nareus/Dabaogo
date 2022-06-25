@@ -17,12 +17,12 @@ const DB_PORT = process.env.DB_PORT
 
 //create database connection
 const db = mysql.createConnection({
-    host: "dabaogo.cjq1kwf2vggx.ap-southeast-1.rds.amazonaws.com",
-    user: "naren",
-    password: "Levelsixlounge",
-    database: "dabaogo",
-    port: "3306"
- })
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
+    port: DB_PORT
+})
 
 const query = util.promisify(db.query).bind(db);
 
@@ -48,17 +48,17 @@ const signUp = (req, res) => {
             "emailUnique": false
         }
         
-            const sqlUsernameSearch = "SELECT * FROM user_info WHERE username =?";
+            const sqlUsernameSearch = "SELECT * FROM Users WHERE username =?";
             const usernameSearchQuery = mysql.format(sqlUsernameSearch, [username]);
-            const sqlPasswordSearch = "SELECT * FROM user_info WHERE password =?";
+            const sqlPasswordSearch = "SELECT * FROM Users WHERE password =?";
             const passwordSearchQuery = mysql.format(sqlPasswordSearch, [password]);
-            const sqlNumberSearch = "SELECT * FROM user_info WHERE phone_number =?";
+            const sqlNumberSearch = "SELECT * FROM Users WHERE phoneNumber =?";
             const numberSearchQuery = mysql.format(sqlNumberSearch, [phone]);
-            const sqlEmailSearch = "SELECT * FROM user_info WHERE email =?";
+            const sqlEmailSearch = "SELECT * FROM Users WHERE email =?";
             const emailSearchQuery = mysql.format(sqlEmailSearch, [email]);
        
             //create query to insert account information into database
-            const sqlInsert = "INSERT INTO user_info VALUES (0, ?, ?, ?, ?, ?)";
+            const sqlInsert = "INSERT INTO Users VALUES (0, ?, ?, ?, ?, ?)";
             const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName]);
             
             //async/await format to query data
@@ -99,7 +99,7 @@ const signIn = (req, res) => {
        }
 
        //create query to verify details 
-       const sqlSearch = "SELECT * FROM user_info WHERE phone_number =? AND password =?";
+       const sqlSearch = "SELECT * FROM Users WHERE phoneNumber =? AND password =?";
        const searchQuery = mysql.format(sqlSearch, [phone, password]);
  
        //check if authentictaion is valid (using callback fomat)
@@ -144,7 +144,7 @@ const validatePassword = password => {
 }
 
 const searchQuery = (entry, string) => {
-    const sqlSearch = "SELECT * FROM user_info WHERE " + string + "=?";
+    const sqlSearch = "SELECT * FROM Users WHERE " + string + "=?";
     const searchQuery = mysql.format(sqlSearch, [entry]);
     let length;
     try{
