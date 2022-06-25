@@ -3,21 +3,21 @@ import {StyleSheet, View} from 'react-native';
 import Padding from '../atoms/Padding';
 import RestaurantCard from '../atoms/RestaurantCard';
 
-const RestaurantScroll = ({navigate}) => {
+const RestaurantScroll = ({onPress}) => {
   return (
     <View style={styles.container}>
       <Padding />
-      <RestaurantCard onPress={navigate} />
+      <RestaurantCard onPress={onPress} />
       <Padding />
-      <RestaurantCard onPress={navigate} />
+      <RestaurantCard onPress={onPress} />
       <Padding />
-      <RestaurantCard onPress={navigate} />
+      <RestaurantCard onPress={onPress} />
       <Padding />
-      <RestaurantCard onPress={navigate} />
+      <RestaurantCard onPress={onPress} />
       <Padding />
-      <RestaurantCard onPress={navigate} />
+      <RestaurantCard onPress={onPress} />
       <Padding />
-      <RestaurantCard onPress={navigate} />
+      <RestaurantCard onPress={onPress} />
     </View>
   );
 };

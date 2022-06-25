@@ -22,7 +22,13 @@ const HomeScreen = props => {
           onRightPress={() => setToggleState(true)}
         />
         {
-          toggleState ? <BuyerHomeScreen /> : <TransporterHomeScreen />
+          toggleState ? (
+            <BuyerHomeScreen
+              navigate={() => props.navigation.navigate('Order')}
+            />
+          ) : (
+            <TransporterHomeScreen />
+          )
           // <TransporterHomeScreen />
           // <BuyerHomeScreen />
         }

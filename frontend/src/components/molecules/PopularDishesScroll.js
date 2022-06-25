@@ -14,7 +14,7 @@ const DATA = [
     price: '$8.00',
   },
   {
-    id: 1,
+    id: 2,
     name: 'Sakura Hiramasa Sushi',
     description:
       'Served with mix vegetables, dal tadka, saffron pulao and butter naan',

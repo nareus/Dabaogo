@@ -3,9 +3,9 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 
-const RestaurantCard = props => {
+const RestaurantCard = ({onPress}) => {
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image
         source={require('../../images/taiwanese.png')}
         style={styles.image}

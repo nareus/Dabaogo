@@ -4,10 +4,10 @@ import {BACKGROUND_COLOR} from '../../styles/colors';
 import RestaurantScroll from '../molecules/RestaurantScroll';
 import TopBarHome from '../molecules/TopBarHome';
 
-const BuyerHomeScreen = () => {
+const BuyerHomeScreen = props => {
   return (
     <View style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
-      <RestaurantScroll />
+      <RestaurantScroll onPress={props.navigate} />
     </View>
   );
 };
