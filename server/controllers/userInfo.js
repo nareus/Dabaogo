@@ -26,11 +26,24 @@ const db = mysql.createConnection({
 
 const query = util.promisify(db.query).bind(db);
 
+//Getting account info 
+const getInfo = async (req, res) => {
+    const id = req.query.userId;
+    const search = "SELECT * FROM Users WHERE userId =?";
+    const searchQuery = mysql.format(search, id);
+    const result = await query(searchQuery);
+    if (result.length == 0) {
+        res.json("Id does not exist")
+    } 
+    else {
+        res.json(result)  
+    }
+
+}
 
 //Creating Account Information
 const signUp = (req, res) => {
         console.log(req.body);
-        const username = req.body.username;
         const password = req.body.password;
         const phone = req.body.phone;
         const firstName = req.body.firstName;
@@ -47,9 +60,6 @@ const signUp = (req, res) => {
             "phoneUnique": false,
             "emailUnique": false
         }
-        
-            const sqlUsernameSearch = "SELECT * FROM Users WHERE username =?";
-            const usernameSearchQuery = mysql.format(sqlUsernameSearch, [username]);
             const sqlPasswordSearch = "SELECT * FROM Users WHERE password =?";
             const passwordSearchQuery = mysql.format(sqlPasswordSearch, [password]);
             const sqlNumberSearch = "SELECT * FROM Users WHERE phoneNumber =?";
@@ -58,8 +68,8 @@ const signUp = (req, res) => {
             const emailSearchQuery = mysql.format(sqlEmailSearch, [email]);
        
             //create query to insert account information into database
-            const sqlInsert = "INSERT INTO Users VALUES (0, ?, ?, ?, ?, ?)";
-            const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName]);
+            const sqlInsert = "INSERT INTO Users VALUES (0, ?, ?, ?, ?, ?, ?)";
+            const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName, null]);
             
             //async/await format to query data
             (async () => { 
@@ -81,8 +91,12 @@ const signUp = (req, res) => {
                     if(Object.values(details).indexOf(false) > -1) {
                         res.json(details);
                     } else {
-                        await db.query (insertQuery);  
-                        res.send("Account created");    
+                        await db.query (insertQuery); 
+                        const idQuery = "select * from Users where userId=(SELECT LAST_INSERT_ID())"
+                        const ids = await query(idQuery)
+                        const id = ids[0].userId
+                        console.log(ids)
+                        res.json({id: id});    
                     }
                 }
             })();
@@ -95,7 +109,8 @@ const signIn = (req, res) => {
        const phone = req.body.phone;
        const password = req.body.password;
        let accepted = {
-           "accepted": false
+           "accepted": false,
+           "id": 0
        }
 
        //create query to verify details 
@@ -109,6 +124,7 @@ const signIn = (req, res) => {
           console.log(result.length);
           if (result.length != 0) {
             accepted.accepted = true;
+            accepted.id = result[0].userId
           } 
           res.json(accepted);
       }) //end of connection.query()
@@ -158,4 +174,4 @@ const searchQuery = (entry, string) => {
 }
 
 
-module.exports = {signIn, signUp}
+module.exports = {signIn, signUp, getInfo}

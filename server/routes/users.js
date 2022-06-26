@@ -1,10 +1,10 @@
 const { application } = require('express');
 const express = require('express');
-const menu = require('../controllers/menu.js');
+const users = require('../controllers/userInfo.js');
 const router = express.Router();
 
 router.use(express.json());
 
-router.get("/", menu.getMenu);
+router.get("/", users.getInfo);
 
 module.exports = router;

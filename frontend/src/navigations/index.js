@@ -12,6 +12,7 @@ import AuthReducer from '../redux/reducer/AuthReducer';
 import OrderScreen from '../scenes/order/order';
 import PaymentScreen from '../scenes/payment/payment';
 import OrderStatusScreen from '../scenes/orderStatus/orderStatus';
+import TransporterOrder from '../scenes/transporterOrder/transporterOrder';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ const Navigator = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Transporter Status">
           <Stack.Screen
             name="Landing"
             component={LandingScreen}
@@ -60,6 +61,11 @@ const Navigator = () => {
           <Stack.Screen
             name="Order Status"
             component={OrderStatusScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Transporter Status"
+            component={TransporterOrder}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
