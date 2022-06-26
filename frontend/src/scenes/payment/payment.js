@@ -9,6 +9,7 @@ import OrderSummary from '../../components/molecules/OrderSummary';
 import {BACKGROUND_COLOR, PRIMARY} from '../../styles/colors';
 import {PADDING_LEFT} from '../../styles/spacing';
 import LocationToVisit from '../../components/atoms/LocationToVisit';
+import TopBarOrder from '../../components/molecules/TopBarOrder';
 
 // interface IData {
 //   items: IItem[],
@@ -49,22 +50,19 @@ const PaymentScreen = props => {
   return (
     <Fragment>
       <SafeAreaView style={styles.topSafeAreaView}>
-        <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
-          <Text style={styles.header}>Payment</Text>
+        <ScrollView
+          style={styles.container}
+          scrollToOverflowEnabled={false}
+          showsVerticalScrollIndicator={false}>
+          {/* <Text style={styles.header}>Payment</Text> */}
+          <Padding />
+          <Padding />
           <Padding />
           <Notes name={'Order Notes'} onPress={() => {}} />
           <Padding />
           <OrderSummary
             data={{
-              // items: [
-              //   {
-              //     quantity: '1',
-              //     name: 'Chicken Rice',
-              //     price: '5.00',
-              //   },
-              // ],
               items: convertToQuantity(items),
-              // items: items,
               subtotal: subtotal,
               deliveryFee: deliveryFee,
               serviceFee: serviceFee,
@@ -80,9 +78,18 @@ const PaymentScreen = props => {
           <Padding />
           <Notes name={'Rider Notes'} onPress={() => {}} />
         </ScrollView>
-        <OrderBottom price={totalPrice} />
+        <OrderBottom
+          price={totalPrice}
+          onPress={() => props.navigation.navigate('Order Status')}
+        />
       </SafeAreaView>
       <SafeAreaView style={styles.bottomSafeAreaView} />
+      <TopBarOrder
+        onPress={() => props.navigation.goBack()}
+        text={'Taiwanese'}
+        iconName={'chevron-left'}
+        iconType={'feather'}
+      />
     </Fragment>
   );
 };

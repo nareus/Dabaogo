@@ -4,14 +4,14 @@ import {Text} from 'react-native-elements';
 
 import GeneralButton from '../atoms/GeneralButton';
 
-const TopBarOrder = ({onPress}) => (
+const TopBarOrder = ({onPress, text, iconName, iconType}) => (
   <View style={styles.bigContainer}>
     <View style={styles.container}>
       <View style={styles.button}>
         <GeneralButton
           onPress={onPress}
-          iconName="chevron-left"
-          iconType="feather"
+          iconName={iconName}
+          iconType={iconType}
           backgroundColor={'white'}
           color={'black'}
           position={'absolute'}
@@ -19,7 +19,7 @@ const TopBarOrder = ({onPress}) => (
         />
         {/* <GeneralButton onPress={onPress} /> */}
       </View>
-      <Text style={styles.text}>Taiwanese</Text>
+      <Text style={styles.text}>{text}</Text>
     </View>
   </View>
 

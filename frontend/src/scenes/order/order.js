@@ -61,7 +61,12 @@ const OrderScreen = props => {
       ) : (
         <></>
       )}
-      <TopBarOrder onPress={() => props.navigation.goBack()} />
+      <TopBarOrder
+        onPress={() => props.navigation.goBack()}
+        text={'Taiwanese'}
+        iconName={'chevron-left'}
+        iconType={'feather'}
+      />
     </View>
   );
 };
