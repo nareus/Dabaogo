@@ -7,14 +7,14 @@ import Padding from '../../components/atoms/Padding';
 import SignInUpButton from '../../components/atoms/SignInUpButton';
 import OrderBottom from '../../components/molecules/OrderBottom';
 import OrderProgress from '../../components/molecules/OrderProgress';
+import TopBarOrder from '../../components/molecules/TopBarOrder';
 
-const OrderStatusScreen = () => {
+const OrderStatusScreen = props => {
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <View style={styles.safeAreaView}>
       <View>
         <View style={styles.container}>
-          <Text style={styles.header}>Order Status</Text>
-          <Padding />
+          <View style={styles.bigPadding} />
           <OrderProgress />
           <Padding />
           <OrderLocationTracker
@@ -33,11 +33,20 @@ const OrderStatusScreen = () => {
           />
         </View>
       </View>
-    </SafeAreaView>
+      <TopBarOrder
+        onPress={() => props.navigation.navigate('Home')}
+        text={'Order Status'}
+        iconName="cross"
+        iconType="entypo"
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  bigPadding: {
+    padding: 48,
+  },
   safeAreaView: {
     backgroundColor: 'BACKGROUND_COLOR',
     flex: 1,

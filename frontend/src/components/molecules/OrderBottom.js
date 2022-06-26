@@ -18,6 +18,7 @@ const PaymentBottom = props => {
         backgroundColor={PRIMARY}
         color={BUTTON_TEXT_2}
         title="Place Order"
+        onPress={props.onPress}
       />
     </View>
   );

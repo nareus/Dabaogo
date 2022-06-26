@@ -44,8 +44,8 @@ const OrderSummary = ({data}) => {
   return (
     <View style={styles.container}>
       <View style={styles.topHalf}>
-        {data.items.map((item, index) => {
-          return <OrderRow item={item} key={index} />;
+        {data.items.map(item => {
+          return <OrderRow item={item} key={item.id} />;
         })}
       </View>
       <BottomDetails name="Subtotal" price={data.subtotal} />
