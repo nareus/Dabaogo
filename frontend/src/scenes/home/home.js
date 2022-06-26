@@ -18,6 +18,7 @@ const HomeScreen = props => {
           selectionState={props.home}
           // onLeftPress={() => props.toggleHomeState(true)}
           // onRightPress={() => props.toggleHomeState(false)}
+          onPressProfile={() => props.navigation.navigate('Settings')}
           onLeftPress={() => setToggleState(false)}
           onRightPress={() => setToggleState(true)}
         />

@@ -10,7 +10,12 @@ import GeneralButton from '../atoms/GeneralButton';
 import HalfPadding from '../atoms/HalfPadding';
 import Padding from '../atoms/Padding';
 
-const TopBarHome = ({selectionState, onLeftPress, onRightPress}) => {
+const TopBarHome = ({
+  selectionState,
+  onLeftPress,
+  onRightPress,
+  onPressProfile,
+}) => {
   return (
     <View style={styles.topBar}>
       <View style={styles.topIcons}>
@@ -30,7 +35,7 @@ const TopBarHome = ({selectionState, onLeftPress, onRightPress}) => {
           />
           <View style={{padding: 4}} />
           <GeneralButton
-            onPress={() => {}}
+            onPress={onPressProfile}
             iconName="user"
             iconType="feather"
             backgroundColor={BACKGROUND_COLOR}

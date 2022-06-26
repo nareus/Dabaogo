@@ -33,7 +33,11 @@ const Navigator = () => {
             component={HomeScreen}
             options={{headerShown: false}}
           />
-          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="Auth"
             component={AuthScreen}
