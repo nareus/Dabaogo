@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ChangeButton from './TextButton';
-import OrdersToTakeUp from './OrdersToTakeUp';
+import OrdersToTakeUp from '../molecules/OrdersToTakeUp';
 
 const DepartureTime = () => {
   return (

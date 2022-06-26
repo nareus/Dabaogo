@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import GeneralButton from '../../components/atoms/GeneralButton';
 import MenuCategoryText from '../../components/atoms/MenuCategoryText';
 import RestaurantCardOrder from '../../components/atoms/RestaurantCardOrder';
+import OrderCheckout from '../../components/molecules/OrderCheckout';
 import PopularDishesScroll from '../../components/molecules/PopularDishesScroll';
 import TopBarAuth from '../../components/molecules/TopBarAuth';
 import TopBarOrder from '../../components/molecules/TopBarOrder';
@@ -10,20 +11,53 @@ import RestOfMenuItems from '../../components/organisms/RestOfMenuItems';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 
 const OrderScreen = props => {
+  const [order, setOrder] = useState([]);
+  const [totalPrice, setPrice] = useState([]);
+  console.log(order);
+
+  const addItem = (itemId, price) => {
+    setPrice(oldArray => [...oldArray, price]);
+    setOrder(oldArray => [...oldArray, itemId]);
+  };
+
+  const removeItem = (itemId, price) => {
+    setOrder(oldArray => {
+      let counter = 0;
+      while (oldArray[counter] !== itemId) {
+        counter++;
+      }
+      oldArray.splice(counter, 1);
+      return [...oldArray];
+    });
+    setPrice(oldArray => {
+      let counter = 0;
+      while (oldArray[counter] !== price) {
+        counter++;
+      }
+      oldArray.splice(counter, 1);
+      return [...oldArray];
+    });
+  };
+
   return (
     <View style={styles.container}>
       {/* <TopBarAuth /> */}
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <RestaurantCardOrder />
-        <MenuCategoryText text={'Popular Dishes'} />
-        <PopularDishesScroll />
-        <RestOfMenuItems />
+        {/* <MenuCategoryText text={'Popular Dishes'} /> */}
+        {/* <PopularDishesScroll addItem={addItem} removeItem={removeItem} /> */}
+        <RestOfMenuItems addItem={addItem} removeItem={removeItem} />
       </ScrollView>
-      {/* <View style={{position: 'absolute', top: 30}}>
-        <GeneralButton />
-      </View> */}
-      <TopBarOrder onPress={() => props.navigation.navigate('Home')} />
+      {order.length !== 0 ? (
+        <OrderCheckout
+          numItems={order.length}
+          totalPrice={totalPrice.reduce((accumulator, a) => accumulator + a)}
+          onPress={() => props.navigation.navigate('Payment')}
+        />
+      ) : (
+        <></>
+      )}
+      <TopBarOrder onPress={() => props.navigation.goBack()} />
     </View>
   );
 };

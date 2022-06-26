@@ -11,26 +11,33 @@ const DATA = [
     name: 'Sakura Hiramasa Sushi',
     description:
       'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-    price: '$8.00',
+    price: 8.0,
   },
   {
     id: 2,
     name: 'Sakura Hiramasa Sushi',
     description:
       'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-    price: '$8.00',
+    price: 8.0,
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
     title: 'Prawn Roe Rice',
-    price: '$7.50',
+    price: 7.5,
   },
 ];
 
-const PopularDishesScroll = () => {
+const PopularDishesScroll = ({addItem, removeItem}) => {
   const items = () =>
     DATA.map(item => (
-      <PopularDishesCard key={item.id} title={item.name} price={item.price} />
+      <PopularDishesCard
+        key={item.id}
+        id={item.id}
+        title={item.name}
+        price={item.price}
+        addItem={addItem}
+        removeItem={removeItem}
+      />
     ));
 
   return (

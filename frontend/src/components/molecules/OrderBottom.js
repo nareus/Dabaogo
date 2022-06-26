@@ -5,7 +5,7 @@ import {PADDING_LEFT} from '../../styles/spacing';
 import Padding from '../atoms/Padding';
 import SignInUpButton from '../atoms/SignInUpButton';
 
-const OrderBottom = props => {
+const PaymentBottom = props => {
   return (
     <View style={styles.container}>
       <View style={styles.orderRow}>
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export default OrderBottom;
+export default PaymentBottom;

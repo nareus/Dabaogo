@@ -2,7 +2,7 @@ import * as React from 'react';
 import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
 import RestaurantScroll from '../molecules/RestaurantScroll';
 import TopBarHome from '../molecules/TopBarHome';
-import OrdersToTakeUp from '../atoms/OrdersToTakeUp';
+import OrdersToTakeUp from '../molecules/OrdersToTakeUp';
 import DepartureTime from '../atoms/DepartureTime';
 import RestaurantToVisit from '../atoms/LocationToVisit';
 import BottomBarTransporterHome from '../molecules/BottomBarTransporterHome';
@@ -17,7 +17,10 @@ const TransporterHomeScreen = () => {
           text={'Restaurant to visit'}
           location={'Yong Tau Fu @ Fine Foods'}
         />
-        <OrdersToTakeUp />
+        <OrdersToTakeUp
+          decrement={() => console.log('decre')}
+          increment={() => console.log('incre')}
+        />
         <DepartureTime />
       </View>
       <BottomBarTransporterHome style={{marginTop: 'auto'}} />
