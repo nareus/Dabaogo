@@ -34,7 +34,7 @@ async function getMenu(req, res) {
     const rest = await query(restSearchQuery);
     result = {
         "popular" : popular,
-        "restOfItems": rest
+        "restOfItems": {"Entrees":rest}
     }
     res.json(result)  
 }
