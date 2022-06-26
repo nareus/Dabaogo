@@ -14,6 +14,7 @@ const otpToPhone = require('./routes/otpToPhone.js')
 const outlets  = require('./routes/outlets.js')
 const orders = require('./routes/orders.js')
 const menu = require('./routes/menu.js')
+const users = require('./routes/users.js')
 
 //Using Routes
 app.use('/register', register);
@@ -23,7 +24,7 @@ app.use('/', otpToPhone);
 app.use('/outlets', outlets);
 app.use('/orders', orders);
 app.use('/menu', menu);
-
+app.use('/users', users);
 
 //Getting data in JSON format
 app.use(express.json());
