@@ -17,10 +17,7 @@ const TransporterHomeScreen = () => {
           text={'Restaurant to visit'}
           location={'Yong Tau Fu @ Fine Foods'}
         />
-        <OrdersToTakeUp
-          decrement={() => console.log('decre')}
-          increment={() => console.log('incre')}
-        />
+        <OrdersToTakeUp decrement={() => {}} increment={() => {}} />
         <DepartureTime />
       </View>
       <BottomBarTransporterHome style={{marginTop: 'auto'}} />

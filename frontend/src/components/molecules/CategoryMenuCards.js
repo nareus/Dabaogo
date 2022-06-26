@@ -8,11 +8,12 @@ const CategoryMenuCards = ({category, data, addItem, removeItem}) => {
   const categoryItems = () =>
     data.map(element => (
       <MainDishesCard
+        element={element}
         key={element.id}
-        id={element.id}
-        name={element.name}
-        description={element.description}
-        price={element.price}
+        // id={element.id}
+        // name={element.name}
+        // description={element.description}
+        // price={element.price}
         addItem={addItem}
         removeItem={removeItem}
       />

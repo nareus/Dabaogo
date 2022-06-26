@@ -13,17 +13,16 @@ import {BACKGROUND_COLOR} from '../../styles/colors';
 const OrderScreen = props => {
   const [order, setOrder] = useState([]);
   const [totalPrice, setPrice] = useState([]);
-  console.log(order);
 
-  const addItem = (itemId, price) => {
+  const addItem = (item, price) => {
     setPrice(oldArray => [...oldArray, price]);
-    setOrder(oldArray => [...oldArray, itemId]);
+    setOrder(oldArray => [...oldArray, item]);
   };
 
-  const removeItem = (itemId, price) => {
+  const removeItem = (item, price) => {
     setOrder(oldArray => {
       let counter = 0;
-      while (oldArray[counter] !== itemId) {
+      while (oldArray[counter].id !== item.id) {
         counter++;
       }
       oldArray.splice(counter, 1);
@@ -52,7 +51,12 @@ const OrderScreen = props => {
         <OrderCheckout
           numItems={order.length}
           totalPrice={totalPrice.reduce((accumulator, a) => accumulator + a)}
-          onPress={() => props.navigation.navigate('Payment')}
+          onPress={() =>
+            props.navigation.navigate('Payment', {
+              subtotal: totalPrice.reduce((accumulator, a) => accumulator + a),
+              items: order,
+            })
+          }
         />
       ) : (
         <></>

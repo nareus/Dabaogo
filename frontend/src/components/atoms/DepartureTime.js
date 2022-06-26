@@ -9,10 +9,7 @@ const DepartureTime = () => {
     <View style={styles.main}>
       <View style={styles.top}>
         <Text>Departure Time</Text>
-        <ChangeButton
-          title={'Change'}
-          onPress={() => console.log('presseddd')}
-        />
+        <ChangeButton title={'Change'} onPress={() => {}} />
       </View>
       <View style={styles.time}>
         <Text>10:30 am</Text>

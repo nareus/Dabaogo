@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {convertToMoney} from '../../constants';
 import {GAP_FORM_FIELD} from '../../styles/spacing';
 import IncrementDecrement from './IncrementDecrement';
 
@@ -21,17 +22,13 @@ const PopularDishesCard = ({title, price, id, addItem, removeItem}) => {
       {counter === 0 ? (
         <TouchableOpacity style={styles.touchableOpacity} onPress={incrementer}>
           <Text style={styles.dishName}>{title}</Text>
-          <Text style={styles.dishPrice}>
-            ${price - Math.floor(price) === 0 ? price + '.00' : price}
-          </Text>
+          <Text style={styles.dishPrice}>{convertToMoney(price)}</Text>
         </TouchableOpacity>
       ) : (
         <View style={styles.touchableOpacity}>
           <Text style={styles.dishNameSelected}>{title}</Text>
           <View style={styles.row}>
-            <Text style={styles.dishPrice}>
-              ${price - Math.floor(price) === 0 ? price + '.00' : price}
-            </Text>
+            <Text style={styles.dishPrice}>{convertToMoney(price)}</Text>
             <IncrementDecrement
               count={counter}
               increment={incrementer}

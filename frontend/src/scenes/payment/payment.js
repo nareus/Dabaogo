@@ -3,7 +3,7 @@ import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import Notes from '../../components/atoms/Notes';
 import Padding from '../../components/atoms/Padding';
-import Payment from '../../components/atoms/Payment';
+import PaymentMethod from '../../components/atoms/PaymentMethod';
 import OrderBottom from '../../components/molecules/OrderBottom';
 import OrderSummary from '../../components/molecules/OrderSummary';
 import {BACKGROUND_COLOR, PRIMARY} from '../../styles/colors';
@@ -24,45 +24,63 @@ import LocationToVisit from '../../components/atoms/LocationToVisit';
 // }
 
 const PaymentScreen = props => {
+  const {subtotal, items} = props.route.params;
+  const deliveryFee = 1.0;
+  const serviceFee = 0.3;
+  const totalPrice = subtotal + deliveryFee + serviceFee;
+
+  const convertToQuantity = () => {
+    const output = {};
+    for (const item of items) {
+      if (typeof output[item.id] === 'undefined') {
+        output[item.id] = {
+          quantity: 1,
+          name: item.name,
+          price: item.price,
+          id: item.id,
+        };
+      } else {
+        output[item.id].quantity++;
+      }
+    }
+    return Object.values(output);
+  };
+
   return (
     <Fragment>
       <SafeAreaView style={styles.topSafeAreaView}>
         <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
           <Text style={styles.header}>Payment</Text>
           <Padding />
-          <Notes
-            name={'Order Notes'}
-            onPress={console.log('order notes pressed')}
-          />
+          <Notes name={'Order Notes'} onPress={() => {}} />
           <Padding />
           <OrderSummary
             data={{
-              items: [
-                {
-                  quantity: '1',
-                  name: 'Chicken Rice',
-                  price: '5.00',
-                },
-              ],
-              subtotal: '5.00',
-              deliveryFee: '1.00',
-              serviceFee: '0.30',
+              // items: [
+              //   {
+              //     quantity: '1',
+              //     name: 'Chicken Rice',
+              //     price: '5.00',
+              //   },
+              // ],
+              items: convertToQuantity(items),
+              // items: items,
+              subtotal: subtotal,
+              deliveryFee: deliveryFee,
+              serviceFee: serviceFee,
             }}
           />
           <Padding />
-          <Payment />
+          <PaymentMethod />
           <Padding />
           <LocationToVisit
             text={'Deliver to'}
             location={'Tembusu College\n #22-01'}
           />
           <Padding />
-          <Notes
-            name={'Rider Notes'}
-            onPress={console.log('rider notes pressed')}
-          />
+          <Notes name={'Rider Notes'} onPress={() => {}} />
         </ScrollView>
-        <OrderBottom price={'6.30'} />
+        <OrderBottom price={totalPrice} />
       </SafeAreaView>
       <SafeAreaView style={styles.bottomSafeAreaView} />
     </Fragment>

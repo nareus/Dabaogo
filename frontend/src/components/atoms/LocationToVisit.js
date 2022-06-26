@@ -10,10 +10,7 @@ const LocationToVisit = ({text, location}) => {
       <Image source={require('../../images/map.png')} style={styles.image} />
       <View style={styles.top}>
         <Text style={styles.text}>{text}</Text>
-        <ChangeButton
-          text={'Change'}
-          onPress={() => console.log('pressed me')}
-        />
+        <ChangeButton text={'Change'} onPress={() => {}} />
       </View>
       <View style={styles.time}>
         <Text style={styles.locationToVisit}>{location}</Text>

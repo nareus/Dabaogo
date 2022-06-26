@@ -29,44 +29,21 @@ const RestOfMenuItems = ({addItem, removeItem}) => {
     ],
     'Donburi Noice': [
       {
-        id: 1,
+        id: 4,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
         price: 8.0,
       },
       {
-        id: 2,
+        id: 5,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
         price: 8.0,
       },
       {
-        id: 3,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: 8.0,
-      },
-    ],
-    Ramen: [
-      {
-        id: 1,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: 8.0,
-      },
-      {
-        id: 2,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: 8.0,
-      },
-      {
-        id: 3,
+        id: 6,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
