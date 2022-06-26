@@ -1,14 +1,13 @@
 import * as React from 'react';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
-import RestaurantScroll from '../molecules/RestaurantScroll'
+import RestaurantScroll from '../molecules/RestaurantScroll';
 import TopBarHome from '../molecules/TopBarHome';
 
 const BuyerHomeScreen = () => {
   return (
-    <View style={{backgroundColor: '#fafafa', flex: 1, }}>
-      <RestaurantScroll/>
-      </View>
-      
+    <View style={{backgroundColor: '#fafafa', flex: 1}}>
+      <RestaurantScroll />
+    </View>
   );
 };
 
