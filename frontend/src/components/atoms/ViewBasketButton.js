@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-elements';
+import {convertToMoney} from '../../constants';
 import {PRIMARY} from '../../styles/colors';
 import {BORDER_RADIUS} from '../../styles/mixins';
 
@@ -11,12 +12,7 @@ const ViewBasketButton = ({numItems, totalPrice, onPress}) => {
         <Text style={styles.text}>{numItems}</Text>
       </View>
       <Text style={styles.text}>View Basket</Text>
-      <Text style={styles.text}>
-        $
-        {totalPrice - Math.floor(totalPrice) === 0
-          ? totalPrice + '.00'
-          : totalPrice}
-      </Text>
+      <Text style={styles.text}>{convertToMoney(totalPrice)}</Text>
     </TouchableOpacity>
   );
 };

@@ -3,22 +3,45 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 
-const RestaurantCard = ({onPress}) => {
+/* INTERFACE
+  "outletId": 0,
+  "name": "Taiwanese - Flavours Utown ",
+  "latitude": 1.304987,
+  "available": 1,
+  "transporters": "0",
+  "typeOfStore": "Food Court",
+  "longitude": 103.772789
+*/
+
+const RestaurantCard = props => {
+  const imageUrl = '' + props.image;
+  const [name, location] = props.name.split('- ');
+
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        props.onPress({
+          id: props.outletId,
+          name: name,
+          location: location,
+          typeOfStore: props.typeOfStore,
+          transporters: props.transporters,
+        })
+      }>
       <Image
-        source={require('../../images/taiwanese.png')}
+        source={require('../../images/flavours.jpg')}
         style={styles.image}
       />
       <View style={styles.alignmentContainer}>
         <View style={styles.details}>
           <View style={styles.leftText}>
-            <Text style={styles.restaurantName}>Taiwanese</Text>
-            <Text style={styles.locationAndCategory}>Flavours@Utown</Text>
-            <Text style={styles.locationAndCategory}>Food Court</Text>
+            <Text style={styles.restaurantName}>{name}</Text>
+            <Text style={styles.locationAndCategory}>{location}</Text>
+            <Text style={styles.locationAndCategory}>{props.typeOfStore}</Text>
           </View>
           <View style={styles.rightText}>
-            <Text style={styles.number}>5</Text>
+            <Text style={styles.number}>{props.transporters}</Text>
             <Text style={styles.transporterText}>transporters</Text>
           </View>
         </View>

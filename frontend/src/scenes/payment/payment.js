@@ -33,15 +33,15 @@ const PaymentScreen = props => {
   const convertToQuantity = () => {
     const output = {};
     for (const item of items) {
-      if (typeof output[item.id] === 'undefined') {
-        output[item.id] = {
+      if (typeof output[item.foodId] === 'undefined') {
+        output[item.foodId] = {
           quantity: 1,
           name: item.name,
           price: item.price,
-          id: item.id,
+          foodId: item.foodIid,
         };
       } else {
-        output[item.id].quantity++;
+        output[item.foodId].quantity++;
       }
     }
     return Object.values(output);

@@ -19,7 +19,7 @@ const SignInForm = ({navigate}) => {
         phone: phoneNum,
         password: password,
       });
-      if (response.data.accepted == true) {
+      if (response.data.accepted === true) {
         return [false, '', ''];
       }
       return [true, '', 'Invalid phone number or password provided'];

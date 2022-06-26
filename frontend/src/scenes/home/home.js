@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {SafeAreaView, ScrollView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, SafeAreaView, ScrollView, View} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
 import {connect} from 'react-redux';
 import {BACKGROUND_COLOR} from '../../styles/colors';
@@ -24,10 +24,12 @@ const HomeScreen = props => {
         {
           toggleState ? (
             <BuyerHomeScreen
-              navigate={() => props.navigation.navigate('Order')}
+              navigate={data => props.navigation.navigate('Order', data)}
             />
           ) : (
-            <TransporterHomeScreen />
+            <TransporterHomeScreen
+              navigate={() => props.navigation.navigate('Transporter Status')}
+            />
           )
           // <TransporterHomeScreen />
           // <BuyerHomeScreen />

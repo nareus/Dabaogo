@@ -16,8 +16,10 @@ const OrderProgress = () => {
     5. Food has been delivered!
     6. Done // this is a dummy, to stop delivered from flashing
     */
-  const [currentStatus, setCurrentStatus] = useState('on the way there');
-  const [isDone, setIsDone] = useState([true, true, false, false, false]);
+  const [currentStatus, setCurrentStatus] = useState(
+    'Finding food transporter',
+  );
+  const [isDone, setIsDone] = useState([true, false, false, false, false]);
   const [foodTransporter, setFoodTransporter] = useState('Naren Sreekanth');
 
   return (

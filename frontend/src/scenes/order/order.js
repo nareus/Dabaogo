@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import GeneralButton from '../../components/atoms/GeneralButton';
 import MenuCategoryText from '../../components/atoms/MenuCategoryText';
 import RestaurantCardOrder from '../../components/atoms/RestaurantCardOrder';
@@ -9,10 +16,31 @@ import TopBarAuth from '../../components/molecules/TopBarAuth';
 import TopBarOrder from '../../components/molecules/TopBarOrder';
 import RestOfMenuItems from '../../components/organisms/RestOfMenuItems';
 import {BACKGROUND_COLOR} from '../../styles/colors';
+import {BACKEND_URL} from '../../utils/links';
 
 const OrderScreen = props => {
   const [order, setOrder] = useState([]);
   const [totalPrice, setPrice] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [popularMenu, setPopularMenu] = useState([]);
+  const [mainMenu, setMainMenu] = useState([]);
+
+  const {id, name, location, typeOfStore, transporters} = props.route.params;
+  const getData = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/menu?menuId=${id}`);
+      setPopularMenu(response.data.popular);
+      setMainMenu(response.data.restOfItems);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const addItem = (item, price) => {
     setPrice(oldArray => [...oldArray, price]);
@@ -22,7 +50,7 @@ const OrderScreen = props => {
   const removeItem = (item, price) => {
     setOrder(oldArray => {
       let counter = 0;
-      while (oldArray[counter].id !== item.id) {
+      while (oldArray[counter].foodId !== item.foodId) {
         counter++;
       }
       oldArray.splice(counter, 1);
@@ -41,12 +69,33 @@ const OrderScreen = props => {
   return (
     <View style={styles.container}>
       {/* <TopBarAuth /> */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <RestaurantCardOrder />
-        {/* <MenuCategoryText text={'Popular Dishes'} /> */}
-        {/* <PopularDishesScroll addItem={addItem} removeItem={removeItem} /> */}
-        <RestOfMenuItems addItem={addItem} removeItem={removeItem} />
-      </ScrollView>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <RestaurantCardOrder
+              name={name}
+              location={location}
+              typeOfStore={typeOfStore}
+              transporters={transporters}
+            />
+            {/* <MenuCategoryText text={'Popular Dishes'} /> */}
+            {/* <PopularDishesScroll
+              data={popularMenu}
+              addItem={addItem}
+              removeItem={removeItem}
+            /> */}
+            <RestOfMenuItems
+              data={mainMenu}
+              addItem={addItem}
+              removeItem={removeItem}
+            />
+            <View style={{padding: 60}} />
+          </ScrollView>
+        </>
+      )}
+
       {order.length !== 0 ? (
         <OrderCheckout
           numItems={order.length}

@@ -27,7 +27,7 @@ const DATA = [
   },
 ];
 
-const PopularDishesScroll = ({addItem, removeItem}) => {
+const PopularDishesScroll = ({data, addItem, removeItem}) => {
   const items = () =>
     DATA.map(item => (
       <PopularDishesCard

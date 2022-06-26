@@ -3,11 +3,16 @@ import {View, Text, StyleSheet} from 'react-native';
 import {PADDING_LEFT} from '../../styles/spacing.js';
 import IncrementDecrement from '../atoms/IncrementDecrement.js';
 
-const OrdersToTakeUp = ({decrement, increment}) => {
+const OrdersToTakeUp = ({count, decrement, increment}) => {
   return (
     <View style={styles.main}>
       <Text style={styles.text}>Orders to take up</Text>
-      <IncrementDecrement count={4} style={styles.toggle} />
+      <IncrementDecrement
+        count={count}
+        style={styles.toggle}
+        increment={increment}
+        decrement={decrement}
+      />
     </View>
   );
 };
@@ -19,11 +24,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'white',
     height: 50,
-    width: '95%',
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
     marginTop: 20,
     borderRadius: 5,
+    alignItems: 'center',
     padding: PADDING_LEFT,
   },
   text: {

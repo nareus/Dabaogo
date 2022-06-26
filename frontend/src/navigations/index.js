@@ -22,7 +22,7 @@ const Navigator = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Transporter Status">
+        <Stack.Navigator initialRouteName="Landing">
           <Stack.Screen
             name="Landing"
             component={LandingScreen}

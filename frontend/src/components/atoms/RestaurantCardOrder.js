@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 
-const RestaurantCardOrder = props => {
+const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
   return (
     <View style={styles.card}>
       <Image
@@ -13,12 +13,12 @@ const RestaurantCardOrder = props => {
       <View style={styles.alignmentContainer}>
         <View style={styles.details}>
           <View style={styles.leftText}>
-            <Text style={styles.restaurantName}>Taiwanese</Text>
-            <Text style={styles.locationAndCategory}>Flavours@Utown</Text>
-            <Text style={styles.locationAndCategory}>Food Court</Text>
+            <Text style={styles.restaurantName}>{name}</Text>
+            <Text style={styles.locationAndCategory}>{location}</Text>
+            <Text style={styles.locationAndCategory}>{typeOfStore}</Text>
           </View>
           <View style={styles.rightText}>
-            <Text style={styles.number}>5</Text>
+            <Text style={styles.number}>{transporters}</Text>
             <Text style={styles.transporterText}>transporters</Text>
           </View>
         </View>
@@ -41,9 +41,10 @@ const styles = StyleSheet.create({
   },
   restaurantName: {
     fontWeight: '500',
-    fontSize: 30,
+    fontSize: 28,
   },
   alignmentContainer: {
+    width: '100%',
     justifyContent: 'center',
     backgroundColor: 'white',
     flex: 1,
