@@ -2,17 +2,14 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ChangeButton from './TextButton';
-import OrdersToTakeUp from './OrdersToTakeUp';
+import OrdersToTakeUp from '../molecules/OrdersToTakeUp';
 
 const DepartureTime = () => {
   return (
     <View style={styles.main}>
       <View style={styles.top}>
         <Text>Departure Time</Text>
-        <ChangeButton
-          title={'Change'}
-          onPress={() => console.log('presseddd')}
-        />
+        <ChangeButton title={'Change'} onPress={() => {}} />
       </View>
       <View style={styles.time}>
         <Text>10:30 am</Text>

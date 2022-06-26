@@ -1,48 +1,32 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
-import {BORDER_RADIUS} from '../../styles/mixins';
+import {StyleSheet, View} from 'react-native';
+import Padding from '../atoms/Padding';
 import RestaurantCard from '../atoms/RestaurantCard';
 
-const RestaurantScroll = ({navigate}) => {
+const RestaurantScroll = ({onPress}) => {
   return (
-    <ScrollView>
-      <RestaurantCard
-        borderRadius={BORDER_RADIUS}
-        onPress={navigate}
-        LRMargin={'2%'}
-        marginTop={25}
-        cardWidth={'96%'}
-      />
-      <RestaurantCard
-        borderRadius={BORDER_RADIUS}
-        onPress={navigate}
-        LRMargin={'2%'}
-        marginTop={25}
-        cardWidth={'96%'}
-      />
-      <RestaurantCard
-        borderRadius={BORDER_RADIUS}
-        onPress={navigate}
-        LRMargin={'2%'}
-        marginTop={25}
-        cardWidth={'96%'}
-      />
-      <RestaurantCard
-        borderRadius={BORDER_RADIUS}
-        onPress={navigate}
-        LRMargin={'2%'}
-        marginTop={25}
-        cardWidth={'96%'}
-      />
-      <RestaurantCard
-        borderRadius={BORDER_RADIUS}
-        onPress={navigate}
-        LRMargin={'2%'}
-        marginTop={25}
-        cardWidth={'96%'}
-      />
-    </ScrollView>
+    <View style={styles.container}>
+      <Padding />
+      <RestaurantCard onPress={onPress} />
+      <Padding />
+      <RestaurantCard onPress={onPress} />
+      <Padding />
+      <RestaurantCard onPress={onPress} />
+      <Padding />
+      <RestaurantCard onPress={onPress} />
+      <Padding />
+      <RestaurantCard onPress={onPress} />
+      <Padding />
+      <RestaurantCard onPress={onPress} />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignSelf: 'center',
+    width: '90%',
+  },
+});
 
 export default RestaurantScroll;

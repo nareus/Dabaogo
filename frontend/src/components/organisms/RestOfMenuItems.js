@@ -2,7 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import CategoryMenuCards from '../molecules/CategoryMenuCards';
 
-const RestOfMenuItems = () => {
+const RestOfMenuItems = ({addItem, removeItem}) => {
   const CATEGORIES = {
     'Haru Matsuri': [
       {
@@ -10,90 +10,44 @@ const RestOfMenuItems = () => {
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
+        price: 8.0,
       },
       {
         id: 2,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
+        price: 8.0,
       },
       {
         id: 3,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
+        price: 8.0,
       },
     ],
     'Donburi Noice': [
       {
-        id: 1,
+        id: 4,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
+        price: 8.0,
       },
       {
-        id: 2,
+        id: 5,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
+        price: 8.0,
       },
       {
-        id: 3,
+        id: 6,
         name: 'Sakura Hiramasa Sushi',
         description:
           'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
-      },
-    ],
-    Ramen: [
-      {
-        id: 1,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
-      },
-      {
-        id: 2,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
-      },
-      {
-        id: 3,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
-      },
-    ],
-    'Si qi is fat': [
-      {
-        id: 1,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
-      },
-      {
-        id: 2,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
-      },
-      {
-        id: 3,
-        name: 'Sakura Hiramasa Sushi',
-        description:
-          'Served with mix vegetables, dal tadka, saffron pulao and butter naan',
-        price: '$8.00',
+        price: 8.0,
       },
     ],
   };
@@ -101,7 +55,15 @@ const RestOfMenuItems = () => {
   const items = () => {
     let result = [];
     for (const [key, value] of Object.entries(CATEGORIES)) {
-      result.push(<CategoryMenuCards key={key} category={key} data={value} />);
+      result.push(
+        <CategoryMenuCards
+          key={key}
+          category={key}
+          data={value}
+          addItem={addItem}
+          removeItem={removeItem}
+        />,
+      );
     }
 
     return result;

@@ -1,37 +1,46 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import Toggle from '../atoms/Toggle';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Icon} from '@rneui/themed';
 import {Text} from 'react-native-elements';
-import {PRIMARY, SECONDARY} from '../../styles/colors';
-
-const styles = StyleSheet.create({
-  topBar: {
-    backgroundColor: 'white',
-    elevation: 2,
-  },
-  icons: {
-    flexDirection: 'row',
-    paddingTop: 15,
-    paddingBottom: 15,
-    justifyContent: 'space-between',
-  },
-});
+import {BACKGROUND_COLOR, PRIMARY, SECONDARY} from '../../styles/colors';
+import {PADDING_LEFT} from '../../styles/spacing';
+import GeneralButton from '../atoms/GeneralButton';
+import HalfPadding from '../atoms/HalfPadding';
+import Padding from '../atoms/Padding';
 
 const TopBarHome = ({selectionState, onLeftPress, onRightPress}) => {
   return (
     <View style={styles.topBar}>
-      <View style={styles.icons}>
-        <View flexDirection="row">
-          <Icon name="location-arrow" style={{fontSize: 25, paddingLeft: 20}} />
-          <Text style={{fontSize: 15, paddingLeft: 10}}>Tembusu College</Text>
+      <View style={styles.topIcons}>
+        <View style={styles.icons}>
+          <Icon name="navigation" type="feather" size={24} />
+          <Text style={styles.location}>Tembusu College</Text>
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <Icon style={{paddingRight: 20, fontSize: 23}} name="search" />
-          <Icon name="user-circle-o" style={{paddingRight: 20, fontSize: 23}} />
+        <View style={styles.icons}>
+          <GeneralButton
+            onPress={() => {}}
+            iconName="search"
+            iconType="feather"
+            backgroundColor={BACKGROUND_COLOR}
+            color={PRIMARY}
+            position={'relative'}
+            size={24}
+          />
+          <View style={{padding: 4}} />
+          <GeneralButton
+            onPress={() => {}}
+            iconName="user"
+            iconType="feather"
+            backgroundColor={BACKGROUND_COLOR}
+            color={PRIMARY}
+            position={'relative'}
+            size={24}
+          />
         </View>
       </View>
-      <View style={{marginBottom: 20}}>
+      <View style={{marginBottom: PADDING_LEFT}}>
         <Toggle
           initialState={selectionState}
           onSignInPress={onLeftPress}
@@ -47,5 +56,34 @@ const TopBarHome = ({selectionState, onLeftPress, onRightPress}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  topBar: {
+    paddingTop: 40,
+    backgroundColor: 'white',
+    elevation: 2,
+  },
+  topIcons: {
+    flexDirection: 'row',
+    width: '90%',
+    alignSelf: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+    justifyContent: 'space-between',
+  },
+  icons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  location: {
+    fontSize: 17,
+    paddingLeft: 12,
+    fontWeight: '600',
+  },
+  searchIcon: {
+    paddingRight: 20,
+    fontSize: 23,
+  },
+});
 
 export default TopBarHome;

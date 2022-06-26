@@ -2,21 +2,22 @@ import * as React from 'react';
 import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
 import RestaurantScroll from '../molecules/RestaurantScroll';
 import TopBarHome from '../molecules/TopBarHome';
-import OrdersToTakeUp from '../atoms/OrdersToTakeUp';
+import OrdersToTakeUp from '../molecules/OrdersToTakeUp';
 import DepartureTime from '../atoms/DepartureTime';
 import RestaurantToVisit from '../atoms/LocationToVisit';
 import BottomBarTransporterHome from '../molecules/BottomBarTransporterHome';
 import LocationToVisit from '../atoms/LocationToVisit';
+import {BACKGROUND_COLOR} from '../../styles/colors';
 
 const TransporterHomeScreen = () => {
   return (
-    <View style={{backgroundColor: '#fafafa', flex: 1}}>
+    <View style={styles.container}>
       <View style={{flex: 1}}>
         <LocationToVisit
           text={'Restaurant to visit'}
           location={'Yong Tau Fu @ Fine Foods'}
         />
-        <OrdersToTakeUp />
+        <OrdersToTakeUp decrement={() => {}} increment={() => {}} />
         <DepartureTime />
       </View>
       <BottomBarTransporterHome style={{marginTop: 'auto'}} />
@@ -26,14 +27,8 @@ const TransporterHomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // alignSelf: 'stretch',
-    height: 40,
-    // paddingBottom: 60,
-    flexDirection: 'row', // row
-    alignItems: 'center',
-    justifyContent: 'space-between', // center, space-around
-    // paddingLeft: 10,
-    // paddingRight: 10
+    backgroundColor: BACKGROUND_COLOR,
+    flex: 1,
   },
 });
 

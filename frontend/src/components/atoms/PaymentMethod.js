@@ -5,11 +5,11 @@ import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 import TextButton from './TextButton';
 
-const Payment = onPress => {
+const PaymentMethod = onPress => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Paynow</Text>
-      <TextButton text={'Change'} onPress={() => console.log('pressed')} />
+      <TextButton text={'Change'} onPress={() => {}} />
     </View>
   );
 };
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-export default Payment;
+export default PaymentMethod;

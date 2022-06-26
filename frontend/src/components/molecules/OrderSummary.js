@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
+import {convertToMoney} from '../../constants';
 import {PRIMARY} from '../../styles/colors';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
@@ -25,7 +26,7 @@ const OrderRow = ({item}) => {
         <Text style={styles.text}>{item.quantity}x </Text>
         <Text style={styles.text}>{item.name}</Text>
       </View>
-      <Text style={styles.text}>{item.price}</Text>
+      <Text style={styles.text}>{convertToMoney(item.price)}</Text>
     </View>
   );
 };
@@ -34,7 +35,7 @@ const BottomDetails = ({name, price}) => {
   return (
     <View style={styles.orderRow}>
       <Text style={styles.text}>{name}</Text>
-      <Text style={styles.text}>{price}</Text>
+      <Text style={styles.text}>{convertToMoney(price)}</Text>
     </View>
   );
 };

@@ -19,7 +19,6 @@ const SignInForm = ({navigate}) => {
         phone: phoneNum,
         password: password,
       });
-      console.log(response.data);
       if (response.data.accepted == true) {
         return [false, '', ''];
       }

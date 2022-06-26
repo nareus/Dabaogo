@@ -4,14 +4,18 @@ import {Text} from 'react-native-elements';
 import MainDishesCard from '../atoms/MainDishesCard';
 import MenuCategoryText from '../atoms/MenuCategoryText';
 
-const CategoryMenuCards = ({category, data}) => {
+const CategoryMenuCards = ({category, data, addItem, removeItem}) => {
   const categoryItems = () =>
     data.map(element => (
       <MainDishesCard
+        element={element}
         key={element.id}
-        name={element.name}
-        description={element.description}
-        price={element.price}
+        // id={element.id}
+        // name={element.name}
+        // description={element.description}
+        // price={element.price}
+        addItem={addItem}
+        removeItem={removeItem}
       />
     ));
 

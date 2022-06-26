@@ -8,7 +8,16 @@ const TopBarOrder = ({onPress}) => (
   <View style={styles.bigContainer}>
     <View style={styles.container}>
       <View style={styles.button}>
-        <GeneralButton onPress={onPress} />
+        <GeneralButton
+          onPress={onPress}
+          iconName="chevron-left"
+          iconType="feather"
+          backgroundColor={'white'}
+          color={'black'}
+          position={'absolute'}
+          size={22}
+        />
+        {/* <GeneralButton onPress={onPress} /> */}
       </View>
       <Text style={styles.text}>Taiwanese</Text>
     </View>
@@ -42,7 +51,7 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     left: 0,
-    top: 6,
+    top: 17,
   },
   bigContainer: {
     // paddingBottom: 100,

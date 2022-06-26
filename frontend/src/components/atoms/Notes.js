@@ -9,7 +9,7 @@ import TextButton from './TextButton';
 const Notes = ({name, onPress}) => {
   return (
     <View style={styles.container}>
-      <TextButton text={name} onPress={() => console.log('pressed')} />
+      <TextButton text={name} onPress={() => {}} />
     </View>
   );
 };
