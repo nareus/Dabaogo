@@ -15,6 +15,7 @@ const outlets  = require('./routes/outlets.js')
 const orders = require('./routes/orders.js')
 const menu = require('./routes/menu.js')
 const users = require('./routes/users.js')
+const transporters = require('./routes/transporters.js')
 
 //Using Routes
 app.use('/register', register);
@@ -25,6 +26,8 @@ app.use('/outlets', outlets);
 app.use('/orders', orders);
 app.use('/menu', menu);
 app.use('/users', users);
+app.use('/transporters', transporters)
+
 
 //Getting data in JSON format
 app.use(express.json());
