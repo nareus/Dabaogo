@@ -13,12 +13,13 @@ const FormErrorAndSubmit = ({signInUp, authenticate, navigate}) => {
   const [errorBody, setErrorBody] = useState('');
 
   const onSubmit = async () => {
-    const [error, tempErrorHeader, tempErrorBody] = await authenticate();
+    const [error, tempErrorHeader, tempErrorBody, userId] =
+      await authenticate();
     setError(error);
     setErrorHeader(tempErrorHeader);
     setErrorBody(tempErrorBody);
     if (!error) {
-      navigate();
+      navigate(userId);
     }
   };
 

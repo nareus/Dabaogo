@@ -8,7 +8,8 @@ import LandingScreen from '../scenes/landingScreen/landing';
 import AuthScreen from '../scenes/auth/auth';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import AuthReducer from '../redux/reducer/AuthReducer';
+// import AuthReducer from '../redux/reducer/AuthReducer';
+import RootReducer from '../redux/reducer/RootReducer';
 import OrderScreen from '../scenes/order/order';
 import PaymentScreen from '../scenes/payment/payment';
 import OrderStatusScreen from '../scenes/orderStatus/orderStatus';
@@ -16,7 +17,7 @@ import TransporterOrder from '../scenes/transporterOrder/transporterOrder';
 
 const Stack = createNativeStackNavigator();
 
-const store = createStore(AuthReducer);
+const store = createStore(RootReducer);
 
 const Navigator = () => {
   return (

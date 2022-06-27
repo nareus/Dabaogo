@@ -19,9 +19,21 @@ const AuthScreen = props => {
         onSignUpPress={() => props.toggleAuthState(false)}
       />
       {props.auth ? (
-        <SignInForm navigate={() => props.navigation.navigate('Home')} />
+        <SignInForm
+          navigate={id =>
+            props.navigation.navigate('Home', {
+              id: id,
+            })
+          }
+        />
       ) : (
-        <SignUpForm navigate={() => props.navigation.navigate('Home')} />
+        <SignUpForm
+          navigate={id =>
+            props.navigation.navigate('Home', {
+              id: id,
+            })
+          }
+        />
       )}
     </SafeAreaView>
   );

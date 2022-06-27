@@ -20,7 +20,7 @@ const SignInForm = ({navigate}) => {
         password: password,
       });
       if (response.data.accepted === true) {
-        return [false, '', ''];
+        return [false, '', '', response.data.id];
       }
       return [true, '', 'Invalid phone number or password provided'];
     } else {
