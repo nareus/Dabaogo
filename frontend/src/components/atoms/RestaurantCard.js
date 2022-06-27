@@ -67,7 +67,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   restaurantName: {
-    fontWeight: '500',
+    // fontWeight: '500',
+    // fontSize: 18,
+    color: 'black',
+    fontWeight: 'bold',
     fontSize: 18,
   },
   alignmentContainer: {
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
   transporterText: {
     // flex: 1,
     justifyContent: 'center',
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 12,
   },
   card: {
@@ -103,7 +106,8 @@ const styles = StyleSheet.create({
   },
   number: {
     fontSize: 23,
-    fontWeight: '600',
+    //fontWeight: '600',
+    fontWeight: 'bold',
     color: '#ff9e9e',
     paddingBottom: 5,
   },

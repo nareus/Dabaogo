@@ -71,32 +71,33 @@ async function createOrder(req, res) {
     await query(updateTransQuery)
 
     //update transporters in outlets
-    const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
-    const updateOutletQuery = mysql.format(updateOutlet, [outletId])
-    await query(updateOutletQuery)
+    if(transporter.maxOrders == transporter.ordersTaken) {
+        const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
+        const updateOutletQuery = mysql.format(updateOutlet, [outletId])
+        await query(updateOutletQuery)
+    }
 
      //Insert order into database
      const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
      const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered]);
      await query(insertQuery)
 
-
-    //update the users' current order
-    const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
-    const update = "UPDATE Users SET currOrderId=? WHERE userId =?"
-    const ids = await query(idQuery)
-    const id = ids[0].orderId
-    const updateBuyer = mysql.format(update, [id, buyerId])
-    const updateTransporter = mysql.format(update, [id, transporterId])
-    await query(updateBuyer)
-    await query(updateTransporter)
+     //update the users' current order
+     const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
+     const update = "UPDATE Users SET currOrderId=? WHERE userId =?"
+     const ids = await query(idQuery)
+     const id = ids[0].orderId
+     const updateBuyer = mysql.format(update, [id, buyerId])
+     const updateTransporter = mysql.format(update, [id, transporterId])
+     await query(updateBuyer)
+     await query(updateTransporter)
 
     //send Id of the order
     res.json({id: id}); 
 }
 
 async function updateOrder(req, res) {
-    const arr = req.body.arr
+    const arr = req.body.stage
     const id = req.body.orderId
     const foundTransporter = arr[0]
     const reachedOutlet = arr[1]

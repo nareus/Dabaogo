@@ -19,7 +19,7 @@ const TransporterOrderProgress = props => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Estimated Arrival</Text>
-      <Text style={styles.estimatedArrival}>20:15 - 20:20</Text>
+      <Text style={styles.estimatedArrival}>13:00</Text>
       <HalfPadding />
       <TransporterProgressBar
         currentStatus={props.currentStatus}

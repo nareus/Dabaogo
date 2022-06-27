@@ -13,8 +13,8 @@ const TransporterProgressBar = ({currentStatus, isDone}) => {
   return (
     <View style={styles.horizontalBar}>
       <TransporterMiniProgressBar
-        pulseOrNah={currentStatus === 'Finding food transporter'}
-        showOrNot={currentStatus === 'Finding food transporter' || true}
+        pulseOrNah={currentStatus === 'Waiting for orders'}
+        showOrNot={currentStatus === 'Waiting for orders' || true}
       />
       <MiniGap />
       <TransporterMiniProgressBar

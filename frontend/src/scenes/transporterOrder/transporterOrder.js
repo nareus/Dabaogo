@@ -29,9 +29,7 @@ const TransporterOrder = props => {
   const [buttonTitle, setButtonTitle] = useState('Confirm');
   const [count, setCount] = useState(1);
   const [stage, setStage] = useState([false, false, false, false]);
-  const [currentStatus, setCurrentStatus] = useState(
-    'Finding food transporter',
-  );
+  const [currentStatus, setCurrentStatus] = useState('Waiting for Orders');
   const [pulseState] = useState([true, false, false, false, false]);
 
   const handlePress = async () => {
@@ -93,13 +91,25 @@ const TransporterOrder = props => {
           <Padding />
           <TransporterOrderCard
             location={'Tembusu College'}
-            orders={'Kampung Fried Rice'}
-            price={'$10'}
+            orders={'1x Chicken Chop Rice'}
+            price={'$5.50'}
+          />
+          <Padding />
+          <TransporterOrderCard
+            location={'Tembusu College'}
+            orders={'2x Vinegar Beef Noodles (Dry)'}
+            price={'$11.00'}
+          />
+          <Padding />
+          <TransporterOrderCard
+            location={'Tembusu College'}
+            orders={'1x Chili Oil Chive Dumplings (6 pcs)'}
+            price={'$3.90'}
           />
           <Padding />
         </ScrollView>
         <TransporterConfirmBottom
-          price={'6.30'}
+          price={'20.40'}
           onPress={handlePress}
           buttonTitle={buttonTitle}
         />

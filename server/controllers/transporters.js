@@ -34,14 +34,18 @@ async function createTransporter(req, res) {
     const ordersTaken = 0
 
     //create transporter
-    const insert = "INSERT INTO Transporters VALUES (0, ?, ?, ?, ?, ?, ?)";
-    const insertQuery = mysql.format(insert, [transporterId, maxOrders, ordersTaken, depTime, hostel, outletId])
+    const insert = "INSERT INTO Transporters VALUES (0, ?, ?, ?, ?, ?, ?, ADDTIME(?, '1:00:00'))";
+    const insertQuery = mysql.format(insert, [transporterId, maxOrders, ordersTaken, depTime, hostel, outletId, depTime])
     await query(insertQuery);
 
     //update transporters in outlets
     const update = "UPDATE Outlets SET transporters = transporters + 1 WHERE outletId = ?"
     const updateQuery = mysql.format(update, [outletId])
     await query(updateQuery)
+
+    const updateUser = "UPDATE Users SET istransporter = 1 WHERE userId = ?"
+    const updateUserQuery = mysql.format(updateUser, [transporterId])
+    await query(updateUserQuery)
 
     res.send("Created")  
 }
@@ -52,6 +56,10 @@ async function deleteTransporter(req, res) {
     const deleteQuery = mysql.format(del, [transporterId])
     await query(deleteQuery);
     res.send("Deleted")  
+
+    const updateUser = "UPDATE Users SET istransporter = 0 WHERE userId = ?"
+    const updateUserQuery = mysql.format(updateUser, [transporterId])
+    await query(updateUserQuery)
 }
 
 async function getTransporter(req, res) {
@@ -62,6 +70,7 @@ async function getTransporter(req, res) {
     if (results.length == 0) {
         res.send("no transporter")
     } else {
+    results[0].estimatedTime = results[0].estimatedTime.slice(0,-3)
     res.send(results[0])  
     }
 }

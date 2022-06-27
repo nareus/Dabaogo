@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   restaurantName: {
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 28,
   },
   alignmentContainer: {
