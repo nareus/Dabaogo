@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     paddingLeft: 12,
     fontWeight: '600',
+    color: 'black',
   },
   searchIcon: {
     paddingRight: 20,

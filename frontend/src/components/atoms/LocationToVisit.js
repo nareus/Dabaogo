@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 17,
     fontWeight: 'bold',
+    color: 'black',
   },
 });
 export default LocationToVisit;

@@ -63,9 +63,11 @@ const styles = StyleSheet.create({
   dishName: {
     fontWeight: 'bold',
     paddingBottom: 10,
+    color: 'black',
   },
   description: {
     fontSize: 12,
+    color: 'black',
   },
   dishPrice: {
     fontWeight: 'bold',

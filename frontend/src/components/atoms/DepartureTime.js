@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   departureText: {
     fontWeight: 'bold',
     fontSize: 17,
+    color: 'black',
   },
   currentTime: {
     fontWeight: 'bold',

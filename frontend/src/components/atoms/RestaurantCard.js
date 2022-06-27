@@ -67,12 +67,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   restaurantName: {
-    // fontWeight: '500',
-    // fontSize: 18,
+    fontWeight: '500',
+    fontSize: 18,
     color: 'black',
-    opacity: 0.4,
-    fontWeight: 'bold',
-    fontSize: 12,
   },
   alignmentContainer: {
     justifyContent: 'center',
@@ -97,6 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontWeight: 'bold',
     fontSize: 12,
+    color: 'black',
   },
   card: {
     height: 240,

@@ -7,15 +7,11 @@ const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
   return (
     <View style={styles.card}>
       <Image
-<<<<<<< HEAD
-        source={require('../../images/flavours.jpg')}
-=======
         source={
           location === 'Fine Foods'
             ? require('../../images/finefoods.jpg')
             : require('../../images/flavours.jpg')
         }
->>>>>>> refs/remotes/origin/main
         style={styles.image}
       />
       <View style={styles.alignmentContainer}>
@@ -50,6 +46,7 @@ const styles = StyleSheet.create({
   restaurantName: {
     fontWeight: 'bold',
     fontSize: 28,
+    color: 'black',
   },
   alignmentContainer: {
     width: '100%',
@@ -73,6 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     fontWeight: 'bold',
+    color: 'black',
   },
   card: {
     height: 328,
