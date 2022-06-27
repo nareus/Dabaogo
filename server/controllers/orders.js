@@ -77,6 +77,11 @@ async function createOrder(req, res) {
         await query(updateOutletQuery)
     }
 
+     //Insert order into database
+     const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+     const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered]);
+     await query(insertQuery)
+
      //update the users' current order
      const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
      const update = "UPDATE Users SET currOrderId=? WHERE userId =?"
@@ -87,20 +92,12 @@ async function createOrder(req, res) {
      await query(updateBuyer)
      await query(updateTransporter)
 
-
-    //Insert order into database
-    const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered]);
-    await query(insertQuery)
-
-   
-
     //send Id of the order
     res.json({id: id}); 
 }
 
 async function updateOrder(req, res) {
-    const arr = req.body.arr
+    const arr = req.body.stage
     const id = req.body.orderId
     const foundTransporter = arr[0]
     const reachedOutlet = arr[1]

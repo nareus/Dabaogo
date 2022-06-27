@@ -70,6 +70,7 @@ async function getTransporter(req, res) {
     if (results.length == 0) {
         res.send("no transporter")
     } else {
+    results[0].estimatedTime = results[0].estimatedTime.slice(0,-3)
     res.send(results[0])  
     }
 }
