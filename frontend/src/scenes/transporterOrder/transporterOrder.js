@@ -24,6 +24,8 @@ import TopBarOrder from '../../components/molecules/TopBarOrder';
 // }
 
 const TransporterOrder = props => {
+  // console.log(props.route.params);
+
   const [buttonTitle, setButtonTitle] = useState('Confirm');
   const [count, setCount] = useState(1);
   const [stage, setStage] = useState([false, false, false, false]);

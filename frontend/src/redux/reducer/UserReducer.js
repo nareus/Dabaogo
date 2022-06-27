@@ -15,6 +15,7 @@ const userReducer = (state = initialState, action) => {
         firstName,
         lastName,
         currOrderId,
+        isTransporter,
       } = action.payload;
       return {
         isLoggedIn: true,
@@ -25,6 +26,7 @@ const userReducer = (state = initialState, action) => {
         firstName,
         lastName,
         currOrderId,
+        isTransporter,
       };
     }
     case USER_LOGOUT: {

@@ -16,7 +16,7 @@ const BottomUserState = props => {
   return (
     <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <View style={styles.orderRow}>
-        <ActivityIndicator size={40} style={styles.indicator} color={'white'} />
+        <ActivityIndicator size={25} style={styles.indicator} color={'white'} />
         <Text style={styles.text}>View Order Progress</Text>
       </View>
       <Padding />
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   container: {
     padding: PADDING_LEFT,
     backgroundColor: PRIMARY,
+    paddingBottom: 25,
   },
   orderRow: {
     flexDirection: 'row',
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   indicator: {
+    paddingLeft: 20,
     paddingRight: 35,
   },
 });

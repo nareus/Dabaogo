@@ -1,12 +1,19 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
+import {BACKEND_URL} from '../../utils/links';
 import HalfPadding from '../atoms/HalfPadding';
 import OrderBottom from './OrderBottom';
 import ProgressBar from './ProgressBar';
 
-const OrderProgress = () => {
+const OrderProgress = ({
+  orderId,
+  arrivalTime,
+  transporterId,
+  transporterName,
+}) => {
   /*
     Current status includes
     1. Finding food transporter
@@ -14,30 +21,80 @@ const OrderProgress = () => {
     3. waiting for food
     4. on the way back
     5. Food has been delivered!
-    6. Done // this is a dummy, to stop delivered from flashing
+    6. Delivered // this is a dummy, to stop delivered from flashing
     */
-  const [currentStatus, setCurrentStatus] = useState(
-    'Finding food transporter',
-  );
+
+  // console.log(orderId, transporterId, transporterName);
+
+  const [currentStatus, setCurrentStatus] = useState('on the way there');
+
   const [isDone, setIsDone] = useState([true, false, false, false, false]);
-  const [foodTransporter, setFoodTransporter] = useState('Naren Sreekanth');
+  const [orderDetails, setOrderDetails] = useState({});
+  const [transporter, setTransporter] = useState({});
+  const [isLoading, setLoading] = useState(true);
+
+  // setTimeout(() => {
+  //   console.log('getting data');
+  //   getData();
+  // }, 10000);
+
+  const getData = async () => {
+    try {
+      const responseTransporter = await axios.get(
+        `${BACKEND_URL}/transporters?transporterId=${transporterId}`,
+      );
+      setTransporter(responseTransporter.data[0]);
+      const response = await axios.get(
+        `${BACKEND_URL}/orders?orderId=${orderId}`,
+      );
+      setOrderDetails(response.data[0]);
+      // setIsDone(
+      //   orderDetails.foundTransporter,
+      //   orderDetails.reachedOutlet,
+      //   orderDetails.orderPickedUp,
+      //   orderDetails.delivered,
+      //   false,
+      // );
+      // setMenuItems(response.data.popular);
+      // setMainMenu(response.data.restOfItems);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+    return () => {
+      getData();
+      setLoading(true);
+    };
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Estimated Arrival</Text>
-      <Text style={styles.estimatedArrival}>20:15 - 20:20</Text>
-      <HalfPadding />
-      <ProgressBar currentStatus={currentStatus} isDone={isDone} />
-      <HalfPadding />
-      {currentStatus === 'Food has been delivered!' ||
-      currentStatus === 'Finding food transporter' ? (
-        <Text style={styles.orderStatus}>{currentStatus}</Text>
+    <>
+      {isLoading ? (
+        <ActivityIndicator />
       ) : (
-        <Text style={styles.orderStatus}>
-          {foodTransporter} is {currentStatus}
-        </Text>
+        <View style={styles.container}>
+          <Text style={styles.text}>Estimated Arrival</Text>
+          <Text style={styles.estimatedArrival}>{arrivalTime}</Text>
+          <HalfPadding />
+          <ProgressBar currentStatus={currentStatus} isDone={isDone} />
+          <HalfPadding />
+          {currentStatus === 'Food has been delivered!' ||
+          currentStatus === 'Finding food transporter' ||
+          currentStatus === 'Delivered' ? (
+            <Text style={styles.orderStatus}>{currentStatus}</Text>
+          ) : (
+            <Text style={styles.orderStatus}>
+              {transporterName} is {currentStatus}
+            </Text>
+          )}
+        </View>
       )}
-    </View>
+    </>
   );
 };
 

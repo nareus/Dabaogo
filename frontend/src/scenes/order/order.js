@@ -24,6 +24,7 @@ const OrderScreen = props => {
   const [isLoading, setLoading] = useState(true);
   const [popularMenu, setPopularMenu] = useState([]);
   const [mainMenu, setMainMenu] = useState([]);
+  const [state, setState] = useState({});
 
   const {id, name, location, typeOfStore, transporters} =
     props.route.params.data;
@@ -42,7 +43,12 @@ const OrderScreen = props => {
 
   useEffect(() => {
     getData();
-  });
+    return () => {
+      setPopularMenu([]);
+      setMainMenu([]);
+      setLoading(true);
+    };
+  }, []);
 
   const addItem = (item, price) => {
     setPrice(oldArray => [...oldArray, price]);
@@ -106,6 +112,7 @@ const OrderScreen = props => {
             props.navigation.navigate('Payment', {
               subtotal: totalPrice.reduce((accumulator, a) => accumulator + a),
               items: order,
+              storeId: id,
             })
           }
         />

@@ -12,6 +12,8 @@ import BottomUserState from '../../components/atoms/BottomUserState';
 const HomeScreen = props => {
   const [toggleState, setToggleState] = useState(true);
 
+  useEffect(() => {}, []);
+
   return (
     <View style={{backgroundColor: BACKGROUND_COLOR, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -21,31 +23,35 @@ const HomeScreen = props => {
           onLeftPress={() => setToggleState(false)}
           onRightPress={() => setToggleState(true)}
         />
-        {
-          toggleState ? (
-            <BuyerHomeScreen
-              navigate={data =>
-                props.navigation.navigate('Order', {
-                  data: data,
-                })
-              }
-            />
-          ) : (
-            <TransporterHomeScreen
-              navigate={() => props.navigation.navigate('Transporter Status')}
-            />
-          )
-          // <TransporterHomeScreen />
-          // <BuyerHomeScreen />
-        }
+        {toggleState ? (
+          <BuyerHomeScreen
+            navigate={data =>
+              props.navigation.navigate('Order', {
+                data: data,
+              })
+            }
+          />
+        ) : (
+          <TransporterHomeScreen
+            navigate={data =>
+              props.navigation.navigate('Transporter Status', {
+                data: data,
+              })
+            }
+          />
+        )}
       </ScrollView>
-      {props.user.currOrderId === null ? (
+      {props.user.currOrderId !== null ? (
         <BottomUserState
-          onPress={() =>
-            props.navigation.navigate('Order Status', {
-              id: props.user.currOrderId,
-            })
-          }
+          onPress={() => {
+            props.user.isTransporter
+              ? props.navigation.navigate('Transporter Status', {
+                  id: props.user.currOrderId,
+                })
+              : props.navigation.navigate('Order Status', {
+                  id: props.user.currOrderId,
+                });
+          }}
         />
       ) : (
         <></>

@@ -10,6 +10,7 @@ export const userLogin = ({
   firstName,
   lastName,
   currOrderId,
+  isTransporter,
 }) => ({
   type: USER_LOGIN,
   payload: {
@@ -20,6 +21,7 @@ export const userLogin = ({
     firstName,
     lastName,
     currOrderId,
+    isTransporter,
   },
 });
 

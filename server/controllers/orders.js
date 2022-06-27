@@ -75,11 +75,11 @@ async function createOrder(req, res) {
     const updateOutletQuery = mysql.format(updateOutlet, [outletId])
     await query(updateOutletQuery)
 
+     //Insert order into database
+     const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+     const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered]);
+     await query(insertQuery)
 
-    //Insert order into database
-    const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered]);
-    await query(insertQuery)
 
     //update the users' current order
     const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
