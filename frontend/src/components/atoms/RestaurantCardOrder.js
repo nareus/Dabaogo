@@ -7,7 +7,7 @@ const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
   return (
     <View style={styles.card}>
       <Image
-        source={require('../../images/taiwanese.png')}
+        source={require('../../images/flavours.jpg')}
         style={styles.image}
       />
       <View style={styles.alignmentContainer}>
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   restaurantName: {
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 28,
   },
   alignmentContainer: {
