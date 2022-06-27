@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import Notes from '../../components/atoms/Notes';
 import Padding from '../../components/atoms/Padding';
@@ -10,6 +10,12 @@ import {BACKGROUND_COLOR, PRIMARY} from '../../styles/colors';
 import {PADDING_LEFT} from '../../styles/spacing';
 import LocationToVisit from '../../components/atoms/LocationToVisit';
 import TopBarOrder from '../../components/molecules/TopBarOrder';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {userLogin} from '../../redux/action/UserActions';
+import axios from 'axios';
+import {BACKEND_URL} from '../../utils/links';
+import {convertToQuantity} from '../../constants';
 
 // interface IData {
 //   items: IItem[],
@@ -25,26 +31,41 @@ import TopBarOrder from '../../components/molecules/TopBarOrder';
 // }
 
 const PaymentScreen = props => {
-  const {subtotal, items} = props.route.params;
+  const {subtotal, items, storeId} = props.route.params;
   const deliveryFee = 1.0;
   const serviceFee = 0.3;
   const totalPrice = subtotal + deliveryFee + serviceFee;
 
-  const convertToQuantity = () => {
-    const output = {};
-    for (const item of items) {
-      if (typeof output[item.foodId] === 'undefined') {
-        output[item.foodId] = {
-          quantity: 1,
-          name: item.name,
-          price: item.price,
-          foodId: item.foodIid,
-        };
-      } else {
-        output[item.foodId].quantity++;
+  const makeOrder = async () => {
+    // console.log(items);
+    const foodItems = items.map(item => item.foodId);
+    const order = {
+      buyerId: props.user.userId,
+      foodItems: foodItems,
+      price: totalPrice,
+      outletId: storeId,
+    };
+    try {
+      const response = await axios.post(`${BACKEND_URL}/orders`, order);
+      if (response.status === 200) {
+        await getUserDetails(props.user.userId);
+        props.navigation.navigate('Order Status', {
+          id: response.data.id,
+        });
       }
+    } catch (error) {
+      console.error(error);
     }
-    return Object.values(output);
+  };
+
+  const getUserDetails = async id => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/users?userId=${id}}`);
+      await props.userLogin(response.data[0]);
+      // console.log(props.user);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -78,10 +99,7 @@ const PaymentScreen = props => {
           <Padding />
           <Notes name={'Rider Notes'} onPress={() => {}} />
         </ScrollView>
-        <OrderBottom
-          price={totalPrice}
-          onPress={() => props.navigation.navigate('Order Status')}
-        />
+        <OrderBottom price={totalPrice} onPress={makeOrder} />
       </SafeAreaView>
       <SafeAreaView style={styles.bottomSafeAreaView} />
       <TopBarOrder
@@ -117,4 +135,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PaymentScreen;
+const mapStateToProps = state => {
+  const {user} = state;
+  return {user};
+};
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      userLogin,
+    },
+    dispatch,
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentScreen);

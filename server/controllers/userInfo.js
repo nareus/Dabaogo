@@ -68,8 +68,8 @@ const signUp = (req, res) => {
             const emailSearchQuery = mysql.format(sqlEmailSearch, [email]);
        
             //create query to insert account information into database
-            const sqlInsert = "INSERT INTO Users VALUES (0, ?, ?, ?, ?, ?, ?)";
-            const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName, null]);
+            const sqlInsert = "INSERT INTO Users VALUES (0, ?, ?, ?, ?, ?, ?, ?)";
+            const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName, null, 0]);
             
             //async/await format to query data
             (async () => { 
