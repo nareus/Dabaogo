@@ -25,19 +25,21 @@ const RestaurantScroll = ({onPress}) => {
   }, []);
 
   const mapData = () =>
-    data.map(card => (
-      <View key={card.outletId}>
-        <Padding />
-        <RestaurantCard
-          image={card.imagePath}
-          outletId={card.outletId}
-          name={card.name}
-          typeOfStore={card.typeOfStore}
-          transporters={card.transporters}
-          onPress={onPress}
-        />
-      </View>
-    ));
+    data
+      .filter(card => card.transporters > 0)
+      .map(card => (
+        <View key={card.outletId}>
+          <Padding />
+          <RestaurantCard
+            image={card.imagePath}
+            outletId={card.outletId}
+            name={card.name}
+            typeOfStore={card.typeOfStore}
+            transporters={card.transporters}
+            onPress={onPress}
+          />
+        </View>
+      ));
 
   return (
     <View style={styles.container}>

@@ -25,7 +25,9 @@ const OrderScreen = props => {
   const [popularMenu, setPopularMenu] = useState([]);
   const [mainMenu, setMainMenu] = useState([]);
 
-  const {id, name, location, typeOfStore, transporters} = props.route.params;
+  const {id, name, location, typeOfStore, transporters} =
+    props.route.params.data;
+
   const getData = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/menu?menuId=${id}`);
@@ -40,7 +42,7 @@ const OrderScreen = props => {
 
   useEffect(() => {
     getData();
-  }, []);
+  });
 
   const addItem = (item, price) => {
     setPrice(oldArray => [...oldArray, price]);
