@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, SafeAreaView, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
 import {connect} from 'react-redux';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import {bindActionCreators} from 'redux';
-import {toggleHomeState} from '../../redux/action/HomeActions';
 import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
 import TransporterHomeScreen from '../../components/organisms/TransporterHomeScreen';
+import {userLogin} from '../../redux/action/UserActions';
+import BottomUserState from '../../components/atoms/BottomUserState';
 
 const HomeScreen = props => {
   const [toggleState, setToggleState] = useState(true);
@@ -16,8 +17,6 @@ const HomeScreen = props => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <TopBarHome
           selectionState={props.home}
-          // onLeftPress={() => props.toggleHomeState(true)}
-          // onRightPress={() => props.toggleHomeState(false)}
           onPressProfile={() => props.navigation.navigate('Settings')}
           onLeftPress={() => setToggleState(false)}
           onRightPress={() => setToggleState(true)}
@@ -25,7 +24,11 @@ const HomeScreen = props => {
         {
           toggleState ? (
             <BuyerHomeScreen
-              navigate={data => props.navigation.navigate('Order', data)}
+              navigate={data =>
+                props.navigation.navigate('Order', {
+                  data: data,
+                })
+              }
             />
           ) : (
             <TransporterHomeScreen
@@ -36,19 +39,30 @@ const HomeScreen = props => {
           // <BuyerHomeScreen />
         }
       </ScrollView>
+      {props.user.currOrderId === null ? (
+        <BottomUserState
+          onPress={() =>
+            props.navigation.navigate('Order Status', {
+              id: props.user.currOrderId,
+            })
+          }
+        />
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
 
 const mapStateToProps = state => {
-  const {home} = state;
-  return {home};
+  const {user} = state;
+  return {user};
 };
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      toggleHomeState,
+      userLogin,
     },
     dispatch,
   );

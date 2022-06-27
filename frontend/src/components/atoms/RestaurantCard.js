@@ -14,7 +14,6 @@ import {PADDING_LEFT} from '../../styles/spacing';
 */
 
 const RestaurantCard = props => {
-  const imageUrl = '' + props.image;
   const [name, location] = props.name.split('- ');
 
   return (
@@ -27,10 +26,15 @@ const RestaurantCard = props => {
           location: location,
           typeOfStore: props.typeOfStore,
           transporters: props.transporters,
+          url: props.image,
         })
       }>
       <Image
-        source={require('../../images/flavours.jpg')}
+        source={
+          location === 'Fine Foods'
+            ? require('../../images/finefoods.jpg')
+            : require('../../images/flavours.jpg')
+        }
         style={styles.image}
       />
       <View style={styles.alignmentContainer}>

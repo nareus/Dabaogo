@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Logo from '../../components/atoms/Logo';
 import SignInUpButton from '../../components/atoms/SignInUpButton';
@@ -13,6 +13,14 @@ import {bindActionCreators} from 'redux';
 import {toggleAuthState} from '../../redux/action/AuthActions';
 
 function LandingScreen(props) {
+  useEffect(() => {
+    if (props.user.isLoggedIn) {
+      props.navigation.navigate('Home', {
+        id: props.user.id,
+      });
+    }
+  }, []);
+
   return (
     <View style={styles.fullScreenContainer}>
       <View style={styles.logoView}>
@@ -45,8 +53,8 @@ function LandingScreen(props) {
 }
 
 const mapStateToProps = state => {
-  const {auth} = state;
-  return {auth};
+  const {auth, user} = state;
+  return {auth, user};
 };
 
 const mapDispatchToProps = dispatch =>

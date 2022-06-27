@@ -6,19 +6,36 @@ import {Text} from 'react-native-elements';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import SignInUpButton from '../atoms/SignInUpButton';
 import {BUTTON_TEXT_2, FORM_INPUT_TEXT, PRIMARY} from '../../styles/colors';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {userLogin} from '../../redux/action/UserActions';
+import {BACKEND_URL} from '../../utils/links';
 
-const FormErrorAndSubmit = ({signInUp, authenticate, navigate}) => {
+const FormErrorAndSubmit = props => {
   const [hasError, setError] = useState(false);
   const [errorHeader, setErrorHeader] = useState('');
   const [errorBody, setErrorBody] = useState('');
 
   const onSubmit = async () => {
-    const [error, tempErrorHeader, tempErrorBody] = await authenticate();
+    const [error, tempErrorHeader, tempErrorBody, userId] =
+      await props.authenticate();
     setError(error);
     setErrorHeader(tempErrorHeader);
     setErrorBody(tempErrorBody);
     if (!error) {
-      navigate();
+      getUserDetails(userId);
+      props.navigate();
+    }
+  };
+
+  const getUserDetails = async id => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/users?userId=${id}}`);
+      props.userLogin(response.data[0]);
+      console.log(props.user);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -46,7 +63,7 @@ const FormErrorAndSubmit = ({signInUp, authenticate, navigate}) => {
       <View style={{paddingTop: GAP_FORM_FIELD}}>
         <SignInUpButton
           onPress={onSubmit}
-          title={signInUp}
+          title={props.signInUp}
           backgroundColor={PRIMARY}
           color={BUTTON_TEXT_2}
         />
@@ -87,4 +104,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormErrorAndSubmit;
+const mapStateToProps = state => {
+  const {user} = state;
+  return {user};
+};
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      userLogin,
+    },
+    dispatch,
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormErrorAndSubmit);

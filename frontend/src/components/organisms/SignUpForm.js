@@ -25,7 +25,6 @@ const SignUpForm = ({navigate}) => {
         lastName: lastName,
         email: email,
       });
-      console.log(response.data);
       const {
         emailUnique,
         emailValid,
@@ -37,8 +36,7 @@ const SignUpForm = ({navigate}) => {
         phoneValid,
       } = response.data;
       if (typeof response.data.id !== 'undefined') {
-        console.log(response.data.id);
-        return [false, '', ''];
+        return [false, '', '', response.data.id];
       } else if (!firstNameValid) {
         return [
           true,

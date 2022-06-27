@@ -7,7 +7,15 @@ const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
   return (
     <View style={styles.card}>
       <Image
+<<<<<<< HEAD
         source={require('../../images/flavours.jpg')}
+=======
+        source={
+          location === 'Fine Foods'
+            ? require('../../images/finefoods.jpg')
+            : require('../../images/flavours.jpg')
+        }
+>>>>>>> refs/remotes/origin/main
         style={styles.image}
       />
       <View style={styles.alignmentContainer}>
