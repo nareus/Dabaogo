@@ -71,9 +71,21 @@ async function createOrder(req, res) {
     await query(updateTransQuery)
 
     //update transporters in outlets
-    const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
-    const updateOutletQuery = mysql.format(updateOutlet, [outletId])
-    await query(updateOutletQuery)
+    if(transporter.maxOrders == transporter.ordersTaken) {
+        const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
+        const updateOutletQuery = mysql.format(updateOutlet, [outletId])
+        await query(updateOutletQuery)
+    }
+
+     //update the users' current order
+     const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
+     const update = "UPDATE Users SET currOrderId=? WHERE userId =?"
+     const ids = await query(idQuery)
+     const id = ids[0].orderId
+     const updateBuyer = mysql.format(update, [id, buyerId])
+     const updateTransporter = mysql.format(update, [id, transporterId])
+     await query(updateBuyer)
+     await query(updateTransporter)
 
 
     //Insert order into database
@@ -81,15 +93,7 @@ async function createOrder(req, res) {
     const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered]);
     await query(insertQuery)
 
-    //update the users' current order
-    const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
-    const update = "UPDATE Users SET currOrderId=? WHERE userId =?"
-    const ids = await query(idQuery)
-    const id = ids[0].orderId
-    const updateBuyer = mysql.format(update, [id, buyerId])
-    const updateTransporter = mysql.format(update, [id, transporterId])
-    await query(updateBuyer)
-    await query(updateTransporter)
+   
 
     //send Id of the order
     res.json({id: id}); 
