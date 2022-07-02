@@ -22,6 +22,10 @@ const RestaurantScroll = ({onPress}) => {
 
   useEffect(() => {
     getData();
+    return () => {
+      setData([]);
+      setLoading(true);
+    };
   }, []);
 
   const mapData = () =>

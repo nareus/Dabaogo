@@ -19,7 +19,8 @@ function LandingScreen(props) {
         id: props.user.id,
       });
     }
-  }, []);
+    return () => {};
+  }, [props.navigation, props.user.id, props.user.isLoggedIn]);
 
   return (
     <View style={styles.fullScreenContainer}>

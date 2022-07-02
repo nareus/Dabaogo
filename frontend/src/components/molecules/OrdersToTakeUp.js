@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     padding: PADDING_LEFT,
   },
   text: {
-    fontSize: 17,
     fontWeight: 'bold',
     flex: 2,
     // paddingLeft: 10,

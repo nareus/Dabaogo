@@ -30,13 +30,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    height: 50,
     borderRadius: 5,
   },
   time: {
     padding: PADDING_LEFT,
     backgroundColor: '#f19896',
-    height: 50,
     borderBottomRightRadius: 5,
     borderBottomLeftRadius: 5,
   },
@@ -54,7 +52,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   text: {
-    fontSize: 17,
     fontWeight: 'bold',
   },
 });

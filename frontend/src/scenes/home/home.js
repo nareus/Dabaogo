@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {Fragment, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
@@ -13,7 +14,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 const HomeScreen = props => {
   const [toggleState, setToggleState] = useState(true);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    return () => {
+      toggleState(true);
+    };
+  }, []);
 
   return (
     <Fragment>

@@ -104,7 +104,7 @@ const PaymentScreen = props => {
       <SafeAreaView style={styles.bottomSafeAreaView} />
       <TopBarOrder
         onPress={() => props.navigation.goBack()}
-        text={'Taiwanese'}
+        text={'Payment'}
         iconName={'chevron-left'}
         iconType={'feather'}
       />

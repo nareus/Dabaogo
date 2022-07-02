@@ -12,7 +12,7 @@ const DepartureTime = () => {
     <View style={styles.main}>
       <View style={styles.top}>
         <Text style={styles.departureText}>Departure Time</Text>
-        <ChangeButton title={'Change'} onPress={() => {}} />
+        <ChangeButton text={'Change'} onPress={() => {}} />
       </View>
       <View style={styles.time}>
         <Text style={styles.currentTime}>10:30 am</Text>
@@ -30,14 +30,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    height: 50,
     padding: PADDING_LEFT,
     marginTop: 20,
     borderRadius: 5,
   },
   departureText: {
     fontWeight: 'bold',
-    fontSize: 17,
   },
   currentTime: {
     fontWeight: 'bold',
