@@ -47,6 +47,8 @@ const OrderScreen = props => {
       setPopularMenu([]);
       setMainMenu([]);
       setLoading(true);
+      setPrice([]);
+      setOrder([]);
     };
   }, []);
 
