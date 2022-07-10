@@ -5,7 +5,7 @@ import {BACKEND_URL} from '../../utils/links';
 import Padding from '../atoms/Padding';
 import RestaurantCard from '../atoms/RestaurantCard';
 
-const RestaurantScroll = ({onPress}) => {
+const RestaurantScroll = ({onPress, isFilter}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -29,21 +29,35 @@ const RestaurantScroll = ({onPress}) => {
   }, []);
 
   const mapData = () =>
-    data
-      .filter(card => card.transporters > 0)
-      .map(card => (
-        <View key={card.outletId}>
-          <Padding />
-          <RestaurantCard
-            image={card.imagePath}
-            outletId={card.outletId}
-            name={card.name}
-            typeOfStore={card.typeOfStore}
-            transporters={card.transporters}
-            onPress={onPress}
-          />
-        </View>
-      ));
+    isFilter
+      ? data
+          .filter(card => card.transporters > 0)
+          .map(card => (
+            <View key={card.outletId}>
+              <Padding />
+              <RestaurantCard
+                image={card.imagePath}
+                outletId={card.outletId}
+                name={card.name}
+                typeOfStore={card.typeOfStore}
+                transporters={card.transporters}
+                onPress={onPress}
+              />
+            </View>
+          ))
+      : data.map(card => (
+          <View key={card.outletId}>
+            <Padding />
+            <RestaurantCard
+              image={card.imagePath}
+              outletId={card.outletId}
+              name={card.name}
+              typeOfStore={card.typeOfStore}
+              transporters={card.transporters}
+              onPress={onPress}
+            />
+          </View>
+        ));
 
   return (
     <View style={styles.container}>
