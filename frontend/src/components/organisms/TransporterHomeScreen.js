@@ -1,10 +1,7 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
-import RestaurantScroll from '../molecules/RestaurantScroll';
-import TopBarHome from '../molecules/TopBarHome';
+import {StyleSheet, View} from 'react-native';
 import OrdersToTakeUp from '../molecules/OrdersToTakeUp';
 import DepartureTime from '../atoms/DepartureTime';
-import RestaurantToVisit from '../atoms/LocationToVisit';
 import BottomBarTransporterHome from '../molecules/BottomBarTransporterHome';
 import LocationToVisit from '../atoms/LocationToVisit';
 import {BACKGROUND_COLOR} from '../../styles/colors';
@@ -18,6 +15,7 @@ const TransporterHomeScreen = props => {
   const deliveryFee = 1.0;
   const [count, setCount] = useState(1);
   const [totalPrice, setPrice] = useState(deliveryFee * count);
+  const [restaurant, setRestaurant] = useState({});
 
   console.log(props.user);
 
@@ -64,7 +62,8 @@ const TransporterHomeScreen = props => {
       <View style={styles.container}>
         <LocationToVisit
           text={'Restaurant to visit'}
-          location={'Taiwanese @ Food Court'}
+          location={restaurant.id + ' @ ' + restaurant.location}
+          onPress={props.restaurantChangePress}
         />
         <OrdersToTakeUp
           count={count}

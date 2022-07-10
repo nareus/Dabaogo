@@ -6,7 +6,7 @@ import RestaurantScroll from '../molecules/RestaurantScroll';
 const BuyerHomeScreen = props => {
   return (
     <View style={styles.container}>
-      <RestaurantScroll onPress={props.navigate} />
+      <RestaurantScroll onPress={props.navigate} isFilter={true} />
     </View>
   );
 };

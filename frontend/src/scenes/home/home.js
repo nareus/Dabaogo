@@ -16,7 +16,7 @@ const HomeScreen = props => {
 
   useEffect(() => {
     return () => {
-      toggleState(true);
+      setToggleState(true);
     };
   }, []);
 
@@ -40,6 +40,9 @@ const HomeScreen = props => {
             />
           ) : (
             <TransporterHomeScreen
+              restaurantChangePress={() =>
+                props.navigation.navigate('Change Restaurant')
+              }
               navigate={data =>
                 props.navigation.navigate('Transporter Status', {
                   data: data,

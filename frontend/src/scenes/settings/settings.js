@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import TopBarOrder from '../../components/molecules/TopBarOrder';
+import TopBar from '../../components/molecules/TopBar';
 import {PRIMARY} from '../../styles/colors';
 
 const SettingsScreen = props => (
@@ -17,7 +17,7 @@ const SettingsScreen = props => (
       </TouchableOpacity>
     </View>
 
-    <TopBarOrder
+    <TopBar
       onPress={() => props.navigation.goBack()}
       text={'Profile'}
       iconName={'chevron-left'}

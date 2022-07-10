@@ -1,15 +1,13 @@
 import React, {Fragment} from 'react';
-import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-elements';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import Notes from '../../components/atoms/Notes';
 import Padding from '../../components/atoms/Padding';
 import PaymentMethod from '../../components/atoms/PaymentMethod';
 import OrderBottom from '../../components/molecules/OrderBottom';
 import OrderSummary from '../../components/molecules/OrderSummary';
-import {BACKGROUND_COLOR, PRIMARY} from '../../styles/colors';
-import {PADDING_LEFT} from '../../styles/spacing';
+import {BACKGROUND_COLOR} from '../../styles/colors';
 import LocationToVisit from '../../components/atoms/LocationToVisit';
-import TopBarOrder from '../../components/molecules/TopBarOrder';
+import TopBar from '../../components/molecules/TopBar';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {userLogin} from '../../redux/action/UserActions';
@@ -102,7 +100,7 @@ const PaymentScreen = props => {
         <OrderBottom price={totalPrice} onPress={makeOrder} />
       </SafeAreaView>
       <SafeAreaView style={styles.bottomSafeAreaView} />
-      <TopBarOrder
+      <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Payment'}
         iconName={'chevron-left'}

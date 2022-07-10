@@ -8,7 +8,7 @@ import Padding from '../../components/atoms/Padding';
 import SignInUpButton from '../../components/atoms/SignInUpButton';
 import OrderBottom from '../../components/molecules/OrderBottom';
 import OrderProgress from '../../components/molecules/OrderProgress';
-import TopBarOrder from '../../components/molecules/TopBarOrder';
+import TopBar from '../../components/molecules/TopBar';
 import {convertToQuantity} from '../../constants';
 import {BACKEND_URL} from '../../utils/links';
 
@@ -97,6 +97,7 @@ const OrderStatusScreen = props => {
       getData();
       setLoading(true);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -122,7 +123,7 @@ const OrderStatusScreen = props => {
               />
             </View>
           </View>
-          <TopBarOrder
+          <TopBar
             onPress={() => props.navigation.navigate('Home')}
             text={'Order Status'}
             iconName="cross"

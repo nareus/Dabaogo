@@ -1,20 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import GeneralButton from '../../components/atoms/GeneralButton';
-import MenuCategoryText from '../../components/atoms/MenuCategoryText';
+import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import RestaurantCardOrder from '../../components/atoms/RestaurantCardOrder';
 import OrderCheckout from '../../components/molecules/OrderCheckout';
 import PopularDishesScroll from '../../components/molecules/PopularDishesScroll';
-import TopBarAuth from '../../components/molecules/TopBarAuth';
-import TopBarOrder from '../../components/molecules/TopBarOrder';
+import TopBar from '../../components/molecules/TopBar';
 import RestOfMenuItems from '../../components/organisms/RestOfMenuItems';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import {BACKEND_URL} from '../../utils/links';
@@ -122,7 +113,7 @@ const OrderScreen = props => {
       ) : (
         <></>
       )}
-      <TopBarOrder
+      <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Taiwanese'}
         iconName={'chevron-left'}

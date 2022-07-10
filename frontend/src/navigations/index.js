@@ -14,6 +14,7 @@ import OrderScreen from '../scenes/order/order';
 import PaymentScreen from '../scenes/payment/payment';
 import OrderStatusScreen from '../scenes/orderStatus/orderStatus';
 import TransporterOrder from '../scenes/transporterOrder/transporterOrder';
+import ChangeRestaurantScreen from '../scenes/change/changeRestaurant';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,11 @@ const Navigator = () => {
           <Stack.Screen
             name="Transporter Status"
             component={TransporterOrder}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Change Restaurant"
+            component={ChangeRestaurantScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
