@@ -4,13 +4,13 @@ import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 import ChangeButton from './TextButton';
 
-const LocationToVisit = ({text, location}) => {
+const LocationToVisit = ({text, location, navigate}) => {
   return (
     <View style={styles.container}>
       <Image source={require('../../images/map.png')} style={styles.image} />
       <View style={styles.top}>
         <Text style={styles.text}>{text}</Text>
-        <ChangeButton text={'Change'} onPress={() => {}} />
+        <ChangeButton text={'Change'} onPress={navigate} />
       </View>
       <View style={styles.time}>
         <Text style={styles.locationToVisit}>{location}</Text>
