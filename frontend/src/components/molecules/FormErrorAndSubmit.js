@@ -7,15 +7,15 @@ import {BORDER_RADIUS} from '../../styles/mixins';
 import SignInUpButton from '../atoms/SignInUpButton';
 import {BUTTON_TEXT_2, FORM_INPUT_TEXT, PRIMARY} from '../../styles/colors';
 import axios from 'axios';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {userLogin} from '../../redux/action/UserActions';
+import {useDispatch} from 'react-redux';
 import {BACKEND_URL} from '../../utils/links';
+import {userLogin} from '../../redux/userSlice';
 
 const FormErrorAndSubmit = props => {
   const [hasError, setError] = useState(false);
   const [errorHeader, setErrorHeader] = useState('');
   const [errorBody, setErrorBody] = useState('');
+  const dispatch = useDispatch();
 
   const onSubmit = async () => {
     const [error, tempErrorHeader, tempErrorBody, userId] =
@@ -32,8 +32,7 @@ const FormErrorAndSubmit = props => {
   const getUserDetails = async id => {
     try {
       const response = await axios.get(`${BACKEND_URL}/users?userId=${id}}`);
-      props.userLogin(response.data[0]);
-      console.log(props.user);
+      dispatch(userLogin(response.data[0]));
     } catch (error) {
       console.log(error);
     }
@@ -104,17 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
-  const {user} = state;
-  return {user};
-};
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      userLogin,
-    },
-    dispatch,
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(FormErrorAndSubmit);
+export default FormErrorAndSubmit;

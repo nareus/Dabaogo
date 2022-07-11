@@ -1,18 +1,24 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, {Fragment, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
-import {connect} from 'react-redux';
-import {BACKGROUND_COLOR} from '../../styles/colors';
-import {bindActionCreators} from 'redux';
+import {useSelector} from 'react-redux';
 import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
 import TransporterHomeScreen from '../../components/organisms/TransporterHomeScreen';
-import {userLogin} from '../../redux/action/UserActions';
 import BottomUserState from '../../components/atoms/BottomUserState';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {RootState} from '../../redux';
 
-const HomeScreen = props => {
+interface IOrderData {
+  id: number;
+  name: string;
+  location: string;
+  typeOfStore: string;
+  transporters: number;
+}
+
+const HomeScreen = (props: any) => {
   const [toggleState, setToggleState] = useState(true);
+  const {user} = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     return () => {
@@ -32,7 +38,7 @@ const HomeScreen = props => {
           />
           {toggleState ? (
             <BuyerHomeScreen
-              navigate={data =>
+              navigate={(data: IOrderData) =>
                 props.navigation.navigate('Order', {
                   data: data,
                 })
@@ -40,27 +46,20 @@ const HomeScreen = props => {
             />
           ) : (
             <TransporterHomeScreen
-              restaurantChangePress={() =>
-                props.navigation.navigate('Change Restaurant')
-              }
-              navigate={data =>
-                props.navigation.navigate('Transporter Status', {
-                  data: data,
-                })
-              }
+              navigate={() => props.navigation.navigate('TransporterOrder')}
             />
           )}
         </ScrollView>
       </SafeAreaView>
-      {props.user.currOrderId !== null ? (
+      {user.currOrderId !== null ? (
         <BottomUserState
           onPress={() => {
-            props.user.isTransporter
-              ? props.navigation.navigate('Transporter Status', {
-                  id: props.user.currOrderId,
+            user.isTransporter
+              ? props.navigation.navigate('TransporterOrder', {
+                  id: user.currOrderId,
                 })
-              : props.navigation.navigate('Order Status', {
-                  id: props.user.currOrderId,
+              : props.navigation.navigate('OrderStatus', {
+                  id: user.currOrderId,
                 });
           }}
         />
@@ -78,17 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
-  const {user} = state;
-  return {user};
-};
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      userLogin,
-    },
-    dispatch,
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default HomeScreen;

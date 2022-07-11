@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {IRestaurant} from '../../redux/slice/transporterSlice';
 import {BACKEND_URL} from '../../utils/links';
 import Padding from '../atoms/Padding';
 import RestaurantCard from '../atoms/RestaurantCard';
 
-const RestaurantScroll = ({onPress, isFilter}) => {
+const RestaurantScroll = (props: any) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -29,32 +30,38 @@ const RestaurantScroll = ({onPress, isFilter}) => {
   }, []);
 
   const mapData = () =>
-    isFilter
+    props.isFilter
       ? data
-          .filter(card => card.transporters > 0)
-          .map(card => (
+          .filter((card: IRestaurant) => card.transporters > 0)
+          .map((card: IRestaurant) => (
             <View key={card.outletId}>
               <Padding />
               <RestaurantCard
-                image={card.imagePath}
                 outletId={card.outletId}
+                image={card.imagePath}
+                available={card.available}
                 name={card.name}
                 typeOfStore={card.typeOfStore}
                 transporters={card.transporters}
-                onPress={onPress}
+                latitude={card.latitude}
+                longitude={card.longitude}
+                onPress={props.onPress}
               />
             </View>
           ))
-      : data.map(card => (
+      : data.map((card: IRestaurant) => (
           <View key={card.outletId}>
             <Padding />
             <RestaurantCard
-              image={card.imagePath}
               outletId={card.outletId}
+              image={card.imagePath}
+              available={card.available}
               name={card.name}
               typeOfStore={card.typeOfStore}
               transporters={card.transporters}
-              onPress={onPress}
+              latitude={card.latitude}
+              longitude={card.longitude}
+              onPress={props.onPress}
             />
           </View>
         ));
@@ -64,12 +71,10 @@ const RestaurantScroll = ({onPress, isFilter}) => {
       {isLoading ? (
         <ActivityIndicator />
       ) : mapData().length === 0 ? (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontWeight: 'bold'}}>No Restaurants Available</Text>
+        <View style={styles.noRestaurantAvailContainer}>
+          <Text style={styles.noRestaurantAvaiLTest}>
+            No Restaurants Available
+          </Text>
         </View>
       ) : (
         <View>{mapData()}</View>
@@ -79,6 +84,13 @@ const RestaurantScroll = ({onPress, isFilter}) => {
 };
 
 const styles = StyleSheet.create({
+  noRestaurantAvailContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noRestaurantAvaiLTest: {
+    fontWeight: 'bold',
+  },
   container: {
     alignSelf: 'center',
     width: '90%',

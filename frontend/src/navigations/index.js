@@ -7,18 +7,17 @@ import ForgotPasswordScreen from '../scenes/forgotPassword/forgotPassword';
 import LandingScreen from '../scenes/landingScreen/landing';
 import AuthScreen from '../scenes/auth/auth';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
 // import AuthReducer from '../redux/reducer/AuthReducer';
-import RootReducer from '../redux/reducer/RootReducer';
 import OrderScreen from '../scenes/order/order';
 import PaymentScreen from '../scenes/payment/payment';
 import OrderStatusScreen from '../scenes/orderStatus/orderStatus';
 import TransporterOrder from '../scenes/transporterOrder/transporterOrder';
 import ChangeRestaurantScreen from '../scenes/change/changeRestaurant';
+import {store} from '../redux';
 
 const Stack = createNativeStackNavigator();
 
-const store = createStore(RootReducer);
+// const store = createStore(RootReducer);
 
 const Navigator = () => {
   return (
@@ -65,17 +64,17 @@ const Navigator = () => {
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="Order Status"
+            name="OrderStatus"
             component={OrderStatusScreen}
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="Transporter Status"
+            name="TransporterOrder"
             component={TransporterOrder}
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="Change Restaurant"
+            name="ChangeRestaurant"
             component={ChangeRestaurantScreen}
             options={{headerShown: false}}
           />

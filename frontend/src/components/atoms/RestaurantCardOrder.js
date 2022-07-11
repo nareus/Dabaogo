@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     padding: PADDING_LEFT,
+    paddingTop: PADDING_LEFT,
+    paddingBottom: PADDING_LEFT,
   },
   locationAndCategory: {
     color: 'black',

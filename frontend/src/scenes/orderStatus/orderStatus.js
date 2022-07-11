@@ -125,7 +125,7 @@ const OrderStatusScreen = props => {
           </View>
           <TopBar
             onPress={() => props.navigation.navigate('Home')}
-            text={'Order Status'}
+            text={'OrderStatus'}
             iconName="cross"
             iconType="entypo"
           />

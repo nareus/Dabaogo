@@ -81,7 +81,7 @@ const TransporterOrder = props => {
     <Fragment>
       <SafeAreaView style={styles.topSafeAreaView}>
         <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
-          <Text style={styles.header}>Transporter Status</Text>
+          <Text style={styles.header}>Transporter Order</Text>
           <Padding />
           <TransporterOrderProgress
             isDone={stage}

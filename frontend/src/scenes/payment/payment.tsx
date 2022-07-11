@@ -8,27 +8,31 @@ import OrderSummary from '../../components/molecules/OrderSummary';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import LocationToVisit from '../../components/atoms/LocationToVisit';
 import TopBar from '../../components/molecules/TopBar';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {userLogin} from '../../redux/action/UserActions';
+import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {BACKEND_URL} from '../../utils/links';
 import {convertToQuantity} from '../../constants';
+import {RootState} from '../../redux';
 
 // interface IData {
-//   items: IItem[],
+//   items: IFoodItem[],
 //   subtotal: number,
 //   deliveryFee: number,
 //   serviceFee: number,
 // }
 
-// interface IItem {
-//     quantity: number,
-//     name: string,
-//     price: number,
-// }
+interface IFoodItem {
+  foodId: number;
+  name: string;
+  description: string;
+  price: number;
+  type: string;
+  menuId: number;
+  popular: number;
+}
 
-const PaymentScreen = props => {
+const PaymentScreen = (props: any) => {
+  const {user} = useSelector((state: RootState) => state.user);
   const {subtotal, items, storeId} = props.route.params;
   const deliveryFee = 1.0;
   const serviceFee = 0.3;
@@ -36,9 +40,9 @@ const PaymentScreen = props => {
 
   const makeOrder = async () => {
     // console.log(items);
-    const foodItems = items.map(item => item.foodId);
+    const foodItems = items.map((item: IFoodItem) => item.foodId);
     const order = {
-      buyerId: props.user.userId,
+      buyerId: user.userId,
       foodItems: foodItems,
       price: totalPrice,
       outletId: storeId,
@@ -46,23 +50,12 @@ const PaymentScreen = props => {
     try {
       const response = await axios.post(`${BACKEND_URL}/orders`, order);
       if (response.status === 200) {
-        await getUserDetails(props.user.userId);
-        props.navigation.navigate('Order Status', {
+        props.navigation.navigate('OrderStatus', {
           id: response.data.id,
         });
       }
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const getUserDetails = async id => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/users?userId=${id}}`);
-      await props.userLogin(response.data[0]);
-      // console.log(props.user);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -92,7 +85,8 @@ const PaymentScreen = props => {
           <Padding />
           <LocationToVisit
             text={'Deliver to'}
-            location={'Tembusu College\n #22-01'}
+            location={'Tembusu College @ #22-01'}
+            onChangeButtonPress={() => {}}
           />
           <Padding />
           <Notes name={'Rider Notes'} onPress={() => {}} />
@@ -133,17 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
-  const {user} = state;
-  return {user};
-};
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      userLogin,
-    },
-    dispatch,
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(PaymentScreen);
+export default PaymentScreen;

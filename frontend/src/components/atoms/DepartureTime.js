@@ -7,7 +7,7 @@ import {BORDER_RADIUS} from '../../styles/mixins';
 import Padding from './Padding';
 import {PADDING_LEFT} from '../../styles/spacing';
 
-const DepartureTime = () => {
+const DepartureTime = ({time}) => {
   return (
     <View style={styles.main}>
       <View style={styles.top}>
@@ -15,7 +15,7 @@ const DepartureTime = () => {
         <ChangeButton text={'Change'} onPress={() => {}} />
       </View>
       <View style={styles.time}>
-        <Text style={styles.currentTime}>10:30 am</Text>
+        <Text style={styles.currentTime}>{time}</Text>
       </View>
     </View>
   );

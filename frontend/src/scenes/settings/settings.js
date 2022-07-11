@@ -6,25 +6,35 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import TopBar from '../../components/molecules/TopBar';
+import {userLogout} from '../../redux/userSlice';
 import {PRIMARY} from '../../styles/colors';
 
-const SettingsScreen = props => (
-  <SafeAreaView style={{flex: 1}}>
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => props.navigation.navigate('Landing')}>
-        <Text style={styles.logout}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+const SettingsScreen = props => {
+  const dispatch = useDispatch();
 
-    <TopBar
-      onPress={() => props.navigation.goBack()}
-      text={'Profile'}
-      iconName={'chevron-left'}
-      iconType={'feather'}
-    />
-  </SafeAreaView>
-);
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('Landing');
+            dispatch(userLogout());
+          }}>
+          <Text style={styles.logout}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TopBar
+        onPress={() => props.navigation.goBack()}
+        text={'Profile'}
+        iconName={'chevron-left'}
+        iconType={'feather'}
+      />
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -3,28 +3,29 @@ import {StyleSheet, View} from 'react-native';
 import OrdersToTakeUp from '../molecules/OrdersToTakeUp';
 import DepartureTime from '../atoms/DepartureTime';
 import BottomBarTransporterHome from '../molecules/BottomBarTransporterHome';
-import LocationToVisit from '../atoms/LocationToVisit';
+import RestaurantToVisit from '../atoms/RestaurantToVisit';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import axios from 'axios';
 import {BACKEND_URL} from '../../utils/links';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {userLogin} from '../../redux/action/UserActions';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {RootState} from '../../redux';
 
-const TransporterHomeScreen = props => {
+const TransporterHomeScreen = (props: any) => {
   const deliveryFee = 1.0;
   const [count, setCount] = useState(1);
   const [totalPrice, setPrice] = useState(deliveryFee * count);
-  const [restaurant, setRestaurant] = useState({});
+  const navigation = useNavigation();
+  const {departureTime} = useSelector((state: RootState) => state.transporter);
 
-  console.log(props.user);
+  const {user} = useSelector((state: RootState) => state.user);
 
-  const increment = () => {
+  const orderToTakeupInc = () => {
     setCount(count + 1);
     setPrice(deliveryFee * (count + 1));
   };
 
-  const decrement = () => {
+  const orderToTakeupDec = () => {
     if (count > 1) {
       setCount(count - 1);
       setPrice(deliveryFee * (count - 1));
@@ -33,11 +34,12 @@ const TransporterHomeScreen = props => {
 
   const onPress = async () => {
     const outletId = 0; // id of taiwanese outlet
-    const transporterId = props.user.userId;
-    const depTime = '12:00:00';
+    const transporterId = user.userId;
+    const depTime = departureTime;
     const maxOrders = count;
-    const hostel = 'tembusu';
+    const hostel = user.location;
 
+    // TO CHANGE
     const data = {
       transporterId,
       depTime,
@@ -50,7 +52,7 @@ const TransporterHomeScreen = props => {
       const response = await axios.post(`${BACKEND_URL}/transporters`, data);
       console.log(response);
       if (response.status === 200) {
-        props.navigate(data);
+        props.navigate();
       }
     } catch (error) {
       console.error(error);
@@ -60,19 +62,18 @@ const TransporterHomeScreen = props => {
   return (
     <View style={styles.bigContainer}>
       <View style={styles.container}>
-        <LocationToVisit
-          text={'Restaurant to visit'}
-          location={restaurant.id + ' @ ' + restaurant.location}
-          onPress={props.restaurantChangePress}
+        <RestaurantToVisit
+          text={'Restaurant(s) to visit'}
+          onChangeButtonPress={() => navigation.navigate('ChangeRestaurant')}
         />
         <OrdersToTakeUp
           count={count}
-          decrement={decrement}
-          increment={increment}
+          decrement={orderToTakeupDec}
+          increment={orderToTakeupInc}
         />
-        <DepartureTime />
+        <DepartureTime time={departureTime} />
       </View>
-      <View style={{position: 'relative', paddingTop: 60}}>
+      <View style={styles.bottomBar}>
         <BottomBarTransporterHome price={totalPrice} onPress={onPress} />
       </View>
     </View>
@@ -88,22 +89,9 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
   },
+  bottomBar: {
+    position: 'relative',
+  },
 });
 
-const mapStateToProps = state => {
-  const {user} = state;
-  return {user};
-};
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      userLogin,
-    },
-    dispatch,
-  );
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TransporterHomeScreen);
+export default TransporterHomeScreen;
