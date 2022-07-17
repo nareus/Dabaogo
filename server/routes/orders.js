@@ -8,5 +8,8 @@ router.use(express.json());
 router.get("/", orders.getOrder);
 router.post("/", orders.createOrder);
 router.put("/", orders.updateOrder);
+router.put("/cancel", orders.cancelOrder);
+router.put("/confirm", orders.confirmOrder);
+
 
 module.exports = router;

@@ -46,15 +46,18 @@ const styles = StyleSheet.create({
   estimatedArrival: {
     fontSize: 25,
     fontWeight: 'bold',
+    color: 'black',
   },
   text: {
     opacity: 0.5,
     fontSize: 15,
     fontWeight: 'bold',
+    color: 'black',
   },
   orderStatus: {
     // fontWeight: 'bold',
     fontSize: 15,
+    color: 'black',
   },
 });
 

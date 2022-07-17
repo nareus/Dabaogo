@@ -1,7 +1,9 @@
+const { Socket } = require("dgram");
 const express = require("express")
 const app = express()
 const mysql = require("mysql")
 const util = require("util");
+const outlet = require("../listeners/outlets")
 
 
 //Use json format for data
@@ -26,9 +28,15 @@ const connection = mysql.createConnection({
 const query = util.promisify(connection.query).bind(connection);
 
 async function getOutlets(req, res) {
-    const searchQuery = "SELECT * FROM Outlets WHERE available = 1";
-    const result = await query(searchQuery);
-    res.json(result)  
+    const userId = req.params.userId
+    const search = "SELECT * FROM Users WHERE userId=?";
+    const searchQuery = mysql.format(search, [userId]);
+    const user = await query(searchQuery)
+    const location = user[0].location
+    io = req.io;
+    const outlets = outlet.loadOutlets(location)
+    io.of('/outletUpdate').emit("outlets")
+    res.send(outlets)
 }
 
 async function makeAvailable(req, res) {
@@ -58,8 +66,7 @@ async function makeUnavailable(req, res) {
         const updateQuery = mysql.format(update, [outletId])
         await query(updateQuery);
         res.send('Updated'); 
-    }
-        
+    }      
 }
 
 

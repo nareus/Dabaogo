@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
   },
   departureText: {
     fontWeight: 'bold',
+<<<<<<< HEAD
+    fontSize: 17,
+    color: 'black',
+=======
+>>>>>>> refs/remotes/origin/main
   },
   currentTime: {
     fontWeight: 'bold',

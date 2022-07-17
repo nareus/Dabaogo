@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: 'bold',
     flex: 2,
+    color: 'black',
     // paddingLeft: 10,
     // paddingTop: 10,
     // paddingBottom: 10,

@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   restaurantName: {
     fontWeight: 'bold',
     fontSize: 28,
+    color: 'black',
   },
   alignmentContainer: {
     width: '100%',
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     fontWeight: 'bold',
+    color: 'black',
   },
   card: {
     height: 328,

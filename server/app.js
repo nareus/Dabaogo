@@ -4,7 +4,12 @@ const mysql = require("mysql")
 const port = process.env.PORT || 3000
 const dotenv = require('dotenv')
 dotenv.config();
-
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+const util = require("util");
+const MySQLEvents = require('@rodrigogs/mysql-events');
 
 //Importing Routes
 const register = require('./routes/register.js')
@@ -16,6 +21,13 @@ const orders = require('./routes/orders.js')
 const menu = require('./routes/menu.js')
 const users = require('./routes/users.js')
 const transporters = require('./routes/transporters.js')
+const outlet = require("./listeners/outlets.js")
+
+
+app.use(function(req, res, next) {
+    req.io = io;
+    next();
+});
 
 //Using Routes
 app.use('/register', register);
@@ -53,9 +65,47 @@ connection.connect(err => {
     }
 });
 
+
+io.of("/transporterStatus").on('connection', (socket) => {} )
+
+io.of("/outletUpdate").on('connection', (socket) => {
+})
+io.of("/maxOrders").on('connection', (socket) => {
+})
+
+// const program = async () => {
+//     const instance = new MySQLEvents({host: DB_HOST,
+//         user: DB_USER,
+//         password: DB_PASSWORD
+//     }, {
+//       startAtEnd: true,
+//     });
+  
+//     await instance.start();
+  
+//     instance.addTrigger({
+//       name: 'Transporters Availability',
+//       expression: '*',
+//       statement: MySQLEvents.STATEMENTS.ALL,
+//       onEvent: (event) => { // You will receive the events here
+//       },
+//     });
+    
+//     instance.on(MySQLEvents.EVENTS.CONNECTION_ERROR, console.error);
+//     instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
+//   };
+  
+//   program()
+//     .then(() => console.log('Waiting for database events...'))
+//     .catch(console.error);
+
+
+
+
+
 //listening on port set in environment 
-app.listen(port, 
+server.listen(port, 
 ()=> console.log(`Server Started on port 3000...`))
 
-   
+
 

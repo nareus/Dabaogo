@@ -17,7 +17,12 @@ const styles = StyleSheet.create({
     paddingRight: 18,
   },
   text: {
+    // fontWeight: 'bold',
+    // color: 'black',
+    color: 'black',
+    opacity: 0.4,
     fontWeight: 'bold',
+    fontSize: 12,
   },
 });
 
