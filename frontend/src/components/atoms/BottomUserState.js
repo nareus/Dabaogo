@@ -6,11 +6,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import {convertToMoney} from '../../constants';
-import {BUTTON_TEXT_2, PRIMARY} from '../../styles/colors';
+import {PRIMARY} from '../../styles/colors';
 import {PADDING_LEFT} from '../../styles/spacing';
 import Padding from '../atoms/Padding';
-import SignInUpButton from '../atoms/SignInUpButton';
 
 const BottomUserState = props => {
   return (

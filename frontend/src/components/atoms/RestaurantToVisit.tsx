@@ -1,19 +1,36 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux';
+import {IRestaurant} from '../../redux/transporterSlice';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 import ChangeButton from './TextButton';
 
-const LocationToVisit = ({text, location, onChangeButtonPress}) => {
+const RestaurantToVisit = (props: any) => {
+  const {restaurantsSelected} = useSelector(
+    (state: RootState) => state.transporter,
+  );
+
   return (
     <View style={styles.container}>
       <Image source={require('../../images/map.png')} style={styles.image} />
       <View style={styles.top}>
-        <Text style={styles.text}>{text}</Text>
-        <ChangeButton text={'Change'} onPress={onChangeButtonPress} />
+        <Text style={styles.text}>{props.text}</Text>
+        <ChangeButton text={'Change'} onPress={props.onChangeButtonPress} />
       </View>
-      <View style={styles.time}>
-        <Text style={styles.locationToVisit}>{location}</Text>
+      <View style={styles.bottomHalf}>
+        {restaurantsSelected.length === 0 ? (
+          <Text style={styles.restaurantToVisit}>
+            -- No restaurants selected so far --
+          </Text>
+        ) : (
+          restaurantsSelected.map((location: IRestaurant) => (
+            <Text style={styles.restaurantToVisit} key={location.outletId}>
+              {location.name.split('- ')[0]} @ {location.name.split('- ')[1]}
+            </Text>
+          ))
+        )}
       </View>
     </View>
   );
@@ -32,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
   },
-  time: {
+  bottomHalf: {
     padding: PADDING_LEFT,
     backgroundColor: '#f19896',
     borderBottomRightRadius: 5,
@@ -46,14 +63,10 @@ const styles = StyleSheet.create({
   },
   restaurantToVisit: {
     fontWeight: 'bold',
-  },
-  locationToVisit: {
-    fontWeight: 'bold',
     color: 'white',
   },
   text: {
     fontWeight: 'bold',
-    color: 'black',
   },
 });
-export default LocationToVisit;
+export default RestaurantToVisit;

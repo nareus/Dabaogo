@@ -7,15 +7,15 @@ import {BORDER_RADIUS} from '../../styles/mixins';
 import Padding from './Padding';
 import {PADDING_LEFT} from '../../styles/spacing';
 
-const DepartureTime = () => {
+const DepartureTime = ({time}) => {
   return (
     <View style={styles.main}>
       <View style={styles.top}>
         <Text style={styles.departureText}>Departure Time</Text>
-        <ChangeButton title={'Change'} onPress={() => {}} />
+        <ChangeButton text={'Change'} onPress={() => {}} />
       </View>
       <View style={styles.time}>
-        <Text style={styles.currentTime}>10:30 am</Text>
+        <Text style={styles.currentTime}>{time}</Text>
       </View>
     </View>
   );
@@ -30,15 +30,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    height: 50,
     padding: PADDING_LEFT,
     marginTop: 20,
     borderRadius: 5,
   },
   departureText: {
     fontWeight: 'bold',
+<<<<<<< HEAD
     fontSize: 17,
     color: 'black',
+=======
+>>>>>>> refs/remotes/origin/main
   },
   currentTime: {
     fontWeight: 'bold',

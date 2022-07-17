@@ -64,7 +64,7 @@ const TopBarHome = ({
 
 const styles = StyleSheet.create({
   topBar: {
-    paddingTop: 40,
+    // paddingTop: 40,
     backgroundColor: 'white',
     elevation: 2,
   },

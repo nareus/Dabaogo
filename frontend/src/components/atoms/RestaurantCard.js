@@ -21,12 +21,14 @@ const RestaurantCard = props => {
       style={styles.card}
       onPress={() =>
         props.onPress({
-          id: props.outletId,
-          name: name,
-          location: location,
-          typeOfStore: props.typeOfStore,
+          outletId: props.outletId,
+          name: props.name,
+          available: props.available,
           transporters: props.transporters,
-          url: props.image,
+          typeOfStore: props.typeOfStore,
+          latitude: props.latitude,
+          longitude: props.longitude,
+          imagePath: props.image,
         })
       }>
       <Image

@@ -8,18 +8,22 @@ import {
   BUTTON_TEXT_1,
   PRIMARY,
 } from '../../styles/colors';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {toggleAuthState} from '../../redux/action/AuthActions';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../redux';
+import {toggleAuthState} from '../../redux/authSlice';
 
-function LandingScreen(props) {
+const LandingScreen = (props: any) => {
+  const dispatch = useDispatch();
+  const {isLoggedIn, user} = useSelector((state: RootState) => state.user);
+
   useEffect(() => {
-    if (props.user.isLoggedIn) {
+    if (isLoggedIn) {
       props.navigation.navigate('Home', {
-        id: props.user.id,
+        id: user.userId,
       });
     }
-  }, []);
+    return () => {};
+  }, [isLoggedIn, props.navigation, user.userId]);
 
   return (
     <View style={styles.fullScreenContainer}>
@@ -31,7 +35,7 @@ function LandingScreen(props) {
         <SignInUpButton
           onPress={() => {
             props.navigation.navigate('Auth');
-            props.toggleAuthState(false);
+            dispatch(toggleAuthState(false));
           }}
           title={'Sign Up'}
           backgroundColor={PRIMARY}
@@ -41,7 +45,7 @@ function LandingScreen(props) {
         <SignInUpButton
           onPress={() => {
             props.navigation.navigate('Auth');
-            props.toggleAuthState(true);
+            dispatch(toggleAuthState(true));
           }}
           title={'Sign In'}
           backgroundColor={BUTTON_BACKGROUND_1}
@@ -50,20 +54,7 @@ function LandingScreen(props) {
       </View>
     </View>
   );
-}
-
-const mapStateToProps = state => {
-  const {auth, user} = state;
-  return {auth, user};
 };
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      toggleAuthState,
-    },
-    dispatch,
-  );
 
 const styles = StyleSheet.create({
   fullScreenContainer: {
@@ -86,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingScreen);
+export default LandingScreen;

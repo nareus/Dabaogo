@@ -8,7 +8,7 @@ import TransporterOrderCard from '../../components/atoms/TransporterOrderCard';
 import axios from 'axios';
 import {BACKEND_URL} from '../../utils/links';
 import TransporterOrderProgress from '../../components/molecules/TransporterOrderProgress';
-import TopBarOrder from '../../components/molecules/TopBarOrder';
+import TopBar from '../../components/molecules/TopBar';
 
 // interface IData {
 //   items: IItem[],
@@ -81,7 +81,7 @@ const TransporterOrder = props => {
     <Fragment>
       <SafeAreaView style={styles.topSafeAreaView}>
         <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
-          <Text style={styles.header}>Transporter Status</Text>
+          <Text style={styles.header}>Transporter Order</Text>
           <Padding />
           <TransporterOrderProgress
             isDone={stage}
@@ -115,7 +115,7 @@ const TransporterOrder = props => {
         />
       </SafeAreaView>
       <SafeAreaView style={styles.bottomSafeAreaView} />
-      <TopBarOrder
+      <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Transport Status'}
         iconName={'chevron-left'}

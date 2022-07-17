@@ -4,7 +4,7 @@ import {Text} from 'react-native-elements';
 
 import GeneralButton from '../atoms/GeneralButton';
 
-const TopBarOrder = ({onPress, text, iconName, iconType}) => (
+const TopBar = ({onPress, text, iconName, iconType}) => (
   <View style={styles.bigContainer}>
     <View style={styles.container}>
       <View style={styles.button}>
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopBarOrder;
+export default TopBar;

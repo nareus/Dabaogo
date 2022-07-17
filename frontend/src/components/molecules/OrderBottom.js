@@ -7,7 +7,6 @@ import Padding from '../atoms/Padding';
 import SignInUpButton from '../atoms/SignInUpButton';
 
 const OrderBottom = props => {
-  console.log(props.price);
   return (
     <View style={styles.container}>
       <View style={styles.orderRow}>
