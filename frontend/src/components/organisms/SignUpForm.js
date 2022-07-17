@@ -8,15 +8,20 @@ import {FORM_WIDTH} from '../../styles/mixins';
 import FormErrorAndSubmit from '../molecules/FormErrorAndSubmit';
 import axios from 'axios';
 import {BACKEND_URL} from '../../utils/links';
+import LocationFormElement from '../molecules/LocationFormElement';
+import {hostelData} from '../../constants';
 
 const SignUpForm = ({navigate}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [location, setLocation] = useState('');
   const [password, setPassword] = useState('');
 
   const authenticate = async () => {
+    console.log(location.title);
+
     if (firstName && lastName && email && phone && password !== '') {
       const response = await axios.post(`${BACKEND_URL}/register`, {
         phone: parseInt(phone, 10),
@@ -24,13 +29,13 @@ const SignUpForm = ({navigate}) => {
         firstName: firstName,
         lastName: lastName,
         email: email,
+        location: location.title,
       });
       const {
         emailUnique,
         emailValid,
         firstNameValid,
         lastNameValid,
-        passwordUnique,
         passwordValid,
         phoneUnique,
         phoneValid,
@@ -97,6 +102,7 @@ const SignUpForm = ({navigate}) => {
           inputText={lastName}
           onChangeText={setLastName}
         />
+        <LocationFormElement onSelect={setLocation} data={hostelData} />
         <FormElement text={'Email'} inputText={email} onChangeText={setEmail} />
         <PhoneFormElement inputText={phone} onChangeText={setPhone} />
         <PasswordFormElement inputText={password} onChangeText={setPassword} />
