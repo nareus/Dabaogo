@@ -49,6 +49,7 @@ const signUp = (req, res) => {
         const firstName = req.body.firstName;
         const lastName = req.body.lastName;
         const email = req.body.email;
+        const location = req.body.location;
         console.log(typeof phone)
          //validate information
         const details = {
@@ -68,8 +69,8 @@ const signUp = (req, res) => {
             const emailSearchQuery = mysql.format(sqlEmailSearch, [email]);
        
             //create query to insert account information into database
-            const sqlInsert = "INSERT INTO Users VALUES (0, ?, ?, ?, ?, ?, ?, ?)";
-            const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName, null, 0]);
+            const sqlInsert = "INSERT INTO Users VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)";
+            const insertQuery = mysql.format(sqlInsert, [password, phone, email, firstName, lastName, null, 0, location]);
             
             //async/await format to query data
             (async () => { 

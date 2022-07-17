@@ -2,7 +2,8 @@ const express = require("express")
 const app = express()
 const mysql = require("mysql")
 const util = require("util");
-
+const outlet = require("../listeners/outlets")
+const getMaxOrders = require('../listeners/maxOrders'); 
 
 //Use json format for data
 app.use(express.json());
@@ -41,75 +42,221 @@ async function getOrder(req, res) {
 async function createOrder(req, res) {
     const buyerId = req.body.buyerId
     const foods = JSON.stringify({ "foods": req.body.foodItems })
+    const numOfItems = req.body.foodItems.length
     const price = req.body.price
     const outletId = req.body.outletId
     const foundTransporter = false
     const reachedOutlet = false
     const orderPickedUp = false
     const delivered = false
+    const confirmed = false
     const dummy = true 
+    const io = req.io
 
     //Find transporter
-    const search = "SELECT * FROM Transporters WHERE outletId =?";
+    const search = "SELECT * FROM Transporters WHERE available = 1";
     const searchQuery = mysql.format(search, [outletId]);
-    const transResult = await query(searchQuery)
-    let  transporterId = 1000000
-    let transporter = {}
+    const transResult = await query(searchQuery);
+    let  transporterId = 1000000;
+    let transporter = {};
+    let depTime = '23:59:59'
+
     for(let i = 0; i < transResult.length; i++) {
-        if(transResult[i].ordersTaken < transResult[i].maxOrders) {
-            if (transporterId > transResult[i].transporterId) {
-                transporterId = transResult[i].transporterId
-                transporter = transResult[i]
+        //check if transporter is going to outlet
+        if (JSON.parse(transResult[i].outlets).includes(outletId)) {
+            // check if there are enough remaining orders
+            if(transResult[i].ordersTaken + numOfItems <=  transResult[i].maxOrders) {
+                //check if the departure time is the soonest
+                if (depTime > transResult[i].depTime) {
+                    transporterId = transResult[i].transporterId
+                    transporter = transResult[i]
+                    console.log(transporter)
+                }
             }
         }
     }
+    if (transporter == {}) {
+        res.send("No transporters available")
+    }
+    else {
+        //update orders taken in transporter table
+        console.log(transporter)
+        const updateTrans = "UPDATE Transporters SET ordersTaken=? WHERE transporterId=?"
+        const updateTransQuery = mysql.format(updateTrans, [transporter.ordersTaken + numOfItems, transporter.transporterId])
+        await query(updateTransQuery)
 
-    //update orders taken in transporter table
-    console.log(transporter)
-    const updateTrans = "UPDATE Transporters SET ordersTaken=? WHERE instanceId=?"
-    const updateTransQuery = mysql.format(updateTrans, [transporter.ordersTaken + 1, transporter.instanceId])
-    await query(updateTransQuery)
+        //emit max orders socket
+        const io = req.io
+        const max = await getMaxOrders.getMaxOrders(transporter.location)
+        io.of('/maxOrders').emit('update max orders', max)
+        
+        //update transporters in outlets table
+        console.log(transporter.maxOrders == transporter.ordersTaken + numOfItems, outletId)
+        if(transporter.maxOrders == transporter.ordersTaken + numOfItems) {
+            const updateOutlet = "UPDATE Transporters SET available = 0 WHERE transporterId = ?"
+            const updateOutletQuery = mysql.format(updateOutlet, [transporterId])
+            await query(updateOutletQuery)
 
-    //update transporters in outlets
-    if(transporter.maxOrders == transporter.ordersTaken) {
-        const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
-        const updateOutletQuery = mysql.format(updateOutlet, [outletId])
-        await query(updateOutletQuery)
+            //update outlets socket
+            const newOutlets = await outlet.loadOutlets(transporter.location)
+            io.of('/updateOutlets').to(transporter.location).emit(newOutlets)
+        }
+
+        //Insert order into database
+        const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered, confirmed]);
+        await query(insertQuery)
+
+        //update the users' current order
+        const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
+        const update = "UPDATE Users SET currOrderId=? WHERE userId =?"
+        const ids = await query(idQuery)
+        const id = ids[0].orderId
+        const updateBuyer = mysql.format(update, [id, buyerId])
+        await query(updateBuyer)
+
+        //send Id of the order
+        res.json({id: id}); 
+    }
+}
+
+async function cancelOrder (req, res) {
+    //Get orderId from user
+    const userId = req.query.userId
+    const search = "SELECT * FROM Users WHERE userId=?";
+    const searchQuery = mysql.format(search, [userId]);
+    const user = await query(searchQuery)
+    const orderId = user[0].currOrderId
+    const io = req.io
+
+    //Get transporter that is assigned to order 
+    const searchOrder = "SELECT * FROM Orders WHERE orderId=?";
+    const searchOrderQuery = mysql.format(searchOrder, [orderId]);
+    const order = await query(searchOrderQuery)
+    const transporterId = order[0].transporterId
+    const searchTransporter = "SELECT * FROM Transporters WHERE transporterId=?";
+    const searchTransporterQuery = mysql.format(searchTransporter, [transporterId]);
+    const transporter = await query(searchTransporterQuery)
+
+
+    //Reset number of transporters in outlet if changed
+    if(transporter.maxOutlets == transporter.ordersTaken) {
+        const update = "UPDATE Transporters SET available = 1 WHERE transporterId = ?"
+        const updateQuery = mysql.format(update, [order[0].transporterId])
+        await query(updateQuery)
+        //update outlets socket
+        const newOutlets = await outlet.loadOutlets(transporter.location)
+        io.of('/updateOutlets').to(transporter.location).emit(newOutlets)
     }
 
-     //Insert order into database
-     const sqlInsert = "INSERT INTO Orders VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-     const insertQuery = mysql.format(sqlInsert, [buyerId, transporterId, price, outletId, foods, foundTransporter, reachedOutlet, orderPickedUp, delivered]);
-     await query(insertQuery)
+    //Reset number of orders taken by transporter
+    const numOfItems = JSON.parse(order[0].foods).foods.length
+    const updateTransporter = "UPDATE Transporters SET  ordersTaken = ordersTaken - ?  WHERE transporterId = ?"
+    const updateTransporterQuery = mysql.format(updateTransporter, [numOfItems, transporterId])
+    await query(updateTransporterQuery)
 
-     //update the users' current order
-     const idQuery = "select * from Orders where orderId=(SELECT LAST_INSERT_ID())"
-     const update = "UPDATE Users SET currOrderId=? WHERE userId =?"
-     const ids = await query(idQuery)
-     const id = ids[0].orderId
-     const updateBuyer = mysql.format(update, [id, buyerId])
-     const updateTransporter = mysql.format(update, [id, transporterId])
-     await query(updateBuyer)
-     await query(updateTransporter)
+    //emit max orders socket
+    const max = await getMaxOrders.getMaxOrders(transporter.location)
+    io.of('/maxOrders').emit('update max orders', max)
 
-    //send Id of the order
-    res.json({id: id}); 
+
+    //Reset Users current order
+    const update = "UPDATE Users SET currOrderId = NULL  WHERE userId =?"
+    const updateBuyer = mysql.format(update, [userId])
+    await query(updateBuyer)
+
+    //Delete Order
+    const del = "DELETE FROM Orders WHERE orderId=?";
+    const deleteQuery = mysql.format(del, [orderId])
+    await query(deleteQuery);
+
+    res.send("updated")
+}
+
+async function confirmOrder(req, res){
+    //Get orderId from user
+    const userId = req.query.userId
+    const search = "SELECT * FROM Users WHERE userId=?";
+    const searchQuery = mysql.format(search, [userId]);
+    const user = await query(searchQuery)
+    const orderId = user[0].currOrderId
+    console.log(orderId)
+
+    //Change confirmed status of order
+    const update = "UPDATE Orders SET confirmed = 1 WHERE orderId = ?"
+    const updateQuery = mysql.format(update, [orderId])
+    await query(updateQuery)
+
+    res.send('confirmed')
 }
 
 async function updateOrder(req, res) {
     const arr = req.body.stage
-    const id = req.body.orderId
+    const id = req.body.transporterId
     const foundTransporter = arr[0]
     const reachedOutlet = arr[1]
     const orderPickedUp = arr[2]
     const delivered = arr[3]
+
+    //delete transporter and decrement outlet if order is confrimed
+    const search = "SELECT * FROM Orders WHERE transporterId =? and delivered = 0";
+    const searchQuery = mysql.format(search, [id]);
+    const result = await query(searchQuery);
+
+    //check if the create order route has already decremented the outlets to avoid double decrementing
+    const trans = "SELECT * FROM Transporters WHERE transporterId=?";
+    const transQuery = mysql.format(trans, [id])
+    transporter = await query(transQuery)
+    const decremented = transporter.orderTaken == transporter.maxOrders
+
+    if (result[0].foundTransporter == false && foundTransporter == true) {
+        const del = "DELETE FROM Transporters WHERE transporterId=?";
+        const deleteQuery = mysql.format(del, [id])
+        await query(deleteQuery);
+
+        // if (!decremented) {
+        //     const outletId = result[0].outletId
+        //     const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
+        //     const updateOutletQuery = mysql.format(updateOutlet, [outletId])
+        //     await query(updateOutletQuery)
+        // }
+    }
+
+    //set transporter back to buyer and set currOrder of buyers to null if delivered
+    if (result[0].delivered == false && delivered == true) {
+        //switch transporter back to buyer
+        const updateUser = "UPDATE Users SET istransporter = 0 WHERE userId = ?"
+        const updateUserQuery = mysql.format(updateUser, [id])
+        await query(updateUserQuery)
+
+        //remove current order from every buyer
+        for(let i = 0; i < result.length; i = i + 1) {
+            const userId = result[i].buyerId
+            const updateCurrOrder = "UPDATE Users SET currOrderId = Null WHERE userId = ?"
+            const updateCurrOrderQuery = mysql.format(updateCurrOrder, [userId])
+            await query(updateCurrOrderQuery)
+        }
+
+
+    }
+
+    // update state in database
     console.log(foundTransporter, reachedOutlet, orderPickedUp, delivered)
-    const update = "UPDATE Orders SET foundTransporter=?, reachedOutlet=?, orderPickedUp=? ,delivered=? WHERE orderId = ?"
+    const update = "UPDATE Orders SET foundTransporter=?, reachedOutlet=?, orderPickedUp=? ,delivered=? WHERE transporterId = ?"
     const updateQuery = mysql.format(update, [foundTransporter, reachedOutlet, orderPickedUp, delivered, id])
     await query(updateQuery)
     res.send("updated")
 
+    const status = {
+        foundTransporter : arr[0],
+        reachedOutlet : arr[1] ,
+        orderPickedUp : arr[2],
+        delivered : arr[3],
+    }
+
+    //emit transporter status through socket server
+    req.io.of('/transporterStatus').to(id.toString()).emit('updated status', status)
 }
 
 
-module.exports = {getOrder, createOrder, updateOrder}
+module.exports = {getOrder, createOrder, updateOrder, confirmOrder, cancelOrder}
