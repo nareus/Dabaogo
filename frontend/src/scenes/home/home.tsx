@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
 import TransporterHomeScreen from '../../components/organisms/TransporterHomeScreen';
 import BottomUserState from '../../components/atoms/BottomUserState';
@@ -9,6 +9,7 @@ import BottomUserState from '../../components/atoms/BottomUserState';
 import {SafeAreaView} from 'react-navigation';
 import {RootState} from '../../redux';
 import {BACKGROUND_COLOR} from '../../styles/colors';
+import {userLogout} from '../../redux/userSlice';
 
 interface IOrderData {
   id: number;
@@ -21,6 +22,11 @@ interface IOrderData {
 const HomeScreen = (props: any) => {
   const [toggleState, setToggleState] = useState(true);
   const {user} = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const onPressLogout = () => {
+    dispatch(userLogout());
+    props.navigation.navigate('Landing');
+  };
 
   useEffect(() => {
     return () => {
@@ -34,7 +40,7 @@ const HomeScreen = (props: any) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <TopBarHome
             selectionState={props.home}
-            onPressProfile={() => props.navigation.navigate('Settings')}
+            onPressProfile={onPressLogout}
             onLeftPress={() => setToggleState(false)}
             onRightPress={() => setToggleState(true)}
           />

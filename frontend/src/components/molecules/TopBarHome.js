@@ -7,8 +7,6 @@ import {Text} from 'react-native-elements';
 import {BACKGROUND_COLOR, PRIMARY, SECONDARY} from '../../styles/colors';
 import {PADDING_LEFT} from '../../styles/spacing';
 import GeneralButton from '../atoms/GeneralButton';
-import HalfPadding from '../atoms/HalfPadding';
-import Padding from '../atoms/Padding';
 
 const TopBarHome = ({
   selectionState,
@@ -36,7 +34,7 @@ const TopBarHome = ({
           <View style={{padding: 4}} />
           <GeneralButton
             onPress={onPressProfile}
-            iconName="user"
+            iconName="log-out"
             iconType="feather"
             backgroundColor={BACKGROUND_COLOR}
             color={PRIMARY}
