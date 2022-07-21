@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {IRestaurant} from '../../redux/slice/transporterSlice';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux';
+import {IRestaurant} from '../../redux/transporterSlice';
 import {BACKEND_URL} from '../../utils/links';
 import Padding from '../atoms/Padding';
 import RestaurantCard from '../atoms/RestaurantCard';
@@ -9,10 +11,12 @@ import RestaurantCard from '../atoms/RestaurantCard';
 const RestaurantScroll = (props: any) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
+  const {user} = useSelector((state: RootState) => state.user);
   const getData = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/outlets`);
+      const response = await axios.get(
+        `${BACKEND_URL}/outlets?userId=${user.userId}`,
+      );
       setData(response.data);
     } catch (error) {
       console.error(error);
@@ -27,6 +31,7 @@ const RestaurantScroll = (props: any) => {
       setData([]);
       setLoading(true);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const mapData = () =>

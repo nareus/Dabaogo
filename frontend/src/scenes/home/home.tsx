@@ -5,8 +5,10 @@ import {useSelector} from 'react-redux';
 import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
 import TransporterHomeScreen from '../../components/organisms/TransporterHomeScreen';
 import BottomUserState from '../../components/atoms/BottomUserState';
-import {SafeAreaView} from 'react-native-safe-area-context';
+// import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-navigation';
 import {RootState} from '../../redux';
+import {BACKGROUND_COLOR} from '../../styles/colors';
 
 interface IOrderData {
   id: number;
@@ -50,22 +52,23 @@ const HomeScreen = (props: any) => {
             />
           )}
         </ScrollView>
+        {user.currOrderId !== null ? (
+          <BottomUserState
+            onPress={() => {
+              user.isTransporter
+                ? props.navigation.navigate('TransporterOrder', {
+                    id: user.currOrderId,
+                  })
+                : props.navigation.navigate('OrderStatus', {
+                    id: user.currOrderId,
+                  });
+            }}
+          />
+        ) : (
+          <></>
+        )}
       </SafeAreaView>
-      {user.currOrderId !== null ? (
-        <BottomUserState
-          onPress={() => {
-            user.isTransporter
-              ? props.navigation.navigate('TransporterOrder', {
-                  id: user.currOrderId,
-                })
-              : props.navigation.navigate('OrderStatus', {
-                  id: user.currOrderId,
-                });
-          }}
-        />
-      ) : (
-        <></>
-      )}
+      <SafeAreaView style={styles.bottomSafeAreaView} />
     </Fragment>
   );
 };
@@ -74,6 +77,10 @@ const styles = StyleSheet.create({
   topSafeAreaView: {
     backgroundColor: 'white',
     flex: 1,
+  },
+  bottomSafeAreaView: {
+    flex: 0,
+    backgroundColor: BACKGROUND_COLOR,
   },
 });
 

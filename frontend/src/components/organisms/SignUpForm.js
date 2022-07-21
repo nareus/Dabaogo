@@ -20,8 +20,6 @@ const SignUpForm = ({navigate}) => {
   const [password, setPassword] = useState('');
 
   const authenticate = async () => {
-    console.log(location.title);
-
     if (firstName && lastName && email && phone && password !== '') {
       const response = await axios.post(`${BACKEND_URL}/register`, {
         phone: parseInt(phone, 10),

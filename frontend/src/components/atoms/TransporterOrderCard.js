@@ -5,7 +5,6 @@ import {GAP_FORM_FIELD, PADDING_LEFT} from '../../styles/spacing';
 const TransporterOrderCard = ({location, orders, price}) => {
   const onPress = () => {
     // navigateToPlaceOrderScreen();
-    console.log('hello i am a popular dishes card');
   };
 
   return (

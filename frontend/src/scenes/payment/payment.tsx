@@ -1,6 +1,5 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import Notes from '../../components/atoms/Notes';
 import Padding from '../../components/atoms/Padding';
 import PaymentMethod from '../../components/atoms/PaymentMethod';
 import OrderBottom from '../../components/molecules/OrderBottom';
@@ -37,6 +36,12 @@ const PaymentScreen = (props: any) => {
   const deliveryFee = 1.0;
   const serviceFee = 0.3;
   const totalPrice = subtotal + deliveryFee + serviceFee;
+  const [paymentMethod, setPaymentMethod] = useState('Paylah');
+  const togglePaymentMethod = () => {
+    paymentMethod === 'Paynow'
+      ? setPaymentMethod('Paylah')
+      : setPaymentMethod('Paynow');
+  };
 
   const makeOrder = async () => {
     // console.log(items);
@@ -70,8 +75,12 @@ const PaymentScreen = (props: any) => {
           <Padding />
           <Padding />
           <Padding />
-          <Notes name={'Order Notes'} onPress={() => {}} />
-          <Padding />
+          {/* <Notes
+            name={'Order Notes'}
+            onPress={(data: string) => setOrderNotes(data)}
+            content={orderNotes}
+          />
+          <Padding /> */}
           <OrderSummary
             data={{
               items: convertToQuantity(items),
@@ -81,15 +90,22 @@ const PaymentScreen = (props: any) => {
             }}
           />
           <Padding />
-          <PaymentMethod />
+          <PaymentMethod
+            paymentMethod={paymentMethod}
+            onPress={() => togglePaymentMethod()}
+          />
           <Padding />
           <LocationToVisit
             text={'Deliver to'}
-            location={'Tembusu College @ #22-01'}
+            location={user.location}
             onChangeButtonPress={() => {}}
           />
-          <Padding />
-          <Notes name={'Rider Notes'} onPress={() => {}} />
+          {/* <Padding />
+          <Notes
+            name={'Rider Notes'}
+            onPress={(data: string) => setRiderNotes(data)}
+            content={riderNotes}
+          /> */}
         </ScrollView>
         <OrderBottom price={totalPrice} onPress={makeOrder} />
       </SafeAreaView>

@@ -24,7 +24,7 @@ const FormErrorAndSubmit = props => {
     setErrorHeader(tempErrorHeader);
     setErrorBody(tempErrorBody);
     if (!error) {
-      getUserDetails(userId);
+      await getUserDetails(userId);
       props.navigate();
     }
   };

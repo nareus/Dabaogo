@@ -10,14 +10,16 @@ import {BACKEND_URL} from '../../utils/links';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {RootState} from '../../redux';
+import {IRestaurant} from '../../redux/transporterSlice';
 
 const TransporterHomeScreen = (props: any) => {
   const deliveryFee = 1.0;
   const [count, setCount] = useState(1);
   const [totalPrice, setPrice] = useState(deliveryFee * count);
   const navigation = useNavigation();
-  const {departureTime} = useSelector((state: RootState) => state.transporter);
-
+  const {departureTime, restaurantsSelected} = useSelector(
+    (state: RootState) => state.transporter,
+  );
   const {user} = useSelector((state: RootState) => state.user);
 
   const orderToTakeupInc = () => {
@@ -33,7 +35,9 @@ const TransporterHomeScreen = (props: any) => {
   };
 
   const onPress = async () => {
-    const outletId = 0; // id of taiwanese outlet
+    const outlets = restaurantsSelected.map(
+      (restaurant: IRestaurant) => restaurant.outletId,
+    ); // id of taiwanese outlet
     const transporterId = user.userId;
     const depTime = departureTime;
     const maxOrders = count;
@@ -45,12 +49,11 @@ const TransporterHomeScreen = (props: any) => {
       depTime,
       maxOrders,
       hostel,
-      outletId,
+      outlets,
     };
 
     try {
       const response = await axios.post(`${BACKEND_URL}/transporters`, data);
-      console.log(response);
       if (response.status === 200) {
         props.navigate();
       }
@@ -71,7 +74,7 @@ const TransporterHomeScreen = (props: any) => {
           decrement={orderToTakeupDec}
           increment={orderToTakeupInc}
         />
-        <DepartureTime time={departureTime} />
+        <DepartureTime />
       </View>
       <View style={styles.bottomBar}>
         <BottomBarTransporterHome price={totalPrice} onPress={onPress} />

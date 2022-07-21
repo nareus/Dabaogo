@@ -20,9 +20,8 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     // color: 'black',
     color: 'black',
-    opacity: 0.4,
-    fontWeight: 'bold',
-    fontSize: 12,
+    fontWeight: '600',
+    fontSize: 14,
   },
 });
 

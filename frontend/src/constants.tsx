@@ -1,4 +1,4 @@
-export const convertToMoney = price => {
+export const convertToMoney = (price: number) => {
   price = Math.round((price + Number.EPSILON) * 100) / 100;
   return (
     '$' +
@@ -10,7 +10,7 @@ export const convertToMoney = price => {
   );
 };
 
-export const convertToQuantity = items => {
+export const convertToQuantity = (items: any) => {
   const output = {};
   for (const item of items) {
     if (typeof output[item.foodId] === 'undefined') {
@@ -94,3 +94,15 @@ export const hostelData = [
     longitude: 103.78002526439816,
   },
 ];
+
+export const formatAMPM = (oldDate: Date, diff: number) => {
+  const date = new Date(oldDate.getTime() + diff * 60000);
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? 0 + minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+};

@@ -21,14 +21,13 @@ const HostelDropdown = (props: IProps) => {
     <SelectDropdown
       data={data}
       onSelect={(selectedItem, index) => {
-        console.log(selectedItem, index);
         onSelect(selectedItem);
       }}
       defaultButtonText={'Select hostel'}
-      buttonTextAfterSelection={(selectedItem, index) => {
+      buttonTextAfterSelection={selectedItem => {
         return selectedItem.title;
       }}
-      rowTextForSelection={(item, index) => {
+      rowTextForSelection={item => {
         return item.title;
       }}
       buttonStyle={styles(props).dropdown1BtnStyle}
@@ -49,7 +48,7 @@ const HostelDropdown = (props: IProps) => {
   );
 };
 
-const styles = props =>
+const styles = (props: any) =>
   StyleSheet.create({
     dropdown1BtnStyle: {
       backgroundColor: SECONDARY,

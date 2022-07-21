@@ -32,7 +32,7 @@ const ChangeRestaurantScreen = (props: any) => {
       </ScrollView>
       <TopBar
         onPress={() => props.navigation.goBack()}
-        text={'Taiwanese'}
+        text={'Change Restaurant'}
         iconName={'chevron-left'}
         iconType={'feather'}
       />
