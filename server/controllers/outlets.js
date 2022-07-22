@@ -28,14 +28,14 @@ const connection = mysql.createConnection({
 const query = util.promisify(connection.query).bind(connection);
 
 async function getOutlets(req, res) {
-    const userId = req.params.userId
+    const userId = req.query.userId
     const search = "SELECT * FROM Users WHERE userId=?";
     const searchQuery = mysql.format(search, [userId]);
     const user = await query(searchQuery)
+    console.log(user)
     const location = user[0].location
     io = req.io;
-    const outlets = outlet.loadOutlets(location)
-    io.of('/outletUpdate').emit("outlets")
+    const outlets = await outlet.loadOutlets(location)
     res.send(outlets)
 }
 
