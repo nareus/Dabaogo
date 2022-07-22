@@ -121,6 +121,7 @@ async function getOrders(req, res) {
 
 async function maxOrders(req, res) {
     const userId = req.query.userId 
+    const outletId = parseInt(req.query.outletId)
     const io = req.io
     
     // get location
@@ -128,8 +129,9 @@ async function maxOrders(req, res) {
     const searchQuery = mysql.format(search, [userId]);
     const user = await query(searchQuery)
     const location = user[0].location
+    console.log(location, outletId)
 
-    const max = await getMaxOrders.getMaxOrders(location)
+    const max = await getMaxOrders.getMaxOrders(location, outletId)
     io.of('/maxOrders').emit('update max orders', max)
     res.json(max)
     
