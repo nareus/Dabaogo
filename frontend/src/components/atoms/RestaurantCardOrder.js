@@ -4,8 +4,6 @@ import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 
 const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
-  const [restaurantName, restaurantLocation] = name.split(' - ');
-
   return (
     <View style={styles.card}>
       <Image
@@ -19,8 +17,8 @@ const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
       <View style={styles.alignmentContainer}>
         <View style={styles.details}>
           <View style={styles.leftText}>
-            <Text style={styles.restaurantName}>{restaurantName}</Text>
-            <Text style={styles.locationAndCategory}>{restaurantLocation}</Text>
+            <Text style={styles.restaurantName}>{name}</Text>
+            <Text style={styles.locationAndCategory}>{location}</Text>
             <Text style={styles.locationAndCategory}>{typeOfStore}</Text>
           </View>
           <View style={styles.rightText}>
@@ -36,8 +34,6 @@ const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
 const styles = StyleSheet.create({
   image: {
     width: '100%',
-    borderTopLeftRadius: BORDER_RADIUS,
-    borderTopRightRadius: BORDER_RADIUS,
     flex: 3,
   },
   details: {
@@ -77,9 +73,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   card: {
-    height: 328,
+    height: 270,
     backgroundColor: 'white',
-    borderRadius: BORDER_RADIUS,
     display: 'flex',
     elevation: 2,
   },

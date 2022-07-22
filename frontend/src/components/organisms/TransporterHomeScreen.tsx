@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {RootState} from '../../redux';
 import {IRestaurant} from '../../redux/transporterSlice';
+import Padding from '../atoms/Padding';
 
 const TransporterHomeScreen = (props: any) => {
   const deliveryFee = 1.0;
@@ -75,6 +76,7 @@ const TransporterHomeScreen = (props: any) => {
           increment={orderToTakeupInc}
         />
         <DepartureTime />
+        <Padding />
       </View>
       <View style={styles.bottomBar}>
         <BottomBarTransporterHome price={totalPrice} onPress={onPress} />

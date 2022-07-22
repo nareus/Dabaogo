@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import RestaurantCardOrder from '../../components/atoms/RestaurantCardOrder';
+import MaxOrderStatusBar from '../../components/molecules/MaxOrderStatusBar';
 import OrderCheckout from '../../components/molecules/OrderCheckout';
 import PopularDishesScroll from '../../components/molecules/PopularDishesScroll';
 import TopBar from '../../components/molecules/TopBar';
@@ -20,6 +21,7 @@ const OrderScreen = props => {
 
   const {id, name, location, typeOfStore, transporters} =
     props.route.params.data;
+  const [restaurantName, restaurantLocation] = name.split(' - ');
 
   const getData = async () => {
     try {
@@ -70,6 +72,13 @@ const OrderScreen = props => {
 
   return (
     <View style={styles.container}>
+      <TopBar
+        onPress={() => props.navigation.goBack()}
+        text={restaurantName}
+        iconName={'chevron-left'}
+        iconType={'feather'}
+      />
+      <MaxOrderStatusBar outletId={id} />
       {/* <TopBarAuth /> */}
       {isLoading ? (
         <ActivityIndicator />
@@ -77,8 +86,8 @@ const OrderScreen = props => {
         <>
           <ScrollView showsVerticalScrollIndicator={false}>
             <RestaurantCardOrder
-              name={name}
-              location={location}
+              name={restaurantName}
+              location={restaurantLocation}
               typeOfStore={typeOfStore}
               transporters={transporters}
             />
@@ -113,12 +122,13 @@ const OrderScreen = props => {
       ) : (
         <></>
       )}
-      <TopBar
+
+      {/* <TopBar
         onPress={() => props.navigation.goBack()}
-        text={'Taiwanese'}
+        text={restaurantName}
         iconName={'chevron-left'}
         iconType={'feather'}
-      />
+      /> */}
     </View>
   );
 };

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   bigContainer: {
     // paddingBottom: 100,
     width: '100%',
-    position: 'absolute',
+    position: 'relative',
     // color: 'black',
     flexDirection: 'row',
     alignItems: 'center',

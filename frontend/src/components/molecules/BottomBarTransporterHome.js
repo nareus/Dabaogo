@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
   container: {
     padding: PADDING_LEFT,
     backgroundColor: 'white',
-    paddingBottom: 50,
   },
   orderRow: {
     flexDirection: 'row',
