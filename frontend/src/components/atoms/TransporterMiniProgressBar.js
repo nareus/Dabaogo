@@ -17,7 +17,6 @@ const TransporterMiniProgressBar = ({pulseOrNah, showOrNot}) => {
        2. Show and pulse (when in progress) -> showOrNot true, pulseOrNah true
        3. Show but don't pulse (When complete) -> showOrNot true, pulseOrNah false
     */
-  //   console.log('pulsing:', pulseOrNah, 'showstate is :', showOrNot);
   const animation = useSharedValue(0);
 
   useEffect(() => {

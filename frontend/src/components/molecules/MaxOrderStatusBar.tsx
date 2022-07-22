@@ -9,14 +9,15 @@ import {RootState} from '../../redux';
 import axios from 'axios';
 
 const MaxOrderStatusBar = ({outletId}) => {
-  console.log('outletId is', outletId);
   const [maxOrder, updateMaxOrder] = useState(0);
+  const [isLoading, setLoading] = useState(true);
   const {user} = useSelector((state: RootState) => state.user);
   const userId = user.userId;
   const socket = io(BACKEND_URL);
+
   socket.emit('join', {userId, outletId});
   socket.on('connect', () => {
-    console.log(socket.connected);
+    // console.log(socket.connected);
   });
 
   useEffect(() => {
@@ -25,19 +26,21 @@ const MaxOrderStatusBar = ({outletId}) => {
   }, []);
 
   socket.on('update', orderNum => {
-    console.log(orderNum);
     updateMaxOrder(orderNum);
   });
 
   const getMaxOrders = async () => {
-    console.log('user id is', userId);
     const response = await axios.get(
-      `${BACKEND_URL}/transporters/maxOrders?userId=${userId}`,
+      `${BACKEND_URL}/transporters/maxOrders?userId=${userId}&outletId=${outletId}`,
     );
     const data = response.data;
-    console.log('max order is', data);
+    updateMaxOrder(data);
+    setLoading(false);
   };
-  return (
+
+  return isLoading ? (
+    <></>
+  ) : (
     <View style={styles.bigContainer}>
       <View style={styles.container}>
         <Text style={styles.text}>Max number of orders is: {maxOrder}</Text>

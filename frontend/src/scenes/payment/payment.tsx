@@ -44,7 +44,6 @@ const PaymentScreen = (props: any) => {
   };
 
   const makeOrder = async () => {
-    // console.log(items);
     const foodItems = items.map((item: IFoodItem) => item.foodId);
     const order = {
       buyerId: user.userId,
