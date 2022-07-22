@@ -18,14 +18,16 @@ const OrderScreen = props => {
   const [popularMenu, setPopularMenu] = useState([]);
   const [mainMenu, setMainMenu] = useState([]);
   const [state, setState] = useState({});
+  console.log('data is', props.route.params.data);
 
-  const {id, name, location, typeOfStore, transporters} =
-    props.route.params.data;
+  const {outletId, name, typeOfStore, transporters} = props.route.params.data;
   const [restaurantName, restaurantLocation] = name.split(' - ');
 
   const getData = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/menu?menuId=${id}`);
+      const response = await axios.get(
+        `${BACKEND_URL}/menu?menuId=${outletId}`,
+      );
       setPopularMenu(response.data.popular);
       setMainMenu(response.data.restOfItems);
     } catch (error) {
@@ -78,7 +80,7 @@ const OrderScreen = props => {
         iconName={'chevron-left'}
         iconType={'feather'}
       />
-      <MaxOrderStatusBar outletId={id} />
+      <MaxOrderStatusBar outletId={outletId} />
       {/* <TopBarAuth /> */}
       {isLoading ? (
         <ActivityIndicator />
@@ -115,7 +117,7 @@ const OrderScreen = props => {
             props.navigation.navigate('Payment', {
               subtotal: totalPrice.reduce((accumulator, a) => accumulator + a),
               items: order,
-              storeId: id,
+              storeId: outletId,
             })
           }
         />

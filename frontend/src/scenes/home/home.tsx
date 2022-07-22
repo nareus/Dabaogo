@@ -9,14 +9,7 @@ import BottomUserState from '../../components/atoms/BottomUserState';
 import {RootState} from '../../redux';
 import {userLogout} from '../../redux/userSlice';
 import {PADDING_LEFT} from '../../styles/spacing';
-
-interface IOrderData {
-  id: number;
-  name: string;
-  location: string;
-  typeOfStore: string;
-  transporters: number;
-}
+import {IRestaurant} from '../../redux/transporterSlice';
 
 const HomeScreen = (props: any) => {
   const [toggleState, setToggleState] = useState(true);
@@ -44,7 +37,7 @@ const HomeScreen = (props: any) => {
         />
         {toggleState ? (
           <BuyerHomeScreen
-            navigate={(data: IOrderData) =>
+            navigate={(data: IRestaurant) =>
               props.navigation.navigate('Order', {
                 data: data,
               })
@@ -56,7 +49,7 @@ const HomeScreen = (props: any) => {
           />
         )}
       </ScrollView>
-      {user.currOrderId !== null ? (
+      {user.isTransporter ? (
         <BottomUserState
           onPress={() => {
             user.isTransporter

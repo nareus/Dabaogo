@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import {PRIMARY} from '../../styles/colors';
@@ -6,8 +6,10 @@ import {io} from 'socket.io-client';
 import {BACKEND_URL} from '../../utils/links';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux';
+import axios from 'axios';
 
-const MaxOrderStatusBar = (outletId: string) => {
+const MaxOrderStatusBar = ({outletId}) => {
+  console.log('outletId is', outletId);
   const [maxOrder, updateMaxOrder] = useState(0);
   const {user} = useSelector((state: RootState) => state.user);
   const userId = user.userId;
@@ -16,9 +18,25 @@ const MaxOrderStatusBar = (outletId: string) => {
   socket.on('connect', () => {
     console.log(socket.connected);
   });
+
+  useEffect(() => {
+    getMaxOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   socket.on('update', orderNum => {
+    console.log(orderNum);
     updateMaxOrder(orderNum);
   });
+
+  const getMaxOrders = async () => {
+    console.log('user id is', userId);
+    const response = await axios.get(
+      `${BACKEND_URL}/transporters/maxOrders?userId=${userId}`,
+    );
+    const data = response.data;
+    console.log('max order is', data);
+  };
   return (
     <View style={styles.bigContainer}>
       <View style={styles.container}>
