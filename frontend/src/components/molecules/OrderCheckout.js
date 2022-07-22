@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {PADDING_LEFT} from '../../styles/spacing';
 import ViewBasketButton from '../atoms/ViewBasketButton';
 
 const OrderCheckout = ({numItems, totalPrice, onPress}) => {
@@ -21,8 +22,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 100,
+    height: 110,
     bottom: 0,
+    paddingBottom: PADDING_LEFT * 2,
     backgroundColor: 'white',
   },
 });

@@ -21,10 +21,11 @@ const styles = StyleSheet.create({
   numItems: {
     padding: 5,
     backgroundColor: '#CF8280',
+    borderRadius: BORDER_RADIUS,
   },
   text: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   touchableOpacity: {
