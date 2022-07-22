@@ -58,6 +58,8 @@ const connection = mysql.createConnection({
     port: DB_PORT
 })
 
+const query = util.promisify(connection.query).bind(connection);
+
 connection.connect(err => {
     if (err) console.log(err.message);
     else {
@@ -66,12 +68,51 @@ connection.connect(err => {
 });
 
 
-io.of("/transporterStatus").on('connection', (socket) => {} )
+io.of("/transporterStatus").on('connection', (socket) => {
+    socket.emit('join', 'hello')
+    socket.on("join", async (roomName) => {
+        const search = "SELECT * FROM Orders WHERE buyerId =? and delivered = 0";
+        const searchQuery = mysql.format(search, [roomName]);
+        const result = await query(searchQuery);
+        const room = result[0].transporterId
+        console.log("join: " + room);
+        await socket.join(room);
+        console.log(socket.rooms);
+      });
+})
 
-io.of("/outletUpdate").on('connection', (socket) => {
+io.of("/updateOutlets").on('connection', async (socket) => {
+    socket.on("join", async (roomName) => {
+        console.log(roomName)
+        const search = "SELECT * FROM Users WHERE userId=?";
+        const searchQuery = mysql.format(search, [roomName]);
+        const result = await query(searchQuery);
+        const room = result[0].location
+        console.log("join: " + room);
+        await socket.join(room);
+        console.log(socket.rooms);
+      });
 })
 io.of("/maxOrders").on('connection', (socket) => {
+    socket.on("join", async (userId, outletId) => {
+        const search = "SELECT * FROM Users WHERE userId=?";
+        const searchQuery = mysql.format(search, [userId]);
+        const result = await query(searchQuery);
+        const location = result[0].location
+        const orderId = result[0].currOrderId
+        // const searchOrder = "SELECT * FROM Orders WHERE orderId=?";
+        // const searchOrderQuery = mysql.format(searchOrder, [orderId]);
+        // const order = await query(searchOrderQuery);
+        // const outletId = order[0].outletId
+        const room = location + outletId.toString()
+        console.log("join: " + room);
+        await socket.join(room);
+        console.log(socket.rooms);
+      });
 })
+io.of("/transporterOrder").on('connection', (socket) => {
+
+} )
 
 // const program = async () => {
 //     const instance = new MySQLEvents({host: DB_HOST,

@@ -53,9 +53,19 @@ async function createTransporter(req, res) {
     await query(updateUserQuery)
 
     res.send("Created")
+
     //update outlets socket
     const newOutlets = await outlet.loadOutlets(hostel)
-    io.of('/outletUpdate').emit("outlet update", newOutlets)
+    io.of('/updateOutlets').to(hostel).emit('update', newOutlets)
+
+     //emit max orders socket
+     for (i = 0; i < req.body.outlets.length; i = i + 1) {
+        console.log(req.body.outlets.length)
+        const max = await getMaxOrders.getMaxOrders(hostel, req.body.outlets[i])
+        const room = hostel.concat(req.body.outlets[i].toString())
+        console.log(room)
+        io.of('/maxOrders').to(room).emit('update', max)
+     }
 }
 
 async function deleteTransporter(req, res) {
@@ -86,11 +96,12 @@ async function getTransporter(req, res) {
 async function getOrders(req, res) {
     transporterId = req.query.transporterId
     const searchConfirmed = "SELECT * FROM Orders WHERE transporterId = ? and delivered = 0 and confirmed = 1";
-    const searchNotConfirmed = "SELECT * FROM Orders WHERE transporterId =? and delivered = 0 and confirmed = 1";
+    const searchNotConfirmed = "SELECT * FROM Orders WHERE transporterId =? and delivered = 0 and confirmed = 0";
     const searchQuery = mysql.format(searchConfirmed, [transporterId]);
     const searchQuery2 = mysql.format(searchNotConfirmed, [transporterId]);
     const confirmed = await query(searchQuery);
     const notConfirmed = await query(searchQuery2);
+
     if (notConfirmed.length == 0) {
         res.json(
             {

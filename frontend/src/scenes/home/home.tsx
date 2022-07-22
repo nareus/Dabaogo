@@ -34,7 +34,7 @@ const HomeScreen = (props: any) => {
   }, []);
 
   return (
-    <View style={styles.topSafeAreaView}>
+    <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <TopBarHome
           selectionState={props.home}
@@ -76,14 +76,10 @@ const HomeScreen = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  topSafeAreaView: {
+  container: {
     paddingTop: PADDING_LEFT * 3,
     backgroundColor: 'white',
     flex: 1,
-  },
-  bottomSafeAreaView: {
-    flex: 1,
-    backgroundColor: 'white',
   },
 });
 

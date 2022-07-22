@@ -32,10 +32,10 @@ async function getOutlets(req, res) {
     const search = "SELECT * FROM Users WHERE userId=?";
     const searchQuery = mysql.format(search, [userId]);
     const user = await query(searchQuery)
+    console.log(user)
     const location = user[0].location
     io = req.io;
     const outlets = await outlet.loadOutlets(location)
-    io.of('/outletUpdate').emit("outlets")
     res.send(outlets)
 }
 

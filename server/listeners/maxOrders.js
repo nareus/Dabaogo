@@ -19,14 +19,16 @@ const connection = mysql.createConnection({
 
 const query = util.promisify(connection.query).bind(connection);
 
-const getMaxOrders = async (location) => {
+const getMaxOrders = async (location, outletId) => {
     const searchTransporters = "SELECT * FROM Transporters WHERE location=?"
     const searchTransporterQuery  = mysql.format(searchTransporters, [location])
     const transporters = await query(searchTransporterQuery)
     let max = 0
     for(let i = 0; i < transporters.length; i = i + 1) {
-        if (transporters[i].maxOrders - transporters[i].ordersTaken > max) {
-            max = transporters[i].maxOrders - transporters[i].ordersTaken
+        if (JSON.parse(transporters[i].outlets).includes(outletId)) {
+            if (transporters[i].maxOrders - transporters[i].ordersTaken > max) {
+                max = transporters[i].maxOrders - transporters[i].ordersTaken
+            }
         }
     }
     output = {"maxOrders": max}
