@@ -20,7 +20,7 @@ const BottomBarTransporterHome = ({price, onPress}) => {
       </View>
       <Padding />
       <SignInUpButton
-        disabled={user.isTransporter}
+        disabled={user.isTransporter || user.currOrderId !== null}
         backgroundColor={PRIMARY}
         color={BUTTON_TEXT_2}
         title="Confirm Availability"

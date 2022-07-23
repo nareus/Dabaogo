@@ -10,37 +10,20 @@ import axios from 'axios';
 
 const MaxOrderStatusBar = ({outletId}) => {
   const [maxOrder, updateMaxOrder] = useState(0);
-  const [isLoading, setLoading] = useState(true);
   const {user} = useSelector((state: RootState) => state.user);
   const userId = user.userId;
-  const socket = io(BACKEND_URL);
+  const socket = io(`${BACKEND_URL}/maxOrders`);
 
-  socket.emit('join', {userId, outletId});
+  socket.emit('join', userId, outletId);
   socket.on('connect', () => {
-    // console.log(socket.connected);
+    console.log(socket.connected);
   });
-
-  useEffect(() => {
-    getMaxOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   socket.on('update', orderNum => {
+    console.log(orderNum);
     updateMaxOrder(orderNum);
   });
 
-  const getMaxOrders = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/transporters/maxOrders?userId=${userId}&outletId=${outletId}`,
-    );
-    const data = response.data;
-    updateMaxOrder(data);
-    setLoading(false);
-  };
-
-  return isLoading ? (
-    <></>
-  ) : (
+  return (
     <View style={styles.bigContainer}>
       <View style={styles.container}>
         <Text style={styles.text}>Max number of orders is: {maxOrder}</Text>

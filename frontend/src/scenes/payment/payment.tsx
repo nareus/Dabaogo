@@ -7,11 +7,12 @@ import OrderSummary from '../../components/molecules/OrderSummary';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import LocationToVisit from '../../components/atoms/LocationToVisit';
 import TopBar from '../../components/molecules/TopBar';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {BACKEND_URL} from '../../utils/links';
 import {convertToQuantity} from '../../constants';
 import {RootState} from '../../redux';
+import {updateUser} from '../../redux/userSlice';
 
 // interface IData {
 //   items: IFoodItem[],
@@ -20,19 +21,9 @@ import {RootState} from '../../redux';
 //   serviceFee: number,
 // }
 
-interface IFoodItem {
-  foodId: number;
-  name: string;
-  description: string;
-  price: number;
-  type: string;
-  menuId: number;
-  popular: number;
-}
-
 const PaymentScreen = (props: any) => {
   const {user} = useSelector((state: RootState) => state.user);
-  const {subtotal, items, storeId} = props.route.params;
+  const {subtotal, items} = props.route.params;
   const deliveryFee = 1.0;
   const serviceFee = 0.3;
   const totalPrice = subtotal + deliveryFee + serviceFee;
@@ -42,21 +33,16 @@ const PaymentScreen = (props: any) => {
       ? setPaymentMethod('Paylah')
       : setPaymentMethod('Paynow');
   };
+  const dispatch = useDispatch();
 
   const makeOrder = async () => {
-    const foodItems = items.map((item: IFoodItem) => item.foodId);
-    const order = {
-      buyerId: user.userId,
-      foodItems: foodItems,
-      price: totalPrice,
-      outletId: storeId,
-    };
     try {
-      const response = await axios.post(`${BACKEND_URL}/orders`, order);
+      const response = await axios.put(
+        `${BACKEND_URL}/orders/confirm?userId=${user.userId}`,
+      );
+      console.log(response.data);
       if (response.status === 200) {
-        props.navigation.navigate('OrderStatus', {
-          id: response.data.id,
-        });
+        props.navigation.navigate('OrderStatus');
       }
     } catch (error) {
       console.error(error);
@@ -66,7 +52,17 @@ const PaymentScreen = (props: any) => {
   return (
     <Fragment>
       <TopBar
-        onPress={() => props.navigation.goBack()}
+        onPress={async () => {
+          const response = await axios.put(
+            `${BACKEND_URL}/orders/cancel?userId=${user.userId}`,
+          );
+          console.log(response.data);
+          const resp = await axios.get(
+            `${BACKEND_URL}/users?userId=${user.userId}}`,
+          );
+          dispatch(updateUser(resp.data[0]));
+          props.navigation.goBack();
+        }}
         text={'Payment'}
         iconName={'chevron-left'}
         iconType={'feather'}

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
 import OrderLocationTracker from '../../components/atoms/OrderLocationTracker';
 import Padding from '../../components/atoms/Padding';
 import SignInUpButton from '../../components/atoms/SignInUpButton';
@@ -10,6 +11,7 @@ import OrderBottom from '../../components/molecules/OrderBottom';
 import OrderProgress from '../../components/molecules/OrderProgress';
 import TopBar from '../../components/molecules/TopBar';
 import {convertToQuantity} from '../../constants';
+import {RootState} from '../../redux';
 import {BACKEND_URL} from '../../utils/links';
 
 const OrderStatusScreen = props => {
@@ -17,13 +19,14 @@ const OrderStatusScreen = props => {
   const [menuItems, setMenuItems] = useState([]);
   const [transporter, setTransporter] = useState({});
   const [orderDetails, setOrderDetails] = useState({});
-  const orderId = props.route.params.id;
+  const {user} = useSelector((state: RootState) => state.user);
 
   const getData = async () => {
     try {
       const response = await axios.get(
-        `${BACKEND_URL}/orders?orderId=${orderId}`,
+        `${BACKEND_URL}/orders?orderId=${user.userId}`,
       );
+      console.log(response.data);
       const {foods, outletId, transporterId} = response.data[0];
       setOrderDetails({
         foods,
@@ -77,7 +80,7 @@ const OrderStatusScreen = props => {
         `${BACKEND_URL}/users?userId=${transporterId}`,
       );
       const {userId, firstName, lastName, phoneNumber} = responseUser.data[0];
-
+      const orderId = user.currOrderId;
       setTransporter({
         estimatedTime,
         userId,
@@ -106,9 +109,15 @@ const OrderStatusScreen = props => {
         <ActivityIndicator />
       ) : (
         <View style={styles.safeAreaView}>
+          <TopBar
+            onPress={() => props.navigation.navigate('Home')}
+            text={'OrderStatus'}
+            iconName="cross"
+            iconType="entypo"
+          />
           <View>
             <View style={styles.container}>
-              <View style={styles.bigPadding} />
+              <Padding />
               <OrderProgress
                 orderId={orderId}
                 arrivalTime={transporter.estimatedTime}
@@ -123,12 +132,6 @@ const OrderStatusScreen = props => {
               />
             </View>
           </View>
-          <TopBar
-            onPress={() => props.navigation.navigate('Home')}
-            text={'OrderStatus'}
-            iconName="cross"
-            iconType="entypo"
-          />
         </View>
       )}
     </>
@@ -136,9 +139,6 @@ const OrderStatusScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  bigPadding: {
-    padding: 48,
-  },
   safeAreaView: {
     backgroundColor: 'BACKGROUND_COLOR',
     flex: 1,

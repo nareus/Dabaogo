@@ -8,7 +8,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import RestaurantCardOrder from '../../components/atoms/RestaurantCardOrder';
 import MaxOrderStatusBar from '../../components/molecules/MaxOrderStatusBar';
 import OrderCheckout from '../../components/molecules/OrderCheckout';
@@ -19,6 +19,17 @@ import {RootState} from '../../redux';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import {BACKEND_URL} from '../../utils/links';
 import {io} from 'socket.io-client';
+import {updateUser} from '../../redux/userSlice';
+
+interface IFoodItem {
+  foodId: number;
+  name: string;
+  description: string;
+  price: number;
+  type: string;
+  menuId: number;
+  popular: number;
+}
 
 const OrderScreen = props => {
   const [order, setOrder] = useState([]);
@@ -26,37 +37,34 @@ const OrderScreen = props => {
   const [isLoading, setLoading] = useState(true);
   const [popularMenu, setPopularMenu] = useState([]);
   const [mainMenu, setMainMenu] = useState([]);
-  const [state, setState] = useState({});
   const {outletId, name, typeOfStore, transporters} = props.route.params.data;
   const [restaurantName, restaurantLocation] = name.split(' - ');
 
   const [maxOrder, updateMaxOrder] = useState(0);
   const {user} = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
   const userId = user.userId;
-  const socket = io(BACKEND_URL);
+  console.log(userId);
 
-  socket.emit('join', {userId, outletId});
+  const socket = io(`${BACKEND_URL}/maxOrders`);
+
+  socket.emit('join', userId, outletId);
   socket.on('connect', () => {
     // console.log(socket.connected);
   });
-
-  useEffect(() => {
-    getMaxOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   socket.on('update', orderNum => {
+    console.log(orderNum);
     updateMaxOrder(orderNum);
   });
 
-  const getMaxOrders = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/transporters/maxOrders?userId=${userId}&outletId=${outletId}`,
-    );
-    const data = response.data;
-    updateMaxOrder(data);
-    setLoading(false);
-  };
+  // const getMaxOrders = async () => {
+  //   const response = await axios.get(
+  //     `${BACKEND_URL}/transporters/maxOrders?userId=${userId}&outletId=${outletId}`,
+  //   );
+  //   const data = response.data;
+  //   updateMaxOrder(data);
+  //   setLoading(false);
+  // };
 
   const getData = async () => {
     try {
@@ -107,6 +115,41 @@ const OrderScreen = props => {
     });
   };
 
+  const onViewBasketPress = async () => {
+    if (order.length > maxOrder) {
+      return Alert.alert(
+        'Maximum number of orders exceeded, please reduce number of orders',
+      );
+    } else {
+      const foodItems = order.map((item: IFoodItem) => item.foodId);
+      const deliveryFee = 1.0;
+      const serviceFee = 0.3;
+      const subTotal =
+        totalPrice.reduce((accumulator, a) => accumulator + a) +
+        deliveryFee +
+        serviceFee;
+      const body = {
+        buyerId: user.userId,
+        foodItems: foodItems,
+        price: subTotal,
+        outletId: outletId,
+      };
+      const response = await axios.post(`${BACKEND_URL}/orders`, body);
+      if (response.status === 200) {
+        const resp = await axios.get(
+          `${BACKEND_URL}/users?userId=${user.userId}}`,
+        );
+        dispatch(updateUser(resp.data[0]));
+
+        props.navigation.navigate('Payment', {
+          subtotal: subTotal,
+          items: order,
+          storeId: outletId,
+        });
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TopBar
@@ -148,19 +191,7 @@ const OrderScreen = props => {
         <OrderCheckout
           numItems={order.length}
           totalPrice={totalPrice.reduce((accumulator, a) => accumulator + a)}
-          onPress={() => {
-            order.length > maxOrder
-              ? Alert.alert(
-                  'Maximum number of orders exceeded, please reduce number of orders',
-                )
-              : props.navigation.navigate('Payment', {
-                  subtotal: totalPrice.reduce(
-                    (accumulator, a) => accumulator + a,
-                  ),
-                  items: order,
-                  storeId: outletId,
-                });
-          }}
+          onPress={onViewBasketPress}
         />
       ) : (
         <></>

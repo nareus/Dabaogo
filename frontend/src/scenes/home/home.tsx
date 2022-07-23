@@ -9,7 +9,8 @@ import BottomUserState from '../../components/atoms/BottomUserState';
 import {RootState} from '../../redux';
 import {userLogout} from '../../redux/userSlice';
 import {PADDING_LEFT} from '../../styles/spacing';
-import {IRestaurant} from '../../redux/transporterSlice';
+import {changeDepartureTime, IRestaurant} from '../../redux/transporterSlice';
+import {formatAMPM} from '../../constants';
 
 const HomeScreen = (props: any) => {
   const [toggleState, setToggleState] = useState(true);
@@ -33,7 +34,10 @@ const HomeScreen = (props: any) => {
           selectionState={props.home}
           onPressProfile={onPressLogout}
           onLeftPress={() => setToggleState(false)}
-          onRightPress={() => setToggleState(true)}
+          onRightPress={() => {
+            setToggleState(true);
+            dispatch(changeDepartureTime(formatAMPM(new Date(), 5)));
+          }}
         />
         {toggleState ? (
           <BuyerHomeScreen

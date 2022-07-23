@@ -13,7 +13,7 @@ import {RootState} from '../../redux';
 import {IRestaurant} from '../../redux/transporterSlice';
 import Padding from '../atoms/Padding';
 import {convertToDate} from '../../constants';
-import {userLogin} from '../../redux/userSlice';
+import {updateUser} from '../../redux/userSlice';
 
 const TransporterHomeScreen = (props: any) => {
   const deliveryFee = 1.0;
@@ -62,7 +62,7 @@ const TransporterHomeScreen = (props: any) => {
         const resp = await axios.get(
           `${BACKEND_URL}/users?userId=${user.userId}}`,
         );
-        dispatch(userLogin(resp.data[0]));
+        dispatch(updateUser(resp.data[0]));
         props.navigate();
       }
     } catch (error) {
