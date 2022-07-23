@@ -8,7 +8,7 @@ interface IUser {
   firstName: string;
   lastName: string;
   currOrderId: number;
-  isTransporter: boolean;
+  isTransporter: number;
   location: string;
 }
 
@@ -20,7 +20,7 @@ const emptyUser: IUser = {
   firstName: '',
   lastName: '',
   currOrderId: 0,
-  isTransporter: false,
+  isTransporter: 0,
   location: '',
 };
 

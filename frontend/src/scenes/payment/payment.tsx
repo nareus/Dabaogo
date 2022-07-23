@@ -44,7 +44,6 @@ const PaymentScreen = (props: any) => {
   };
 
   const makeOrder = async () => {
-    // console.log(items);
     const foodItems = items.map((item: IFoodItem) => item.foodId);
     const order = {
       buyerId: user.userId,
@@ -66,14 +65,18 @@ const PaymentScreen = (props: any) => {
 
   return (
     <Fragment>
+      <TopBar
+        onPress={() => props.navigation.goBack()}
+        text={'Payment'}
+        iconName={'chevron-left'}
+        iconType={'feather'}
+      />
       <SafeAreaView style={styles.topSafeAreaView}>
         <ScrollView
           style={styles.container}
           scrollToOverflowEnabled={false}
           showsVerticalScrollIndicator={false}>
           {/* <Text style={styles.header}>Payment</Text> */}
-          <Padding />
-          <Padding />
           <Padding />
           {/* <Notes
             name={'Order Notes'}
@@ -110,12 +113,6 @@ const PaymentScreen = (props: any) => {
         <OrderBottom price={totalPrice} onPress={makeOrder} />
       </SafeAreaView>
       <SafeAreaView style={styles.bottomSafeAreaView} />
-      <TopBar
-        onPress={() => props.navigation.goBack()}
-        text={'Payment'}
-        iconName={'chevron-left'}
-        iconType={'feather'}
-      />
     </Fragment>
   );
 };

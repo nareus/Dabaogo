@@ -18,25 +18,20 @@ const ChangeRestaurantScreen = (props: any) => {
 
   return (
     <View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Padding />
-        <Padding />
-        <Padding />
-        <Padding />
-        <Padding />
-        <RestaurantScroll
-          onPress={(restaurant: IRestaurant) =>
-            dispatch(addOrRemoveRestaurant(restaurant))
-          }
-        />
-      </ScrollView>
       <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Change Restaurant'}
         iconName={'chevron-left'}
         iconType={'feather'}
       />
-
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <RestaurantScroll
+          onPress={(restaurant: IRestaurant) =>
+            dispatch(addOrRemoveRestaurant(restaurant))
+          }
+        />
+        <View style={{padding: 120}} />
+      </ScrollView>
       {restaurantsSelected.length === 0 ? <></> : <ChangeRestaurantBottom />}
     </View>
   );

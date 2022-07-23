@@ -7,6 +7,8 @@ import {Text} from 'react-native-elements';
 import {BACKGROUND_COLOR, PRIMARY, SECONDARY} from '../../styles/colors';
 import {PADDING_LEFT} from '../../styles/spacing';
 import GeneralButton from '../atoms/GeneralButton';
+import {useSelector} from 'react-redux';
+import RootState from '../../redux';
 
 const TopBarHome = ({
   selectionState,
@@ -14,12 +16,13 @@ const TopBarHome = ({
   onRightPress,
   onPressProfile,
 }) => {
+  const {user} = useSelector((state: RootState) => state.user);
   return (
     <View style={styles.topBar}>
       <View style={styles.topIcons}>
         <View style={styles.icons}>
           <Icon name="navigation" type="feather" size={24} />
-          <Text style={styles.location}>Tembusu College</Text>
+          <Text style={styles.location}>{user.location}</Text>
         </View>
         <View style={styles.icons}>
           <GeneralButton

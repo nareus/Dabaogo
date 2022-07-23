@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     position: 'absolute',
     width: '100%',
+    paddingBottom: PADDING_LEFT * 5,
     // marginTop: PADDING_LEFT,
   },
   // container: {

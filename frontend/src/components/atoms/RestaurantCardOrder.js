@@ -34,8 +34,6 @@ const RestaurantCardOrder = ({name, location, typeOfStore, transporters}) => {
 const styles = StyleSheet.create({
   image: {
     width: '100%',
-    borderTopLeftRadius: BORDER_RADIUS,
-    borderTopRightRadius: BORDER_RADIUS,
     flex: 3,
   },
   details: {
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
   },
   restaurantName: {
     fontWeight: 'bold',
-    fontSize: 28,
+    fontSize: 26,
     color: 'black',
   },
   alignmentContainer: {
@@ -75,9 +73,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   card: {
-    height: 328,
+    height: 270,
     backgroundColor: 'white',
-    borderRadius: BORDER_RADIUS,
     display: 'flex',
     elevation: 2,
   },

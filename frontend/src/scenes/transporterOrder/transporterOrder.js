@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-elements';
 import Padding from '../../components/atoms/Padding';
 import TransporterConfirmBottom from '../../components/molecules/TransporterConfirmBottom';
@@ -24,8 +24,6 @@ import TopBar from '../../components/molecules/TopBar';
 // }
 
 const TransporterOrder = props => {
-  // console.log(props.route.params);
-
   const [buttonTitle, setButtonTitle] = useState('Confirm');
   const [count, setCount] = useState(1);
   const [stage, setStage] = useState([false, false, false, false]);
@@ -63,7 +61,6 @@ const TransporterOrder = props => {
       if (count === 5) {
         props.navigation.navigate('Home');
       }
-      //console.log(response)
     }
   };
 
@@ -78,50 +75,47 @@ const TransporterOrder = props => {
     */
 
   return (
-    <Fragment>
-      <SafeAreaView style={styles.topSafeAreaView}>
-        <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
-          <Text style={styles.header}>Transporter Order</Text>
-          <Padding />
-          <TransporterOrderProgress
-            isDone={stage}
-            currentStatus={currentStatus}
-            pulseState={pulseState}
-          />
-          <Padding />
-          <TransporterOrderCard
-            location={'Tembusu College'}
-            orders={'1x Chicken Chop Rice'}
-            price={'$5.50'}
-          />
-          <Padding />
-          <TransporterOrderCard
-            location={'Tembusu College'}
-            orders={'2x Vinegar Beef Noodles (Dry)'}
-            price={'$11.00'}
-          />
-          <Padding />
-          <TransporterOrderCard
-            location={'Tembusu College'}
-            orders={'1x Chili Oil Chive Dumplings (6 pcs)'}
-            price={'$3.90'}
-          />
-          <Padding />
-        </ScrollView>
-        <TransporterConfirmBottom
-          price={'20.40'}
-          onPress={handlePress}
-          buttonTitle={buttonTitle}
-        />
-      </SafeAreaView>
-      <SafeAreaView style={styles.bottomSafeAreaView} />
+    <View style={styles.topSafeAreaView}>
       <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Transport Status'}
         iconName={'chevron-left'}
         iconType={'feather'}
       />
-    </Fragment>
+      <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
+        <Text style={styles.header}>Transporter Order</Text>
+        <Padding />
+        <TransporterOrderProgress
+          isDone={stage}
+          currentStatus={currentStatus}
+          pulseState={pulseState}
+        />
+        <Padding />
+        <TransporterOrderCard
+          location={'Tembusu College'}
+          orders={'1x Chicken Chop Rice'}
+          price={'$5.50'}
+        />
+        <Padding />
+        <TransporterOrderCard
+          location={'Tembusu College'}
+          orders={'2x Vinegar Beef Noodles (Dry)'}
+          price={'$11.00'}
+        />
+        <Padding />
+        <TransporterOrderCard
+          location={'Tembusu College'}
+          orders={'1x Chili Oil Chive Dumplings (6 pcs)'}
+          price={'$3.90'}
+        />
+        <Padding />
+      </ScrollView>
+      <TransporterConfirmBottom
+        price={'20.40'}
+        onPress={handlePress}
+        buttonTitle={buttonTitle}
+      />
+    </View>
   );
 };
 
