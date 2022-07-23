@@ -106,3 +106,10 @@ export const formatAMPM = (oldDate: Date, diff: number) => {
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 };
+
+export const convertToDate = (date: string) => {
+  const minutes = parseInt(date.split(':')[1].split(' ')[0], 10);
+  const newDate = new Date();
+  newDate.setMinutes(minutes);
+  return newDate;
+};

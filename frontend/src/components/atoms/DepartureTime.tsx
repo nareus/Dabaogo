@@ -7,16 +7,9 @@ import DatePicker from 'react-native-date-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux';
 import {changeDepartureTime} from '../../redux/transporterSlice';
-import {formatAMPM} from '../../constants';
+import {convertToDate, formatAMPM} from '../../constants';
 
 const DepartureTime = () => {
-  const convertToDate = (date: string) => {
-    const minutes = parseInt(date.split(':')[1].split(' ')[0], 10);
-    const newDate = new Date();
-    newDate.setMinutes(minutes);
-    return newDate;
-  };
-
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const {departureTime} = useSelector((state: RootState) => state.transporter);

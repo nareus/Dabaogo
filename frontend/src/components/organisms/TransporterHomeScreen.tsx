@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import OrdersToTakeUp from '../molecules/OrdersToTakeUp';
 import DepartureTime from '../atoms/DepartureTime';
 import BottomBarTransporterHome from '../molecules/BottomBarTransporterHome';
@@ -7,11 +7,13 @@ import RestaurantToVisit from '../atoms/RestaurantToVisit';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import axios from 'axios';
 import {BACKEND_URL} from '../../utils/links';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {RootState} from '../../redux';
 import {IRestaurant} from '../../redux/transporterSlice';
 import Padding from '../atoms/Padding';
+import {convertToDate} from '../../constants';
+import {userLogin} from '../../redux/userSlice';
 
 const TransporterHomeScreen = (props: any) => {
   const deliveryFee = 1.0;
@@ -22,6 +24,7 @@ const TransporterHomeScreen = (props: any) => {
     (state: RootState) => state.transporter,
   );
   const {user} = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   const orderToTakeupInc = () => {
     setCount(count + 1);
@@ -56,6 +59,10 @@ const TransporterHomeScreen = (props: any) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/transporters`, data);
       if (response.status === 200) {
+        const resp = await axios.get(
+          `${BACKEND_URL}/users?userId=${user.userId}}`,
+        );
+        dispatch(userLogin(resp.data[0]));
         props.navigate();
       }
     } catch (error) {
@@ -79,7 +86,18 @@ const TransporterHomeScreen = (props: any) => {
         <Padding />
       </View>
       <View style={styles.bottomBar}>
-        <BottomBarTransporterHome price={totalPrice} onPress={onPress} />
+        <BottomBarTransporterHome
+          price={totalPrice}
+          onPress={() =>
+            restaurantsSelected.length === 0
+              ? Alert.alert('Please Select Restaurants')
+              : convertToDate(departureTime) >= new Date()
+              ? onPress()
+              : Alert.alert(
+                  'The departure time has passed, please select a new departure time',
+                )
+          }
+        />
       </View>
     </View>
   );
