@@ -137,7 +137,7 @@ async function cancelOrder (req, res) {
     const io = req.io
 
     //Get transporter that is assigned to order 
-    const searchOrder = "SELECT * FROM Orders WHERE orderId=?";
+    const searchOrder = "SELECT * FROM Orders WHERE orderId=? and delivered=0";
     const searchOrderQuery = mysql.format(searchOrder, [orderId]);
     const order = await query(searchOrderQuery)
     const transporterId = order[0].transporterId
@@ -147,7 +147,8 @@ async function cancelOrder (req, res) {
 
 
     //Reset number of transporters in outlet if changed
-    if(transporter[0].maxOutlets == transporter[0].ordersTaken) {
+    console.log(transporter[0].maxOrders == transporter[0].ordersTaken, order[0].transporterId)
+    if(transporter[0].maxOrders == transporter[0].ordersTaken) {
         const update = "UPDATE Transporters SET available = 1 WHERE transporterId = ?"
         const updateQuery = mysql.format(update, [order[0].transporterId])
         await query(updateQuery)
@@ -269,7 +270,7 @@ async function updateOrder(req, res) {
     }
 
     //emit transporter status through socket server
-    req.io.of('/transporterStatus').to(id).emit('update', 'hi')
+    req.io.of('/transporterStatus').to(id).emit('update', status)
     //req.io.of('/transporterStatus').emit('update', status)
 }
 
