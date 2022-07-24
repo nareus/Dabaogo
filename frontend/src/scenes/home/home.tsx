@@ -24,7 +24,7 @@ import {BACKEND_URL} from '../../utils/links';
 const HomeScreen = (props: any) => {
   const {user} = useSelector((state: RootState) => state.user);
   const [toggleState, setToggleState] = useState(
-    user.currOrderId === null || !user.isTransporter,
+    user.currOrderId === null && !user.isTransporter,
   );
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -33,6 +33,7 @@ const HomeScreen = (props: any) => {
     props.navigation.navigate('Landing');
   };
 
+  console.log('current order id is', user.currOrderId);
   useEffect(() => {
     const socket = io(`${BACKEND_URL}/updateOutlets`);
 
@@ -57,7 +58,6 @@ const HomeScreen = (props: any) => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <TopBarHome
-          selectionState={!toggleState}
           onPressProfile={onPressLogout}
           onLeftPress={() => setToggleState(false)}
           onRightPress={() => {

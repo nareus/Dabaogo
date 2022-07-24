@@ -7,14 +7,13 @@ import {BACKGROUND_COLOR, PRIMARY, SECONDARY} from '../../styles/colors';
 import {PADDING_LEFT} from '../../styles/spacing';
 import GeneralButton from '../atoms/GeneralButton';
 import {useSelector} from 'react-redux';
-import RootState from '../../redux';
+import {RootState} from '../../redux';
 import HomeToggle from '../atoms/HomeToggle';
 
-const TopBarHome = ({
-  selectionState,
-  onLeftPress,
-  onRightPress,
-  onPressProfile,
+const TopBarHome = (props: {
+  onLeftPress: Function;
+  onRightPress: Function;
+  onPressProfile: Function;
 }) => {
   const {user} = useSelector((state: RootState) => state.user);
   console.log('isTransporter', user.isTransporter);
@@ -37,7 +36,7 @@ const TopBarHome = ({
           />
           <View style={{padding: 4}} />
           <GeneralButton
-            onPress={onPressProfile}
+            onPress={props.onPressProfile}
             iconName="log-out"
             iconType="feather"
             backgroundColor={BACKGROUND_COLOR}
@@ -49,11 +48,8 @@ const TopBarHome = ({
       </View>
       <View style={{marginBottom: PADDING_LEFT}}>
         <HomeToggle
-          hasOrder={user.currOrderId !== null}
-          isTransporter={user.isTransporter}
-          initialState={selectionState}
-          onAvailablePress={onLeftPress}
-          onTransporterPress={onRightPress}
+          onAvailablePress={props.onLeftPress}
+          onTransporterPress={props.onRightPress}
           selectionColor={PRIMARY}
           unselectionColor={SECONDARY}
           leftContent={'Available Restaurants'}

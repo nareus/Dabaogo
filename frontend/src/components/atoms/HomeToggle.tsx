@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
@@ -6,28 +7,30 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
-  StyleSheet,
   Alert,
 } from 'react-native';
 import {BORDER_RADIUS} from '../../styles/mixins';
 
-const HomeToggle = ({
-  hasOrder,
-  isTransporter,
-  onAvailablePress,
-  onTransporterPress,
-  initialState,
-  unselectionColor,
-  selectionColor,
-  leftContent,
-  rightContent,
-  height,
-  width,
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux';
+
+const HomeToggle = (props: {
+  onAvailablePress: Function;
+  onTransporterPress: Function;
+  unselectionColor: string;
+  selectionColor: string;
+  leftContent: string;
+  rightContent: string;
+  height: number;
+  width: number;
 }) => {
-  const [active, setActive] = useState(initialState);
+  const {user} = useSelector((state: RootState) => state.user);
+  const [active, setActive] = useState(
+    user.currOrderId === null || !user.isTransporter,
+  );
   let transformX = useRef(new Animated.Value(0)).current;
-  const WIDTH = height;
-  const HEIGHT = width;
+  const WIDTH = props.height;
+  const HEIGHT = props.width;
 
   useEffect(() => {
     if (active) {
@@ -43,16 +46,15 @@ const HomeToggle = ({
         useNativeDriver: true,
       }).start();
     }
-  }, [active]);
+  }, [active, transformX]);
 
   const rotationX = transformX.interpolate({
     inputRange: [0, 1],
     outputRange: [0, WIDTH / 2],
   });
 
-  console.log(hasOrder);
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView>
       <View
         style={{
           left: Dimensions.get('screen').width / 2 - WIDTH / 2,
@@ -61,7 +63,7 @@ const HomeToggle = ({
           height: HEIGHT,
           width: WIDTH,
           borderRadius: BORDER_RADIUS,
-          backgroundColor: unselectionColor,
+          backgroundColor: props.unselectionColor,
         }}>
         <Animated.View
           style={{
@@ -76,7 +78,7 @@ const HomeToggle = ({
                 translateX: rotationX,
               },
             ],
-            backgroundColor: selectionColor,
+            backgroundColor: props.selectionColor,
           }}
         />
         <TouchableOpacity
@@ -86,22 +88,23 @@ const HomeToggle = ({
             alignItems: 'center',
           }}
           onPress={() => {
-            if (!hasOrder) {
+            if (user.isTransporter) {
+              console.log('user is transporter');
+              // setActive(true);
+              //   if (!active) {
+              // props.onAvailablePress();
+              //   }
+            } else if (user.currOrderId === null) {
               setActive(false);
               if (active) {
-                onTransporterPress();
+                props.onTransporterPress();
               }
-            } else if (!isTransporter) {
-              setActive(false);
-              //   if (active) {
-              onTransporterPress();
-              //   }
             } else {
               Alert.alert('You currently have an order in progress');
             }
           }}>
           <Text style={{color: active ? 'black' : 'white', fontWeight: 'bold'}}>
-            {leftContent}
+            {props.leftContent}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -111,35 +114,27 @@ const HomeToggle = ({
             alignItems: 'center',
           }}
           onPress={() => {
-            if (!hasOrder) {
+            if (user.currOrderId === null) {
               setActive(true);
               if (!active) {
-                onAvailablePress();
+                props.onAvailablePress();
               }
-            } else if (isTransporter) {
-              setActive(true);
-              //   if (!active) {
-              onAvailablePress();
+            } else if (!user.isTransporter) {
+              // setActive(false);
+              // //   if (active) {
+              // props.onTransporterPress();
               //   }
             } else {
               Alert.alert('You currently have an order in progress');
             }
           }}>
           <Text style={{color: active ? 'white' : 'black', fontWeight: 'bold'}}>
-            {rightContent}
+            {props.rightContent}
           </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = props =>
-  StyleSheet.create({
-    safeAreaView: {
-      width: props.WIDTH,
-      alignItems: 'center',
-    },
-  });
 
 export default HomeToggle;
