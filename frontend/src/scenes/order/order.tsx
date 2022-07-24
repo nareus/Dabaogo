@@ -12,7 +12,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import RestaurantCardOrder from '../../components/atoms/RestaurantCardOrder';
 import MaxOrderStatusBar from '../../components/molecules/MaxOrderStatusBar';
 import OrderCheckout from '../../components/molecules/OrderCheckout';
-import PopularDishesScroll from '../../components/molecules/PopularDishesScroll';
 import TopBar from '../../components/molecules/TopBar';
 import RestOfMenuItems from '../../components/organisms/RestOfMenuItems';
 import {RootState} from '../../redux';
@@ -20,6 +19,7 @@ import {BACKGROUND_COLOR} from '../../styles/colors';
 import {BACKEND_URL} from '../../utils/links';
 import {io} from 'socket.io-client';
 import {updateUser} from '../../redux/userSlice';
+import {updateCurrMaxOrder} from '../../redux/restaurantsSlice';
 
 interface IFoodItem {
   foodId: number;
@@ -40,12 +40,11 @@ const OrderScreen = props => {
   const {outletId, name, typeOfStore, transporters} = props.route.params.data;
   const [restaurantName, restaurantLocation] = name.split(' - ');
 
-  const [maxOrder, updateMaxOrder] = useState(0);
   const {user} = useSelector((state: RootState) => state.user);
+  const {currMaxOrder} = useSelector((state: RootState) => state.restaurants);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getData();
     const socket = io(`${BACKEND_URL}/maxOrders`);
 
     socket.emit('join', user.userId, outletId);
@@ -53,8 +52,9 @@ const OrderScreen = props => {
       // console.log(socket.connected);
     });
     socket.on('update', orderNum => {
-      updateMaxOrder(orderNum);
+      dispatch(updateCurrMaxOrder(orderNum));
     });
+    getData();
 
     return () => {
       setPopularMenu([]);
@@ -62,7 +62,6 @@ const OrderScreen = props => {
       setLoading(true);
       setPrice([]);
       setOrder([]);
-      updateMaxOrder(0);
     };
   }, []);
 
@@ -105,7 +104,7 @@ const OrderScreen = props => {
   };
 
   const onViewBasketPress = async () => {
-    if (order.length > maxOrder) {
+    if (order.length > currMaxOrder) {
       return Alert.alert(
         'Maximum number of orders exceeded, please reduce number of orders',
       );
@@ -153,7 +152,7 @@ const OrderScreen = props => {
             iconName={'chevron-left'}
             iconType={'feather'}
           />
-          <MaxOrderStatusBar outletId={outletId} />
+          <MaxOrderStatusBar />
           {/* <TopBarAuth /> */}
           <>
             <ScrollView showsVerticalScrollIndicator={false}>

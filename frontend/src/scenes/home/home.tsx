@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
 import {useDispatch, useSelector} from 'react-redux';
 import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
@@ -17,6 +17,7 @@ import {BACKEND_URL} from '../../utils/links';
 
 const HomeScreen = (props: any) => {
   const [toggleState, setToggleState] = useState(true);
+  const [loading, setLoading] = useState(true);
   const {user} = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const onPressLogout = () => {
@@ -32,6 +33,7 @@ const HomeScreen = (props: any) => {
       // console.log(socket.connected);
     });
     socket.on('update', data => {
+      setLoading(false);
       dispatch(updateRestaurants(data));
     });
     return () => {
@@ -39,7 +41,11 @@ const HomeScreen = (props: any) => {
     };
   }, [dispatch, user.userId]);
 
-  return (
+  return loading ? (
+    <>
+      <ActivityIndicator />
+    </>
+  ) : (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <TopBarHome

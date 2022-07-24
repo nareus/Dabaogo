@@ -25,6 +25,7 @@ const FormErrorAndSubmit = props => {
     setErrorBody(tempErrorBody);
     if (!error) {
       await getUserDetails(userId);
+      console.log('hello');
       props.navigate();
     }
   };
