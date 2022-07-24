@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import Toggle from '../atoms/Toggle';
 // import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Icon} from '@rneui/themed';
 import {Text} from 'react-native-elements';
@@ -9,6 +8,7 @@ import {PADDING_LEFT} from '../../styles/spacing';
 import GeneralButton from '../atoms/GeneralButton';
 import {useSelector} from 'react-redux';
 import RootState from '../../redux';
+import HomeToggle from '../atoms/HomeToggle';
 
 const TopBarHome = ({
   selectionState,
@@ -17,6 +17,7 @@ const TopBarHome = ({
   onPressProfile,
 }) => {
   const {user} = useSelector((state: RootState) => state.user);
+  console.log('isTransporter', user.isTransporter);
   return (
     <View style={styles.topBar}>
       <View style={styles.topIcons}>
@@ -47,10 +48,12 @@ const TopBarHome = ({
         </View>
       </View>
       <View style={{marginBottom: PADDING_LEFT}}>
-        <Toggle
+        <HomeToggle
+          hasOrder={user.currOrderId !== null}
+          isTransporter={user.isTransporter}
           initialState={selectionState}
-          onSignInPress={onLeftPress}
-          onSignUpPress={onRightPress}
+          onAvailablePress={onLeftPress}
+          onTransporterPress={onRightPress}
           selectionColor={PRIMARY}
           unselectionColor={SECONDARY}
           leftContent={'Available Restaurants'}

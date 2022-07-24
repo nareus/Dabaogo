@@ -70,6 +70,8 @@ const OrderProgress = ({
     return () => {
       getData();
       setLoading(true);
+      setTransporter({});
+      setOrderDetails({});
     };
   }, []);
 
