@@ -39,34 +39,34 @@ const OrderProgress = ({
   //   getData();
   // }, 10000);
 
-  const getData = async () => {
-    try {
-      const responseTransporter = await axios.get(
-        `${BACKEND_URL}/transporters?transporterId=${transporterId}`,
-      );
-      setTransporter(responseTransporter.data[0]);
-      const response = await axios.get(
-        `${BACKEND_URL}/orders?orderId=${orderId}`,
-      );
-      setOrderDetails(response.data[0]);
-      // setIsDone(
-      //   orderDetails.foundTransporter,
-      //   orderDetails.reachedOutlet,
-      //   orderDetails.orderPickedUp,
-      //   orderDetails.delivered,
-      //   false,
-      // );
-      // setMenuItems(response.data.popular);
-      // setMainMenu(response.data.restOfItems);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getData();
+    const getData = async () => {
+      try {
+        const responseTransporter = await axios.get(
+          `${BACKEND_URL}/transporters?transporterId=${transporterId}`,
+        );
+        setTransporter(responseTransporter.data[0]);
+        const response = await axios.get(
+          `${BACKEND_URL}/orders?orderId=${orderId}`,
+        );
+        setOrderDetails(response.data[0]);
+        // setIsDone(
+        //   orderDetails.foundTransporter,
+        //   orderDetails.reachedOutlet,
+        //   orderDetails.orderPickedUp,
+        //   orderDetails.delivered,
+        //   false,
+        // );
+        // setMenuItems(response.data.popular);
+        // setMainMenu(response.data.restOfItems);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+
+      getData().catch(console.error);
+    };
     return () => {
       getData();
       setLoading(true);

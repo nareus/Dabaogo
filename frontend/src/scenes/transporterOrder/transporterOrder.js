@@ -83,7 +83,6 @@ const TransporterOrder = props => {
         iconType={'feather'}
       />
       <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
-        <Text style={styles.header}>Transporter Order</Text>
         <Padding />
         <TransporterOrderProgress
           isDone={stage}

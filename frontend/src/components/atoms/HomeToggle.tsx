@@ -26,7 +26,7 @@ const HomeToggle = (props: {
 }) => {
   const {user} = useSelector((state: RootState) => state.user);
   const [active, setActive] = useState(
-    user.currOrderId === null || !user.isTransporter,
+    user.currOrderId === null && user.isTransporter,
   );
   let transformX = useRef(new Animated.Value(0)).current;
   const WIDTH = props.height;
@@ -94,13 +94,12 @@ const HomeToggle = (props: {
               //   if (!active) {
               // props.onAvailablePress();
               //   }
+              Alert.alert('You currently have an order in progress');
             } else if (user.currOrderId === null) {
-              setActive(false);
+              setActive(0);
               if (active) {
                 props.onTransporterPress();
               }
-            } else {
-              Alert.alert('You currently have an order in progress');
             }
           }}>
           <Text style={{color: active ? 'black' : 'white', fontWeight: 'bold'}}>
@@ -115,7 +114,7 @@ const HomeToggle = (props: {
           }}
           onPress={() => {
             if (user.currOrderId === null) {
-              setActive(true);
+              setActive(1);
               if (!active) {
                 props.onAvailablePress();
               }
@@ -124,7 +123,6 @@ const HomeToggle = (props: {
               // //   if (active) {
               // props.onTransporterPress();
               //   }
-            } else {
               Alert.alert('You currently have an order in progress');
             }
           }}>
