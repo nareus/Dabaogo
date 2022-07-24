@@ -28,19 +28,20 @@ async function getOrders(transporterId) {
     const notConfirmed = await query(searchQuery2);
 
     if (notConfirmed.length == 0) {
-        res.json(
+        return(
             {
                 items : confirmed, 
                 processing: true
             }
             )
     } else {
-        res.json(
+        return(
             {
                 items : confirmed, 
                 processing: false
             }
-            )
+        )
+            
     }
 }
 

@@ -11,7 +11,7 @@ const io = new Server(server);
 const util = require("util");
 const maxOrders = require('./listeners/maxOrders')
 const outlet = require("./listeners/outlets.js")
-const transporterOrder = require("./listeners/outlets.js")
+const transporterOrder = require("./listeners/transporterOrder.js")
 
 //Importing Routes
 const register = require('./routes/register.js')
@@ -92,16 +92,16 @@ io.of("/transporterStatus").on('connection', (socket) => {
 
 io.of("/updateOutlets").on('connection', async (socket) => {
     socket.on("join", async (userId) => {
-        // console.log(userId)
-        // const search = "SELECT * FROM Users WHERE userId=?";
-        // const searchQuery = mysql.format(search, [userId]);
-        // const result = await query(searchQuery);
-        // const room = result[0].location
-        // const newOutlets = await outlet.loadOutlets(result[0].location)
-        // console.log("join: " + room);
-        // await socket.join(room);
-        // console.log(socket.rooms);
-        // socket.emit('update', newOutlets)
+        console.log(userId)
+        const search = "SELECT * FROM Users WHERE userId=?";
+        const searchQuery = mysql.format(search, [userId]);
+        const result = await query(searchQuery);
+        const room = result[0].location
+        const newOutlets = await outlet.loadOutlets(result[0].location)
+        console.log("join: " + room);
+        await socket.join(room);
+        console.log(socket.rooms);
+        socket.emit('update', newOutlets)
         
 
       });
@@ -126,24 +126,15 @@ io.of("/maxOrders").on('connection', (socket) => {
         socket.emit('update', max)
       });
 })
-io.of("/transporterOrder").on('connection', (socket) => {
-    socket.on("join", async (userId, outletId) => {
-        const search = "SELECT * FROM Users WHERE userId=?";
-        const searchQuery = mysql.format(search, [userId]);
-        const result = await query(searchQuery);
-        const location = result[0].location
-        // const orderId = result[0].currOrderId
-        // const searchOrder = "SELECT * FROM Orders WHERE orderId=?";
-        // const searchOrderQuery = mysql.format(searchOrder, [orderId]);
-        // const order = await query(searchOrderQuery);
-        // const outletId = order[0].outletId
-        const max = await maxOrders.getMaxOrders(location, outletId)
-        console.log(max)
-        const room = location + outletId.toString()
-        console.log("join: " + room);
+io.of("/transporterOrders").on('connection', (socket) => {
+    socket.on("join", async (transporterId) => {
+        const orders = await transporterOrder.getOrders(transporterId)
+        console.log(orders)
+        const room = transporterId
+        console.log("join: " + typeof room);
         await socket.join(room);
         console.log(socket.rooms);
-        socket.emit('update', max)
+        socket.emit('update', orders)
       });
 } )
 

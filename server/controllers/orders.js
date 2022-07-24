@@ -3,7 +3,8 @@ const app = express()
 const mysql = require("mysql")
 const util = require("util");
 const outlet = require("../listeners/outlets")
-const getMaxOrders = require('../listeners/maxOrders'); 
+const getMaxOrders = require('../listeners/maxOrders');
+const transporterOrders = require('../listeners/transporterOrder')
 
 //Use json format for data
 app.use(express.json());
@@ -120,6 +121,11 @@ async function createOrder(req, res) {
         const updateBuyer = mysql.format(update, [id, buyerId])
         await query(updateBuyer)
 
+        //emit transporter orders socket
+        const orders = await transporterOrders.getOrders(transporter.transporterId)
+        const ordersRoom = transporter.transporterId.toString()
+        io.of('/transporterOrders').to(ordersRoom).emit('update', orders)
+
         //send Id of the order
         res.json({id: id}); 
     }
@@ -164,11 +170,9 @@ async function cancelOrder (req, res) {
     await query(updateTransporterQuery)
 
     //emit max orders socket
-
     const max = await getMaxOrders.getMaxOrders(location, order[0].outletId)
     const room = location.concat(order[0].outletId.toString())
     io.of('/maxOrders').to(room).emit('update', max)
-
 
     //Reset Users current order
     const update = "UPDATE Users SET currOrderId = NULL  WHERE userId =?"
@@ -179,6 +183,12 @@ async function cancelOrder (req, res) {
     const del = "DELETE FROM Orders WHERE orderId=?";
     const deleteQuery = mysql.format(del, [orderId])
     await query(deleteQuery);
+
+    //emit transporter orders socket
+    const orders = await transporterOrders.getOrders(transporterId)
+    const ordersRoom = transporterId.toString()
+    console.log(ordersRoom)
+    io.of('/transporterOrders').to(ordersRoom).emit('update', orders)
 
     res.send("updated")
 }
@@ -201,6 +211,13 @@ async function confirmOrder(req, res){
     const searchQueryt = mysql.format(searcht, [userId]);
     const result = await query(searchQueryt);
     const transporterId = result[0].transporterId;
+
+    //emit transporter orders socket
+    const io = req.io
+    const orders = await transporterOrders.getOrders(transporterId)
+    const ordersRoom = transporterId.toString()
+    console.log(ordersRoom)
+    io.of('/transporterOrders').to(ordersRoom).emit('update', orders)
 
     res.send('confirmed')
 }
