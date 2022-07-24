@@ -1,5 +1,11 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import TopBarHome from '../../components/molecules/TopBarHome';
 import {useDispatch, useSelector} from 'react-redux';
 import BuyerHomeScreen from '../../components/organisms/BuyerHomeScreen';
@@ -16,9 +22,11 @@ import {io} from 'socket.io-client';
 import {BACKEND_URL} from '../../utils/links';
 
 const HomeScreen = (props: any) => {
-  const [toggleState, setToggleState] = useState(true);
-  const [loading, setLoading] = useState(true);
   const {user} = useSelector((state: RootState) => state.user);
+  const [toggleState, setToggleState] = useState(
+    user.currOrderId === null || !user.isTransporter,
+  );
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const onPressLogout = () => {
     dispatch(userLogout());
@@ -49,7 +57,7 @@ const HomeScreen = (props: any) => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <TopBarHome
-          selectionState={props.home}
+          selectionState={!toggleState}
           onPressProfile={onPressLogout}
           onLeftPress={() => setToggleState(false)}
           onRightPress={() => {
@@ -59,11 +67,13 @@ const HomeScreen = (props: any) => {
         />
         {toggleState ? (
           <BuyerHomeScreen
-            navigate={(data: IRestaurant) =>
-              props.navigation.navigate('Order', {
-                data: data,
-              })
-            }
+            navigate={(data: IRestaurant) => {
+              user.currOrderId !== null
+                ? Alert.alert('You currently have an order in progress')
+                : props.navigation.navigate('Order', {
+                    data: data,
+                  });
+            }}
           />
         ) : (
           <TransporterHomeScreen
