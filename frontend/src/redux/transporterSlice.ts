@@ -1,16 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {formatAMPM} from '../constants';
-
-export interface IRestaurant {
-  outletId: string;
-  name: string;
-  available: boolean;
-  transporters: number;
-  typeOfStore: string;
-  latitude: number;
-  longitude: number;
-  imagePath: string;
-}
+import {IRestaurant} from './restaurantsSlice';
 
 let temp: IRestaurant[] = [];
 

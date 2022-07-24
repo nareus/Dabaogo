@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import Padding from '../../components/atoms/Padding';
 import ChangeRestaurantBottom from '../../components/molecules/ChangeRestaurantBottom';
 import RestaurantScroll from '../../components/molecules/RestaurantScroll';
 import TopBar from '../../components/molecules/TopBar';
 import {RootState} from '../../redux';
-import {addOrRemoveRestaurant, IRestaurant} from '../../redux/transporterSlice';
+import {addOrRemoveRestaurant} from '../../redux/transporterSlice';
+import {IRestaurant} from '../../redux/restaurantsSlice';
 
 const ChangeRestaurantScreen = (props: any) => {
   const dispatch = useDispatch();

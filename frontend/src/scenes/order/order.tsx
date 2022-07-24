@@ -43,28 +43,28 @@ const OrderScreen = props => {
   const [maxOrder, updateMaxOrder] = useState(0);
   const {user} = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const userId = user.userId;
-  console.log(userId);
 
-  const socket = io(`${BACKEND_URL}/maxOrders`);
+  useEffect(() => {
+    getData();
+    const socket = io(`${BACKEND_URL}/maxOrders`);
 
-  socket.emit('join', userId, outletId);
-  socket.on('connect', () => {
-    // console.log(socket.connected);
-  });
-  socket.on('update', orderNum => {
-    console.log(orderNum);
-    updateMaxOrder(orderNum);
-  });
+    socket.emit('join', user.userId, outletId);
+    socket.on('connect', () => {
+      // console.log(socket.connected);
+    });
+    socket.on('update', orderNum => {
+      updateMaxOrder(orderNum);
+    });
 
-  // const getMaxOrders = async () => {
-  //   const response = await axios.get(
-  //     `${BACKEND_URL}/transporters/maxOrders?userId=${userId}&outletId=${outletId}`,
-  //   );
-  //   const data = response.data;
-  //   updateMaxOrder(data);
-  //   setLoading(false);
-  // };
+    return () => {
+      setPopularMenu([]);
+      setMainMenu([]);
+      setLoading(true);
+      setPrice([]);
+      setOrder([]);
+      updateMaxOrder(0);
+    };
+  }, []);
 
   const getData = async () => {
     try {
@@ -79,17 +79,6 @@ const OrderScreen = props => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    getData();
-    return () => {
-      setPopularMenu([]);
-      setMainMenu([]);
-      setLoading(true);
-      setPrice([]);
-      setOrder([]);
-    };
-  }, []);
 
   const addItem = (item, price) => {
     setPrice(oldArray => [...oldArray, price]);
@@ -151,59 +140,57 @@ const OrderScreen = props => {
   };
 
   return (
-    <View style={styles.container}>
-      <TopBar
-        onPress={() => props.navigation.goBack()}
-        text={restaurantName}
-        iconName={'chevron-left'}
-        iconType={'feather'}
-      />
-      <MaxOrderStatusBar outletId={outletId} />
-      {/* <TopBarAuth /> */}
+    <>
       {isLoading ? (
-        <ActivityIndicator />
+        <View>
+          <ActivityIndicator />
+        </View>
       ) : (
-        <>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <RestaurantCardOrder
-              name={restaurantName}
-              location={restaurantLocation}
-              typeOfStore={typeOfStore}
-              transporters={transporters}
-            />
-            {/* <MenuCategoryText text={'Popular Dishes'} /> */}
-            {/* <PopularDishesScroll
+        <View style={styles.container}>
+          <TopBar
+            onPress={() => props.navigation.goBack()}
+            text={restaurantName}
+            iconName={'chevron-left'}
+            iconType={'feather'}
+          />
+          <MaxOrderStatusBar outletId={outletId} />
+          {/* <TopBarAuth /> */}
+          <>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <RestaurantCardOrder
+                name={restaurantName}
+                location={restaurantLocation}
+                typeOfStore={typeOfStore}
+                transporters={transporters}
+              />
+              {/* <MenuCategoryText text={'Popular Dishes'} /> */}
+              {/* <PopularDishesScroll
               data={popularMenu}
               addItem={addItem}
               removeItem={removeItem}
             /> */}
-            <RestOfMenuItems
-              data={mainMenu}
-              addItem={addItem}
-              removeItem={removeItem}
+              <RestOfMenuItems
+                data={mainMenu}
+                addItem={addItem}
+                removeItem={removeItem}
+              />
+              <View style={{padding: 60}} />
+            </ScrollView>
+          </>
+          {order.length !== 0 ? (
+            <OrderCheckout
+              numItems={order.length}
+              totalPrice={totalPrice.reduce(
+                (accumulator, a) => accumulator + a,
+              )}
+              onPress={onViewBasketPress}
             />
-            <View style={{padding: 60}} />
-          </ScrollView>
-        </>
+          ) : (
+            <></>
+          )}
+        </View>
       )}
-
-      {order.length !== 0 ? (
-        <OrderCheckout
-          numItems={order.length}
-          totalPrice={totalPrice.reduce((accumulator, a) => accumulator + a)}
-          onPress={onViewBasketPress}
-        />
-      ) : (
-        <></>
-      )}
-
-      {/* <TopBar
-        onPress={() => props.navigation.goBack()}
-        text={restaurantName}
-        iconName={'chevron-left'}
-        iconType={'feather'}
-      /> */}
-    </View>
+    </>
   );
 };
 

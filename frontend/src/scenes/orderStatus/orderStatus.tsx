@@ -1,13 +1,9 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-elements';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import OrderLocationTracker from '../../components/atoms/OrderLocationTracker';
 import Padding from '../../components/atoms/Padding';
-import SignInUpButton from '../../components/atoms/SignInUpButton';
-import OrderBottom from '../../components/molecules/OrderBottom';
 import OrderProgress from '../../components/molecules/OrderProgress';
 import TopBar from '../../components/molecules/TopBar';
 import {convertToQuantity} from '../../constants';
@@ -24,7 +20,7 @@ const OrderStatusScreen = props => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `${BACKEND_URL}/orders?orderId=${user.userId}`,
+        `${BACKEND_URL}/orders?orderId=${user.currOrderId}`,
       );
       console.log(response.data);
       const {foods, outletId, transporterId} = response.data[0];
@@ -46,13 +42,13 @@ const OrderStatusScreen = props => {
     }
   };
 
-  const getMenuItems = async (outletId, foods) => {
+  const getMenuItems = async (outletId: number, foods: []) => {
     try {
       const response = await axios.get(
         `${BACKEND_URL}/menu?menuId=${outletId}`,
       );
       const restOfItems = response.data.restOfItems;
-      const filteredMenu = [];
+      const filteredMenu: Object = [];
       foods.forEach(itemId => {
         for (const [, value] of Object.entries(restOfItems)) {
           value.forEach(item => {
@@ -70,7 +66,7 @@ const OrderStatusScreen = props => {
     }
   };
 
-  const getTransporter = async transporterId => {
+  const getTransporter = async (transporterId: number) => {
     try {
       const responseTransporter = await axios.get(
         `${BACKEND_URL}/transporters?transporterId=${transporterId}`,
@@ -119,7 +115,7 @@ const OrderStatusScreen = props => {
             <View style={styles.container}>
               <Padding />
               <OrderProgress
-                orderId={orderId}
+                orderId={user.currOrderId}
                 arrivalTime={transporter.estimatedTime}
                 transporterId={transporter.userId}
                 transporterName={transporter.firstName + transporter.lastName}

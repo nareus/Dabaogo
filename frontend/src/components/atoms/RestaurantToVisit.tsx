@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux';
-import {IRestaurant} from '../../redux/transporterSlice';
+import {IRestaurant} from '../../redux/restaurantsSlice';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
 import ChangeButton from './TextButton';

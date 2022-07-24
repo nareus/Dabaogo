@@ -10,7 +10,7 @@ import {BACKEND_URL} from '../../utils/links';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {RootState} from '../../redux';
-import {IRestaurant} from '../../redux/transporterSlice';
+import {IRestaurant} from '../../redux/restaurantsSlice';
 import Padding from '../atoms/Padding';
 import {convertToDate} from '../../constants';
 import {updateUser} from '../../redux/userSlice';

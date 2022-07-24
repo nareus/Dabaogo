@@ -11,22 +11,27 @@ import axios from 'axios';
 const MaxOrderStatusBar = ({outletId}) => {
   const [maxOrder, updateMaxOrder] = useState(0);
   const {user} = useSelector((state: RootState) => state.user);
-  const userId = user.userId;
-  const socket = io(`${BACKEND_URL}/maxOrders`);
 
-  socket.emit('join', userId, outletId);
-  socket.on('connect', () => {
-    console.log(socket.connected);
-  });
-  socket.on('update', orderNum => {
-    console.log(orderNum);
-    updateMaxOrder(orderNum);
-  });
+  useEffect(() => {
+    const socket = io(`${BACKEND_URL}/maxOrders`);
+
+    socket.emit('join', user.userId, outletId);
+    socket.on('connect', () => {
+      console.log(socket.connected);
+    });
+    socket.on('update', orderNum => {
+      console.log(orderNum);
+      updateMaxOrder(orderNum);
+    });
+    return () => {
+      updateMaxOrder(0);
+    };
+  }, []);
 
   return (
     <View style={styles.bigContainer}>
       <View style={styles.container}>
-        <Text style={styles.text}>Max number of orders is: {maxOrder}</Text>
+        <Text style={styles.text}>Max number of orders is {maxOrder}</Text>
       </View>
     </View>
   );

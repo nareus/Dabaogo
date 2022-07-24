@@ -2,8 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux';
-import {IRestaurant} from '../../redux/transporterSlice';
-import {BORDER_RADIUS} from '../../styles/mixins';
+import {IRestaurant} from '../../redux/restaurantsSlice';
 import {PADDING_LEFT} from '../../styles/spacing';
 
 const ChangeRestaurantBottom = () => {

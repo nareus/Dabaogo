@@ -1,42 +1,17 @@
-import axios from 'axios';
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux';
-import {IRestaurant} from '../../redux/transporterSlice';
-import {BACKEND_URL} from '../../utils/links';
+import {IRestaurant} from '../../redux/restaurantsSlice';
 import Padding from '../atoms/Padding';
 import RestaurantCard from '../atoms/RestaurantCard';
 
 const RestaurantScroll = (props: any) => {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const {user} = useSelector((state: RootState) => state.user);
-  const getData = async () => {
-    try {
-      const response = await axios.get(
-        `${BACKEND_URL}/outlets?userId=${user.userId}`,
-      );
-      setData(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-    return () => {
-      setData([]);
-      setLoading(true);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {restaurants} = useSelector((state: RootState) => state.restaurants);
 
   const mapData = () =>
     props.isFilter
-      ? data
+      ? restaurants
           .filter((card: IRestaurant) => card.transporters > 0)
           .map((card: IRestaurant) => (
             <View key={card.outletId}>
@@ -54,7 +29,7 @@ const RestaurantScroll = (props: any) => {
               />
             </View>
           ))
-      : data.map((card: IRestaurant) => (
+      : restaurants.map((card: IRestaurant) => (
           <View key={card.outletId}>
             <Padding />
             <RestaurantCard
@@ -73,9 +48,10 @@ const RestaurantScroll = (props: any) => {
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
+      {/* {isLoading ? (
         <ActivityIndicator />
-      ) : mapData().length === 0 ? (
+      ) :  */}
+      {mapData().length === 0 ? (
         <View style={styles.noRestaurantAvailContainer}>
           <Text style={styles.noRestaurantAvaiLTest}>
             No Restaurants Available

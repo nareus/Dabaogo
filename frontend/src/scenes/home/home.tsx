@@ -9,8 +9,11 @@ import BottomUserState from '../../components/atoms/BottomUserState';
 import {RootState} from '../../redux';
 import {userLogout} from '../../redux/userSlice';
 import {PADDING_LEFT} from '../../styles/spacing';
-import {changeDepartureTime, IRestaurant} from '../../redux/transporterSlice';
+import {changeDepartureTime} from '../../redux/transporterSlice';
+import {IRestaurant, updateRestaurants} from '../../redux/restaurantsSlice';
 import {formatAMPM} from '../../constants';
+import {io} from 'socket.io-client';
+import {BACKEND_URL} from '../../utils/links';
 
 const HomeScreen = (props: any) => {
   const [toggleState, setToggleState] = useState(true);
@@ -22,10 +25,19 @@ const HomeScreen = (props: any) => {
   };
 
   useEffect(() => {
+    const socket = io(`${BACKEND_URL}/updateOutlets`);
+
+    socket.emit('join', user.userId);
+    socket.on('connect', () => {
+      // console.log(socket.connected);
+    });
+    socket.on('update', data => {
+      dispatch(updateRestaurants(data));
+    });
     return () => {
       setToggleState(true);
     };
-  }, []);
+  }, [dispatch, user.userId]);
 
   return (
     <View style={styles.container}>
@@ -53,7 +65,7 @@ const HomeScreen = (props: any) => {
           />
         )}
       </ScrollView>
-      {user.isTransporter ? (
+      {user.isTransporter || user.currOrderId !== null ? (
         <BottomUserState
           onPress={() => {
             user.isTransporter
