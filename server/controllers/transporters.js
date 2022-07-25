@@ -106,14 +106,14 @@ async function getOrders(req, res) {
     if (notConfirmed.length == 0) {
         res.json(
             {
-                items : confirmed, 
+                items : confirmed.concat(notConfirmed), 
                 processing: false
             }
             )
     } else {
         res.json(
             {
-                items : confirmed, 
+                items : confirmed.concat(notConfirmed), 
                 processing: true
             }
             )
