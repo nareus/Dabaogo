@@ -24,7 +24,7 @@ import {BACKEND_URL} from '../../utils/links';
 const HomeScreen = (props: any) => {
   const {user} = useSelector((state: RootState) => state.user);
   const [toggleState, setToggleState] = useState(
-    user.currOrderId === null && !user.isTransporter,
+    user.currOrderId !== null || !user.isTransporter,
   );
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();

@@ -74,7 +74,7 @@ connection.connect(err => {
 io.of("/transporterStatus").on('connection', (socket) => {
     socket.on("join", async (userId) => {
         const search = "SELECT * FROM Orders WHERE buyerId =? and delivered = 0";
-        const searchQuery = mysql.format(search, [roomName]);
+        const searchQuery = mysql.format(search, [userId]);
         const result = await query(searchQuery);
         const room = result[0].transporterId
         console.log("join: " + room);

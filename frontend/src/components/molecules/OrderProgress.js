@@ -8,6 +8,8 @@ import {BACKEND_URL} from '../../utils/links';
 import HalfPadding from '../atoms/HalfPadding';
 import OrderBottom from './OrderBottom';
 import ProgressBar from './ProgressBar';
+import {io} from 'socket.io-client';
+import {useSelector} from 'react-redux';
 
 const OrderProgress = ({
   orderId,
@@ -33,6 +35,7 @@ const OrderProgress = ({
   const [orderDetails, setOrderDetails] = useState({});
   const [transporter, setTransporter] = useState({});
   const [isLoading, setLoading] = useState(true);
+  const {user} = useSelector(state => state.user);
 
   // setTimeout(() => {
   //   console.log('getting data');
@@ -40,6 +43,15 @@ const OrderProgress = ({
   // }, 10000);
 
   useEffect(() => {
+    const socket = io(`${BACKEND_URL}/transporterStatus`);
+
+    socket.emit('join', user.userId);
+    socket.on('connect', () => {});
+    socket.on('update', data => {
+      console.log('dataItems is', data);
+      setLoading(false);
+    });
+
     const getData = async () => {
       try {
         const responseTransporter = await axios.get(
@@ -64,9 +76,8 @@ const OrderProgress = ({
       } finally {
         setLoading(false);
       }
-
-      getData().catch(console.error);
     };
+    getData().catch(console.error);
     return () => {
       getData();
       setLoading(true);

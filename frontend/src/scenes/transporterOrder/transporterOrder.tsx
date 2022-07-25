@@ -87,25 +87,27 @@ const TransporterOrder = props => {
         newStage[i] = true;
       }
       setStage(newStage);
-      await axios.put(`${BACKEND_URL}/orders`, {
-        stage: newStage,
-        transporterId: user.userId,
-      });
+      if (count < 5) {
+        await axios.put(`${BACKEND_URL}/orders`, {
+          stage: newStage,
+          transporterId: user.userId,
+        });
+      }
       if (count === 1) {
-        setButtonTitle('Reached Outlet');
         setCurrentStatus('On the way there');
+        setButtonTitle('Reached Outlet');
       }
       if (count === 2) {
-        setButtonTitle('Picked Up Food');
         setCurrentStatus('Waiting for food');
+        setButtonTitle('Picked Up Food');
       }
       if (count === 3) {
-        setButtonTitle('Delivered');
         setCurrentStatus('On the way back');
+        setButtonTitle('Delivered');
       }
       if (count === 4) {
-        setButtonTitle('Done');
         setCurrentStatus('Food has been delivered!');
+        setButtonTitle('Done');
       }
       if (count === 5) {
         await axios.delete(

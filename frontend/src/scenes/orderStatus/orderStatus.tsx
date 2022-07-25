@@ -13,7 +13,14 @@ import {BACKEND_URL} from '../../utils/links';
 const OrderStatusScreen = props => {
   const [isLoading, setLoading] = useState(true);
   const [menuItems, setMenuItems] = useState([]);
-  const [transporter, setTransporter] = useState({});
+  const [transporter, setTransporter] = useState({
+    estimatedTime: '',
+    firstName: '',
+    lastName: '',
+    userId: '',
+    orderId: 0,
+    phoneNumber: 0,
+  });
   const [orderDetails, setOrderDetails] = useState({});
   const {user} = useSelector((state: RootState) => state.user);
 
