@@ -26,18 +26,19 @@ async function getOrders(transporterId) {
     const searchQuery2 = mysql.format(searchNotConfirmed, [transporterId]);
     const confirmed = await query(searchQuery);
     const notConfirmed = await query(searchQuery2);
+    console.log(notConfirmed, confirmed)
 
     if (notConfirmed.length == 0) {
         return(
             {
-                items : confirmed, 
+                items : confirmed.concat(notConfirmed), 
                 processing: false
             }
             )
     } else {
         return(
             {
-                items : confirmed, 
+                items : confirmed.concat(notConfirmed), 
                 processing: true
             }
         )
