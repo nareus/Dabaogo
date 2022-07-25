@@ -47,6 +47,7 @@ const HomeScreen = (props: any) => {
       dispatch(updateRestaurants(data));
     });
     return () => {
+      setLoading(true);
       setToggleState(true);
     };
   }, [dispatch, user.userId]);

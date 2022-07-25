@@ -29,9 +29,11 @@ const OrderProgress = ({
 
   // console.log(orderId, transporterId, transporterName);
 
-  const [currentStatus, setCurrentStatus] = useState('on the way there');
+  const [currentStatus, setCurrentStatus] = useState(
+    'Finding food transporter',
+  );
 
-  const [isDone, setIsDone] = useState([true, false, false, false, false]);
+  const [isDone, setIsDone] = useState([0, 0, 0, 0, 0]);
   const [orderDetails, setOrderDetails] = useState({});
   const [transporter, setTransporter] = useState({});
   const [isLoading, setLoading] = useState(true);
@@ -48,11 +50,30 @@ const OrderProgress = ({
     socket.emit('join', user.userId);
     socket.on('connect', () => {});
     socket.on('update', data => {
-      console.log('dataItems is', data);
+      // console.log('response is', data);
+      setIsDone(data);
+      // console.log('dataItems is', isDone);
+      if (data[0]) {
+        setCurrentStatus('on the way there');
+      }
+      if (data[1]) {
+        setCurrentStatus('waiting for food');
+      }
+      if (data[2]) {
+        setCurrentStatus('on the way back');
+      }
+      if (data[3]) {
+        setCurrentStatus('Food has been delivered!');
+      }
+      if (data[4]) {
+        setCurrentStatus('Complete!');
+      }
+
       setLoading(false);
     });
 
     const getData = async () => {
+      console.log('transporter id is', transporterId);
       try {
         const responseTransporter = await axios.get(
           `${BACKEND_URL}/transporters?transporterId=${transporterId}`,
@@ -99,7 +120,7 @@ const OrderProgress = ({
           <HalfPadding />
           {currentStatus === 'Food has been delivered!' ||
           currentStatus === 'Finding food transporter' ||
-          currentStatus === 'Delivered' ? (
+          currentStatus === 'Complete' ? (
             <Text style={styles.orderStatus}>{currentStatus}</Text>
           ) : (
             <Text style={styles.orderStatus}>

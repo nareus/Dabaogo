@@ -14,7 +14,7 @@ const OrderStatusScreen = props => {
   const [isLoading, setLoading] = useState(true);
   const [menuItems, setMenuItems] = useState([]);
   const [transporter, setTransporter] = useState({
-    estimatedTime: '',
+    estimatedTime: '1300',
     firstName: '',
     lastName: '',
     userId: '',
@@ -79,6 +79,7 @@ const OrderStatusScreen = props => {
       const responseTransporter = await axios.get(
         `${BACKEND_URL}/transporters?transporterId=${transporterId}`,
       );
+      console.log('estimated arrival', responseTransporter.data);
       const {estimatedTime} = responseTransporter.data;
       const responseUser = await axios.get(
         `${BACKEND_URL}/users?userId=${transporterId}`,
@@ -115,7 +116,7 @@ const OrderStatusScreen = props => {
         <View style={styles.safeAreaView}>
           <TopBar
             onPress={() => props.navigation.navigate('Home')}
-            text={'OrderStatus'}
+            text={'Order Status'}
             iconName="cross"
             iconType="entypo"
           />
@@ -126,11 +127,13 @@ const OrderStatusScreen = props => {
                 orderId={user.currOrderId}
                 arrivalTime={transporter.estimatedTime}
                 transporterId={transporter.userId}
-                transporterName={transporter.firstName + transporter.lastName}
+                transporterName={
+                  transporter.firstName + ' ' + transporter.lastName
+                }
               />
               <Padding />
               <OrderLocationTracker
-                text={transporter.firstName + transporter.lastName}
+                text={transporter.firstName + ' ' + transporter.lastName}
                 duration={''}
                 orders={menuItems}
               />
