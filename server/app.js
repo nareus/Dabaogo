@@ -41,7 +41,7 @@ app.use('/outlets', outlets);
 app.use('/orders', orders);
 app.use('/menu', menu);
 app.use('/users', users);
-app.use('/transporters', transporters)
+app.use('/transporters', transporters);
 
 
 //Getting data in JSON format
@@ -80,12 +80,13 @@ io.of("/transporterStatus").on('connection', (socket) => {
         console.log("join: " + room);
         await socket.join(room);
         console.log(socket.rooms);
-        const status = {
-            foundTransporter : result[0].foundTransporter,
-            reachedOutlet : result[0].reachedOutlet ,
-            orderPickedUp :result[0].orderPickedUp,
-            delivered : result[0].delivered,
-        }
+        // const status = {
+        //     foundTransporter : result[0].foundTransporter,
+        //     reachedOutlet : result[0].reachedOutlet ,
+        //     orderPickedUp :result[0].orderPickedUp,
+        //     delivered : result[0].delivered,
+        // }
+        const status = [result[0].foundTransporter, result[0].reachedOutlet, result[0].orderPickedUp, result[0].delivered]
         socket.emit('update', status)
     })
 })
