@@ -9,7 +9,8 @@ import HalfPadding from '../atoms/HalfPadding';
 import OrderBottom from './OrderBottom';
 import ProgressBar from './ProgressBar';
 import {io} from 'socket.io-client';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateBuyerState} from '../../redux/transporterSlice';
 
 const OrderProgress = ({
   orderId,
@@ -37,6 +38,7 @@ const OrderProgress = ({
   const [orderDetails, setOrderDetails] = useState({});
   const [transporter, setTransporter] = useState({});
   const [isLoading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const {user} = useSelector(state => state.user);
 
   // setTimeout(() => {
@@ -51,7 +53,8 @@ const OrderProgress = ({
     socket.on('connect', () => {});
     socket.on('update', data => {
       // console.log('response is', data);
-      setIsDone(data);
+
+      dispatch(updateBuyerState(data));
       // console.log('dataItems is', isDone);
       if (data[0]) {
         setCurrentStatus('on the way there');
@@ -114,13 +117,13 @@ const OrderProgress = ({
       ) : (
         <View style={styles.container}>
           <Text style={styles.text}>Estimated Arrival</Text>
-          <Text style={styles.estimatedArrival}>{arrivalTime}</Text>
+          <Text style={styles.estimatedArrivalTime}>{arrivalTime}</Text>
           <HalfPadding />
-          <ProgressBar currentStatus={currentStatus} isDone={isDone} />
-          <HalfPadding />
+          {/* <ProgressBar currentStatus={currentStatus} />
+          <HalfPadding /> */}
           {currentStatus === 'Food has been delivered!' ||
           currentStatus === 'Finding food transporter' ||
-          currentStatus === 'Complete' ? (
+          currentStatus === 'Complete!' ? (
             <Text style={styles.orderStatus}>{currentStatus}</Text>
           ) : (
             <Text style={styles.orderStatus}>
@@ -140,12 +143,11 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS,
     padding: PADDING_LEFT,
   },
-  estimatedArrival: {
+  estimatedArrivalTime: {
     fontSize: 25,
     fontWeight: 'bold',
   },
   text: {
-    opacity: 0.5,
     fontSize: 15,
     fontWeight: 'bold',
   },

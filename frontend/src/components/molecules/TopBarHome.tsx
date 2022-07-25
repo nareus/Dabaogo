@@ -25,7 +25,7 @@ const TopBarHome = (props: {
           <Text style={styles.location}>{user.location}</Text>
         </View>
         <View style={styles.icons}>
-          <GeneralButton
+          {/* <GeneralButton
             onPress={() => {}}
             iconName="search"
             iconType="feather"
@@ -33,7 +33,7 @@ const TopBarHome = (props: {
             color={PRIMARY}
             position={'relative'}
             size={24}
-          />
+          /> */}
           <View style={{padding: 4}} />
           <GeneralButton
             onPress={props.onPressProfile}

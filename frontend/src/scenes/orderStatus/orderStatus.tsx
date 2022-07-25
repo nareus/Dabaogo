@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import OrderLocationTracker from '../../components/atoms/OrderLocationTracker';
 import Padding from '../../components/atoms/Padding';
 import OrderProgress from '../../components/molecules/OrderProgress';
 import TopBar from '../../components/molecules/TopBar';
 import {convertToQuantity} from '../../constants';
 import {RootState} from '../../redux';
+import {updateUser} from '../../redux/userSlice';
 import {BACKEND_URL} from '../../utils/links';
 
 const OrderStatusScreen = props => {
@@ -23,6 +24,8 @@ const OrderStatusScreen = props => {
   });
   const [orderDetails, setOrderDetails] = useState({});
   const {user} = useSelector((state: RootState) => state.user);
+  const {buyerProgress} = useSelector((state: RootState) => state.transporter);
+  const dispatch = useDispatch();
 
   const getData = async () => {
     try {
@@ -115,7 +118,16 @@ const OrderStatusScreen = props => {
       ) : (
         <View style={styles.safeAreaView}>
           <TopBar
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={async () => {
+              if (buyerProgress[4]) {
+                const resp = await axios.get(
+                  `${BACKEND_URL}/users?userId=${user.userId}}`,
+                );
+                dispatch(updateUser(resp.data[0]));
+              }
+
+              props.navigation.navigate('Home');
+            }}
             text={'Order Status'}
             iconName="cross"
             iconType="entypo"
