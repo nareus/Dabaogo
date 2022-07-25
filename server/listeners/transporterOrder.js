@@ -31,14 +31,14 @@ async function getOrders(transporterId) {
         return(
             {
                 items : confirmed, 
-                processing: true
+                processing: false
             }
             )
     } else {
         return(
             {
                 items : confirmed, 
-                processing: false
+                processing: true
             }
         )
             

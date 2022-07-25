@@ -101,19 +101,20 @@ async function getOrders(req, res) {
     const searchQuery2 = mysql.format(searchNotConfirmed, [transporterId]);
     const confirmed = await query(searchQuery);
     const notConfirmed = await query(searchQuery2);
+    console.log(confirmed)
 
     if (notConfirmed.length == 0) {
         res.json(
             {
                 items : confirmed, 
-                processing: true
+                processing: false
             }
             )
     } else {
         res.json(
             {
                 items : confirmed, 
-                processing: false
+                processing: true
             }
             )
     }
