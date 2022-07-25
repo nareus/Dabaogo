@@ -175,7 +175,7 @@ async function cancelOrder (req, res) {
     io.of('/maxOrders').to(room).emit('update', max)
 
     //Reset Users current order
-    const update = "UPDATE Users SET currOrderId = NULL  WHERE userId =?"
+    const update = "UPDATE Users SET currOrderId = NULL WHERE userId =?"
     const updateBuyer = mysql.format(update, [userId])
     await query(updateBuyer)
 
@@ -241,21 +241,33 @@ async function updateOrder(req, res) {
     transporter = await query(transQuery)
     const decremented = transporter.orderTaken == transporter.maxOrders
 
-    if (result[0].foundTransporter == false && foundTransporter == true) {
-        const del = "DELETE FROM Transporters WHERE transporterId=?";
-        const deleteQuery = mysql.format(del, [id])
-        await query(deleteQuery);
+    if(result.length != 0) {
+        console.log(result)
+        if (result[0].foundTransporter == false && foundTransporter == true) {
+            const del = "DELETE FROM Transporters WHERE transporterId=?";
+            const deleteQuery = mysql.format(del, [id])
+            await query(deleteQuery);
 
-        // if (!decremented) {
-        //     const outletId = result[0].outletId
-        //     const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
-        //     const updateOutletQuery = mysql.format(updateOutlet, [outletId])
-        //     await query(updateOutletQuery)
-        // }
+            const getUser = "SELECT * FROM Users WHERE userId = ?"
+            const getUserQuery = mysql.format(getUser, [id])
+            const user = await query(getUserQuery)
+            const location = user[0].location
+
+            //update outlets socket
+            const newOutlets = await outlet.loadOutlets(location)
+            req.io.of('/updateOutlets').to(location).emit('update', newOutlets)
+
+            // if (!decremented) {
+            //     const outletId = result[0].outletId
+            //     const updateOutlet = "UPDATE Outlets SET transporters = transporters - 1 WHERE outletId = ?"
+            //     const updateOutletQuery = mysql.format(updateOutlet, [outletId])
+            //     await query(updateOutletQuery)
+            // }
     }
+    }   
 
     //set transporter back to buyer and set currOrder of buyers to null if delivered
-    if (result[0].delivered == false && delivered == true) {
+    if (delivered == true) {
         //switch transporter back to buyer
         const updateUser = "UPDATE Users SET istransporter = 0 WHERE userId = ?"
         const updateUserQuery = mysql.format(updateUser, [id])
@@ -279,12 +291,14 @@ async function updateOrder(req, res) {
     await query(updateQuery)
     res.send("updated")
 
-    const status = {
-        foundTransporter : arr[0],
-        reachedOutlet : arr[1] ,
-        orderPickedUp : arr[2],
-        delivered : arr[3],
-    }
+    // const status = {
+    //     foundTransporter : arr[0],
+    //     reachedOutlet : arr[1] ,
+    //     orderPickedUp : arr[2],
+    //     delivered : arr[3],
+    // }
+
+    const status = [arr[0], arr[1], arr[2], arr[3]]
 
     //emit transporter status through socket server
     req.io.of('/transporterStatus').to(id).emit('update', status)
