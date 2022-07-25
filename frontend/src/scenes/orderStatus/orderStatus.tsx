@@ -60,6 +60,7 @@ const OrderStatusScreen = props => {
       });
 
       const finalMenu = convertToQuantity(filteredMenu);
+      console.log(finalMenu);
       setMenuItems(finalMenu);
     } catch (error) {
       console.error(error);

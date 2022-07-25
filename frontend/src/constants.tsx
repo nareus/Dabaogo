@@ -1,3 +1,10 @@
+export interface IOrder {
+  foodId: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 export const convertToMoney = (price: number) => {
   price = Math.round((price + Number.EPSILON) * 100) / 100;
   return (
@@ -18,13 +25,14 @@ export const convertToQuantity = (items: any) => {
         quantity: 1,
         name: item.name,
         price: item.price,
-        foodId: item.foodIid,
+        foodId: item.foodId,
       };
     } else {
       output[item.foodId].quantity++;
     }
   }
-  return Object.values(output);
+  const result: IOrder[] = Object.values(output);
+  return result;
 };
 
 export const hostelData = [
@@ -108,8 +116,14 @@ export const formatAMPM = (oldDate: Date, diff: number) => {
 };
 
 export const convertToDate = (date: string) => {
-  const minutes = parseInt(date.split(':')[1].split(' ')[0], 10);
+  // 5:06 pm
+  const [hours, minutesAndAMPM] = date.split(':');
+  const [minutes, AMPM] = minutesAndAMPM.split(' ');
+  const hours24 =
+    AMPM === 'am' ? parseInt(hours, 10) : parseInt(hours, 10) + 12;
+
   const newDate = new Date();
-  newDate.setMinutes(minutes);
+  newDate.setMinutes(parseInt(minutes, 10));
+  newDate.setHours(hours24);
   return newDate;
 };

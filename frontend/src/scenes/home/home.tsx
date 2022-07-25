@@ -43,6 +43,7 @@ const HomeScreen = (props: any) => {
     });
     socket.on('update', data => {
       setLoading(false);
+      console.log('restaurant data is', data);
       dispatch(updateRestaurants(data));
     });
     return () => {

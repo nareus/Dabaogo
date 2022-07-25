@@ -14,6 +14,8 @@ const DepartureTime = () => {
   const dispatch = useDispatch();
   const {departureTime} = useSelector((state: RootState) => state.transporter);
 
+  console.log(departureTime);
+  console.log(convertToDate(departureTime));
   return (
     <View style={styles.main}>
       <View style={styles.top}>

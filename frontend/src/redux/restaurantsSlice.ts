@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export interface IRestaurant {
-  outletId: string;
+  outletId: number;
   name: string;
   available: boolean;
   transporters: number;
