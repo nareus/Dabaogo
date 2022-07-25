@@ -1,19 +1,8 @@
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {GAP_FORM_FIELD, PADDING_LEFT} from '../../styles/spacing';
-import {ExpandableListView} from 'react-native-expandable-listview';
+import {Text, StyleSheet, View} from 'react-native';
+import {PADDING_LEFT} from '../../styles/spacing';
 import {PRIMARY} from '../../styles/colors';
 import {BORDER_RADIUS} from '../../styles/mixins';
-import RestaurantCard from './RestaurantCard';
-import {sub} from 'react-native-reanimated';
-
-const CONTENT = [
-  {
-    id: '96',
-    categoryName: 'Sean',
-    subCategory: [{id: '1', name: '1 x Chicken Chop Rice ($5.50)'}],
-  },
-];
 export interface IRestaurantTransporterOrderCard {
   id: number;
   restaurantName: string;
@@ -33,22 +22,9 @@ export interface IFoodItem {
 
 const TransporterOrderCard = ({restaurantName, data}) => {
   console.log(data);
-
-  const onPress = () => {
-    // navigateToPlaceOrderScreen();
-  };
-
-  function handleItemClick(index) {
-    console.log(index);
-  }
-
-  function handleInnerItemClick({innerIndex, item, itemIndex}) {
-    console.log(innerIndex);
-  }
-
   return (
     // <View style={{paddingRight: GAP_FORM_FIELD * 2}}>
-    <View style={styles.container} onPress={onPress}>
+    <View style={styles.container}>
       <Text style={styles.restaurantName}>{restaurantName}</Text>
       <View>
         {data.map((item: ITransporterOrderCard) => (
@@ -65,7 +41,7 @@ const TransporterOrderCard = ({restaurantName, data}) => {
             </View>
             <View style={{padding: PADDING_LEFT / 1.5}}>
               {item.subCategory.map((subCategory: IFoodItem) => {
-                const [name, price] = subCategory.name.split(' (');
+                const [name, price] = subCategory.name.split(' $');
                 return (
                   <View
                     key={subCategory.id}
@@ -88,7 +64,7 @@ const TransporterOrderCard = ({restaurantName, data}) => {
                         fontSize: 12,
                         color: PRIMARY,
                       }}>
-                      {price.split(')')[0]}
+                      {price}
                     </Text>
                   </View>
                 );

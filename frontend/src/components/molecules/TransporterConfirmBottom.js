@@ -9,23 +9,41 @@ const TransporterConfirmBottom = props => {
   return (
     <View style={styles.container}>
       <View style={styles.orderRow}>
-        <Text style={styles.text}>Total</Text>
-        <Text style={styles.text}>${props.price}</Text>
+        <Text style={styles.text}>Profit</Text>
+        <Text style={styles.price}>{props.price}</Text>
+      </View>
+      <View style={styles.orderRow}>
+        <Text style={styles.text}>Total Price</Text>
+        <Text style={styles.price}>{props.totalPrice}</Text>
       </View>
       <Padding />
-      <SignInUpButton
-        onPress={props.onPress}
-        backgroundColor={PRIMARY}
-        color={BUTTON_TEXT_2}
-        title={props.buttonTitle}
-      />
+      {props.dataLength === 0 ? (
+        <SignInUpButton
+          disabled={false}
+          onPress={props.cancelPress}
+          backgroundColor={'red'}
+          color={BUTTON_TEXT_2}
+          title={'Cancel Transporter'}
+        />
+      ) : (
+        <SignInUpButton
+          disabled={props.processing}
+          onPress={props.onPress}
+          backgroundColor={PRIMARY}
+          color={BUTTON_TEXT_2}
+          title={props.buttonTitle}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: PADDING_LEFT,
+    paddingLeft: PADDING_LEFT,
+    paddingRight: PADDING_LEFT,
+    paddingTop: PADDING_LEFT,
+    paddingBottom: PADDING_LEFT * 2,
     backgroundColor: 'white',
   },
   orderRow: {
@@ -36,6 +54,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  price: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: PRIMARY,
   },
 });
 export default TransporterConfirmBottom;

@@ -9,6 +9,7 @@ const transporterSlice = createSlice({
   initialState: {
     restaurantsSelected: temp,
     departureTime: formatAMPM(new Date(), 5),
+    totalProfit: 0,
   },
   reducers: {
     addOrRemoveRestaurant(state, action: PayloadAction<IRestaurant>) {
@@ -40,9 +41,12 @@ const transporterSlice = createSlice({
     changeDepartureTime(state, action: PayloadAction<string>) {
       state.departureTime = action.payload;
     },
+    setTotalProfit(state, action: PayloadAction<number>) {
+      state.totalProfit = action.payload;
+    },
   },
 });
 
-export const {addOrRemoveRestaurant, changeDepartureTime} =
+export const {addOrRemoveRestaurant, changeDepartureTime, setTotalProfit} =
   transporterSlice.actions;
 export default transporterSlice.reducer;

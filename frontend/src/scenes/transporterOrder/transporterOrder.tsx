@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import Padding from '../../components/atoms/Padding';
 import TransporterConfirmBottom from '../../components/molecules/TransporterConfirmBottom';
 import {BACKGROUND_COLOR} from '../../styles/colors';
 import TransporterOrderCard, {
-  IFoodItem,
   IRestaurantTransporterOrderCard,
   ITransporterOrderCard,
 } from '../../components/atoms/TransporterOrderCard';
@@ -13,11 +12,11 @@ import {BACKEND_URL} from '../../utils/links';
 import TransporterOrderProgress from '../../components/molecules/TransporterOrderProgress';
 import TopBar from '../../components/molecules/TopBar';
 import {io} from 'socket.io-client';
-import RootState from '../../redux';
-import {useSelector} from 'react-redux';
-import {convertToQuantity, IOrder} from '../../constants';
-import {State} from 'react-native-gesture-handler';
+import {RootState} from '../../redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {convertToMoney, convertToQuantity, IOrder} from '../../constants';
 import {IRestaurant} from '../../redux/restaurantsSlice';
+import {updateUser} from '../../redux/userSlice';
 
 // interface IData {
 //   items: IItem[],
@@ -31,11 +30,15 @@ import {IRestaurant} from '../../redux/restaurantsSlice';
 //     name: string,
 //     price: number,
 // }
+interface ISocketData {
+  items: ITransporterOrder[];
+  processing: boolean;
+}
 
 interface ITransporterOrder {
   orderId: number;
   buyerId: number;
-  transproterId: number;
+  transporterId: number;
   price: number;
   outletId: number;
   foods: string;
@@ -57,20 +60,24 @@ interface IFoodItem {
 }
 
 const TransporterOrder = props => {
-  const [buttonTitle, setButtonTitle] = useState('Confirm');
+  const deliveryFee = 1;
+  const [buttonTitle, setButtonTitle] = useState('Depart');
   const [count, setCount] = useState(1);
   const [stage, setStage] = useState([false, false, false, false]);
   const [currentStatus, setCurrentStatus] = useState('Waiting for Orders');
   const [pulseState] = useState([true, false, false, false, false]);
-  const [loading, setLoading] = useState(false);
-
-  const [currOrders, updateCurrOrders] = useState<ITransporterOrder[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalProfit, setTotalProfit] = useState(0);
   const [processing, setProcessing] = useState(false);
+  const [numCurrOrder, setNumCurrOrder] = useState(0);
   const [ordersToBeDisplayed, setOrdersToBeDisplayed] = useState<
     IRestaurantTransporterOrderCard[]
   >([]);
   const {user} = useSelector((state: RootState) => state.user);
   const {restaurants} = useSelector((state: RootState) => state.restaurants);
+  // const {totalProfit} = useSelector((state: RootState) => state.transporter);
+  const dispatch = useDispatch();
 
   const handlePress = async () => {
     if (count <= 5) {
@@ -82,7 +89,7 @@ const TransporterOrder = props => {
       setStage(newStage);
       await axios.put(`${BACKEND_URL}/orders`, {
         stage: newStage,
-        orderId: 13,
+        transporterId: user.userId,
       });
       if (count === 1) {
         setButtonTitle('Reached Outlet');
@@ -101,6 +108,14 @@ const TransporterOrder = props => {
         setCurrentStatus('Food has been delivered!');
       }
       if (count === 5) {
+        await axios.delete(
+          `${BACKEND_URL}/transporters?transporterId=${user.userId}`,
+        );
+        const response = await axios.get(
+          `${BACKEND_URL}/users?userId=${user.userId}}`,
+        );
+        dispatch(updateUser(response.data[0]));
+
         props.navigation.navigate('Home');
       }
     }
@@ -109,21 +124,21 @@ const TransporterOrder = props => {
   useEffect(() => {
     const socket = io(`${BACKEND_URL}/transporterOrders`);
 
-    socket.emit('join', user.userId);
+    socket.emit('join', String(user.userId));
     socket.on('connect', () => {});
-    socket.on('update', data => {
-      console.log('dataItems is', data.items);
-      updateCurrOrders(data.items);
+    socket.on('update', (data: ISocketData) => {
+      console.log('dataItems is', data);
+      setNumCurrOrder(data.items.length);
       getFinalOrder(data.items);
       setProcessing(data.processing);
     });
 
-    // you need to split them up into the different outlets
-    // so you can dynamically generate TransporterOrderCards
-
-    // getMenuItems();
     return () => {
-      updateCurrOrders([]);
+      setButtonTitle('Confirm');
+      setCount(1);
+      setStage([false, false, false, false, false]);
+      setCurrentStatus('Waiting for Order');
+      setOrdersToBeDisplayed([]);
       setProcessing(false);
     };
   }, []);
@@ -160,6 +175,8 @@ const TransporterOrder = props => {
 
   const getFinalOrder = async currOrders => {
     const finalCurrOrders: IRestaurantTransporterOrderCard[] = [];
+    let price = 0;
+    let profit = 0;
 
     for (let i = 0; i < currOrders.length; i++) {
       const orderDetails = currOrders[i];
@@ -174,10 +191,16 @@ const TransporterOrder = props => {
       const item: ITransporterOrderCard = {
         id: orderDetails.buyerId.toString(),
         categoryName: firstName + ' ' + lastName + ' @ ' + location,
-        subCategory: ordererOrder.map((order: IOrder) => ({
-          id: String(order.foodId),
-          name: `${order.quantity}x ${order.name} (${order.price})`,
-        })),
+        subCategory: ordererOrder.map((order: IOrder) => {
+          profit = profit + deliveryFee;
+          price = price + order.price;
+          return {
+            id: String(order.foodId),
+            name: `${order.quantity}x ${order.name} $${convertToMoney(
+              order.price,
+            )}`,
+          };
+        }),
       };
 
       const {name} = restaurants.filter(
@@ -205,6 +228,8 @@ const TransporterOrder = props => {
       }
     }
     console.log('finalCurrOrders is', finalCurrOrders);
+    setTotalPrice(price);
+    setTotalProfit(profit);
     setOrdersToBeDisplayed(finalCurrOrders);
     setLoading(false);
   };
@@ -229,7 +254,17 @@ const TransporterOrder = props => {
     6. Done // this is a dummy, to stop delivered from flashing
     */
 
-  return (
+  return loading ? (
+    <View
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+      }}>
+      <ActivityIndicator />
+    </View>
+  ) : (
     <View style={styles.topSafeAreaView}>
       <TopBar
         onPress={() => props.navigation.goBack()}
@@ -237,7 +272,6 @@ const TransporterOrder = props => {
         iconName={'chevron-left'}
         iconType={'feather'}
       />
-
       <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
         <Padding />
         <TransporterOrderProgress
@@ -246,21 +280,24 @@ const TransporterOrder = props => {
           pulseState={pulseState}
         />
         {ordersToBeDisplayed.map(order => renderItems(order))}
-        {/* <Padding />
-        <TransporterOrderCard
-          restaurantName={'Western'}
-          data={[
-            {
-              id: '96',
-              categoryName: 'Sean',
-              subCategory: [{id: '1', name: '1 x Chicken Chop Rice ($5.50)'}],
-            },
-          ]}
-        /> */}
         <Padding />
       </ScrollView>
       <TransporterConfirmBottom
-        price={'20.40'}
+        dataLength={numCurrOrder}
+        processing={processing}
+        price={convertToMoney(totalProfit)}
+        totalPrice={convertToMoney(totalPrice)}
+        cancelPress={async () => {
+          await axios.delete(
+            `${BACKEND_URL}/transporters?transporterId=${user.userId}`,
+          );
+          const response = await axios.get(
+            `${BACKEND_URL}/users?userId=${user.userId}}`,
+          );
+          dispatch(updateUser(response.data[0]));
+
+          props.navigation.navigate('Home');
+        }}
         onPress={handlePress}
         buttonTitle={buttonTitle}
       />

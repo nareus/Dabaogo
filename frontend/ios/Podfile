@@ -5,6 +5,9 @@ platform :ios, '11.0'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'frontend' do
+  pre_install do |installer|
+    $RNMapboxMaps.pre_install(installer)
+  end
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -35,6 +38,7 @@ target 'frontend' do
   use_flipper!()
 
   post_install do |installer|
+    $RNMapboxMaps.post_install(installer)
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end

@@ -5,6 +5,7 @@ import {RootState} from '../../redux';
 import {IRestaurant} from '../../redux/restaurantsSlice';
 import {BORDER_RADIUS} from '../../styles/mixins';
 import {PADDING_LEFT} from '../../styles/spacing';
+import Map from './Map';
 import ChangeButton from './TextButton';
 
 const RestaurantToVisit = (props: any) => {
@@ -15,6 +16,7 @@ const RestaurantToVisit = (props: any) => {
   return (
     <View style={styles.container}>
       <Image source={require('../../images/map.png')} style={styles.image} />
+      {/* <Map /> */}
       <View style={styles.top}>
         <Text style={styles.text}>{props.text}</Text>
         <ChangeButton text={'Change'} onPress={props.onChangeButtonPress} />

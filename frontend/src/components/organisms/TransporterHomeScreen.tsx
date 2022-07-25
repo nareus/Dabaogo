@@ -14,6 +14,7 @@ import {IRestaurant} from '../../redux/restaurantsSlice';
 import Padding from '../atoms/Padding';
 import {convertToDate} from '../../constants';
 import {updateUser} from '../../redux/userSlice';
+import {setTotalProfit} from '../../redux/transporterSlice';
 
 const TransporterHomeScreen = (props: any) => {
   const deliveryFee = 1.0;
@@ -63,6 +64,7 @@ const TransporterHomeScreen = (props: any) => {
           `${BACKEND_URL}/users?userId=${user.userId}}`,
         );
         dispatch(updateUser(resp.data[0]));
+        dispatch(setTotalProfit(totalPrice));
         props.navigate();
       }
     } catch (error) {
