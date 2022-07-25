@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   showPasswordText: {
+    color: 'black',
     fontWeight: 'bold',
   },
 });

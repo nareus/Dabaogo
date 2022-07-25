@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 5,
   },
   text: {
+    color: 'black',
     fontWeight: 'bold',
   },
   restaurantToVisit: {

@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   departureText: {
+    color: 'black',
     fontWeight: 'bold',
   },
   currentTime: {

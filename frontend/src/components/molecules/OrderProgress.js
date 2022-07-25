@@ -145,15 +145,18 @@ const styles = StyleSheet.create({
   },
   estimatedArrivalTime: {
     fontSize: 25,
+    color: 'black',
     fontWeight: 'bold',
   },
   text: {
+    color: 'black',
     fontSize: 15,
     fontWeight: 'bold',
   },
   orderStatus: {
     // fontWeight: 'bold',
     fontSize: 15,
+    color: 'black',
   },
 });
 
