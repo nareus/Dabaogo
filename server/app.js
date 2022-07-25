@@ -86,7 +86,7 @@ io.of("/transporterStatus").on('connection', (socket) => {
         //     orderPickedUp :result[0].orderPickedUp,
         //     delivered : result[0].delivered,
         // }
-        const status = [result[0].foundTransporter, result[0].reachedOutlet, result[0].orderPickedUp, result[0].delivered]
+        const status = [result[0].foundTransporter, result[0].reachedOutlet, result[0].orderPickedUp, result[0].delivered, result[0].delivered]
         socket.emit('update', status)
     })
 })

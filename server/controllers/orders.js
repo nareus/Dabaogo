@@ -242,9 +242,8 @@ async function updateOrder(req, res) {
     const decremented = transporter.orderTaken == transporter.maxOrders
 
     if(result.length != 0) {
-        console.log(result)
         if (result[0].foundTransporter == false && foundTransporter == true) {
-            const del = "DELETE FROM Transporters WHERE transporterId=?";
+            const del = "UPDATE Transporters SET available=0 WHERE transporterId=?";
             const deleteQuery = mysql.format(del, [id])
             await query(deleteQuery);
 
@@ -297,8 +296,7 @@ async function updateOrder(req, res) {
     //     orderPickedUp : arr[2],
     //     delivered : arr[3],
     // }
-
-    const status = [arr[0], arr[1], arr[2], arr[3]]
+    const status = [arr[0], arr[1], arr[2], arr[3], arr[3]]
 
     //emit transporter status through socket server
     req.io.of('/transporterStatus').to(id).emit('update', status)
