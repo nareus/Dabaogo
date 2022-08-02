@@ -48,6 +48,12 @@ const transporterSlice = createSlice({
     updateBuyerState(state, action: PayloadAction<number[]>) {
       state.buyerProgress = action.payload;
     },
+    resetTransporter(state) {
+      state.restaurantsSelected = temp;
+      state.departureTime = formatAMPM(new Date(), 5);
+      state.totalProfit = 0;
+      state.buyerProgress = [0, 0, 0, 0, 0];
+    },
   },
 });
 
@@ -56,5 +62,6 @@ export const {
   changeDepartureTime,
   setTotalProfit,
   updateBuyerState,
+  resetTransporter,
 } = transporterSlice.actions;
 export default transporterSlice.reducer;

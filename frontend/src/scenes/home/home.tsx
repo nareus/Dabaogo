@@ -14,6 +14,7 @@ import BottomUserState from '../../components/atoms/BottomUserState';
 // import {SafeAreaView} from 'react-navigation';
 import {RootState} from '../../redux';
 import {userLogout} from '../../redux/userSlice';
+import {resetTransporter} from '../../redux/transporterSlice';
 import {PADDING_LEFT} from '../../styles/spacing';
 import {changeDepartureTime} from '../../redux/transporterSlice';
 import {IRestaurant, updateRestaurants} from '../../redux/restaurantsSlice';
@@ -30,6 +31,7 @@ const HomeScreen = (props: any) => {
   const dispatch = useDispatch();
   const onPressLogout = () => {
     dispatch(userLogout());
+    dispatch(resetTransporter());
     props.navigation.navigate('Landing');
   };
 
