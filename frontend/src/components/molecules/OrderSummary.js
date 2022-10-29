@@ -49,7 +49,10 @@ const OrderSummary = ({data}) => {
         })}
       </View>
       <BottomDetails name="Subtotal" price={data.subtotal} />
-      <BottomDetails name="Delivery Fee" price={data.deliveryFee} />
+      <BottomDetails
+        name="Delivery Fee"
+        price={data.items.length * data.deliveryFee}
+      />
       <BottomDetails name="Service Fee" price={data.serviceFee} />
       {/* </View> */}
     </View>
