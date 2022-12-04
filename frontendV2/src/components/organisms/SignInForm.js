@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-
-import PasswordFormElement from '../molecules/PasswordFormElement';
-import PhoneFormElement from '../molecules/PhoneFormElement';
-import {FORM_WIDTH} from '../../styles/mixins';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import PasswordFormElement from '../molecules/auth/PasswordFormElement';
+import PhoneFormElement from '../molecules/auth/PhoneFormElement';
+import { FORM_WIDTH } from '../../styles/mixins';
 import axios from 'axios';
-import {BACKEND_URL} from '../../utils/links';
-import FormErrorAndSubmit from '../molecules/FormErrorAndSubmit';
+import { BACKEND_URL } from '../../utils/links';
+import FormErrorAndSubmit from '../molecules/auth/FormErrorAndSubmit';
 
-const SignInForm = ({navigate}) => {
+const SignInForm = ({ navigate }) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,7 +16,7 @@ const SignInForm = ({navigate}) => {
       const phoneNum = parseInt(phone, 10);
       const response = await axios.post(`${BACKEND_URL}/login`, {
         phone: phoneNum,
-        password: password,
+        password
       });
       if (response.data.accepted === true) {
         return [false, '', '', response.data.id];
@@ -27,7 +26,7 @@ const SignInForm = ({navigate}) => {
       return [
         true,
         'All fields are required',
-        'Enter the required information into every field',
+        'Enter the required information into every field'
       ];
     }
   };
@@ -36,7 +35,7 @@ const SignInForm = ({navigate}) => {
     <View style={styles.container}>
       <View
         style={{
-          width: FORM_WIDTH,
+          width: FORM_WIDTH
         }}>
         <PhoneFormElement inputText={phone} onChangeText={setPhone} />
         <PasswordFormElement inputText={password} onChangeText={setPassword} />
@@ -52,8 +51,8 @@ const SignInForm = ({navigate}) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 export default SignInForm;
