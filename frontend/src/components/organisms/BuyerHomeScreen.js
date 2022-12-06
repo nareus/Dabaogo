@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {BACKGROUND_COLOR} from '../../styles/colors';
-import RestaurantScroll from '../molecules/RestaurantScroll';
+import { StyleSheet, View } from 'react-native';
+import { BACKGROUND_COLOR } from '../../styles/colors';
+import RestaurantScroll from '../molecules/menu/RestaurantScroll';
 
 const BuyerHomeScreen = props => {
   return (
@@ -14,8 +14,8 @@ const BuyerHomeScreen = props => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: BACKGROUND_COLOR,
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 export default BuyerHomeScreen;

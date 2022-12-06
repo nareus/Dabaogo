@@ -12,16 +12,29 @@ interface IUser {
   location: string;
 }
 
+// const emptyUser: IUser = {
+//   userId: -1,
+//   password: '',
+//   phoneNumber: 0,
+//   email: '',
+//   firstName: '',
+//   lastName: '',
+//   currOrderId: 0,
+//   isTransporter: 0,
+//   location: '',
+// };
+
+// This is 
 const emptyUser: IUser = {
-  userId: -1,
-  password: '',
-  phoneNumber: 0,
-  email: '',
-  firstName: '',
-  lastName: '',
+  userId: 1,
+  password: 'sdadsadasdsa',
+  phoneNumber: 93214321,
+  email: 'defaultUser@gmail.com',
+  firstName: 'Default',
+  lastName: 'User',
   currOrderId: 0,
   isTransporter: 0,
-  location: '',
+  location: 'Tembusu College',
 };
 
 const userSlice = createSlice({

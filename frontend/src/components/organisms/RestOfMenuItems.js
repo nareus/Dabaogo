@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import CategoryMenuCards from '../molecules/CategoryMenuCards';
+import CategoryMenuCards from '../molecules/menu/CategoryMenuCards';
 
 const RestOfMenuItems = ({addItem, removeItem, data}) => {
   const items = () => {
