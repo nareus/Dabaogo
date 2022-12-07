@@ -3,14 +3,13 @@ import { StyleSheet, View, Text } from 'react-native';
 
 import GeneralButton from '../../atoms/button/GeneralButton';
 
-const TopBar = ({ onPress, text, iconName, iconType }) => (
+const TopBar = ({ onPress, text }) => (
   <View style={styles.bigContainer}>
     <View style={styles.container}>
       <View style={styles.button}>
         <GeneralButton
           onPress={onPress}
-          iconName={iconName}
-          iconType={iconType}
+          iconName={'arrow-back-outline'}
           backgroundColor={'white'}
           color={'black'}
           position={'absolute'}

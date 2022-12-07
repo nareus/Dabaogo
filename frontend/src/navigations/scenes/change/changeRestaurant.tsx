@@ -21,8 +21,6 @@ const ChangeRestaurantScreen = (props: any) => {
       <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Change Restaurant'}
-        iconName={'chevron-left'}
-        iconType={'feather'}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <RestaurantScroll

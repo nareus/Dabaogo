@@ -18,8 +18,6 @@ const NotesScreen = (props: any) => {
       <TopBar
         onPress={() => props.navigation.goBack()}
         text={''}
-        iconName={'chevron-left'}
-        iconType={'feather'}
       />
     </View>
   );

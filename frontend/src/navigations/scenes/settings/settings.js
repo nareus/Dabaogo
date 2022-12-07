@@ -4,18 +4,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import TopBar from '../../../components/molecules/bar/TopBar';
-import {userLogout} from '../../../redux/userSlice';
-import {PRIMARY} from '../../../styles/colors';
+import { userLogout } from '../../../redux/userSlice';
+import { PRIMARY } from '../../../styles/colors';
 
 const SettingsScreen = props => {
   const dispatch = useDispatch();
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
@@ -29,8 +29,6 @@ const SettingsScreen = props => {
       <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Profile'}
-        iconName={'chevron-left'}
-        iconType={'feather'}
       />
     </SafeAreaView>
   );
@@ -40,14 +38,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   logout: {
     fontWeight: 'bold',
     fontSize: 18,
     color: PRIMARY,
-    textDecorationLine: 'underline',
-  },
+    textDecorationLine: 'underline'
+  }
 });
 
 export default SettingsScreen;

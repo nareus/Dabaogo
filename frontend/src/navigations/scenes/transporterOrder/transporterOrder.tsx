@@ -271,8 +271,6 @@ const TransporterOrder = props => {
       <TopBar
         onPress={() => props.navigation.goBack()}
         text={'Transport Status'}
-        iconName={'chevron-left'}
-        iconType={'feather'}
       />
       <ScrollView style={styles.container} scrollToOverflowEnabled={false}>
         <Padding />

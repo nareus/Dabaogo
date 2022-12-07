@@ -149,8 +149,6 @@ const OrderScreen = props => {
           <TopBar
             onPress={() => props.navigation.goBack()}
             text={restaurantName}
-            iconName={'chevron-left'}
-            iconType={'feather'}
           />
           <MaxOrderStatusBar />
           {/* <TopBarAuth /> */}

@@ -64,8 +64,6 @@ const PaymentScreen = (props: any) => {
           props.navigation.goBack();
         }}
         text={'Payment'}
-        iconName={'chevron-left'}
-        iconType={'feather'}
       />
       <SafeAreaView style={styles.topSafeAreaView}>
         <ScrollView
